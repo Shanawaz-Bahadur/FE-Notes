@@ -1,0 +1,32 @@
+Important points to make  sure in interview:
+
+    1. Reclarify the any doubt from the interviewer
+    2. Discuss the solution with the interviewer
+    3. Config driven developement - to make it scable code(It means in the future I want to add some more component)
+    4. Maintain the data in the parent component
+    5. Pagination is od 2 types:
+
+        1. Frontend Heavy- get all the data into the FE then perform the Pagination
+        2. Backend heavy - API for each page click
+    
+    6. At the end of the interview just say - if I would have got more time I would have this code more modular and seperate component
+
+learning from question
+
+    1. Tabs form - How to update the nested array/object
+    2. Pagination - creating new Array of some specific number, slice function
+    3. Search Bar - Debounce using useEffect, caching using state variable
+    4. OTP Inputs - 
+        i. Maintaining input value in a useState of Array and updating it with the help of its index
+        ii. isNaN(value) - inbuilt function to check whether the value entered is a number or not
+        iii. Updating focus using useRef with array***
+        iv. Handling backspace event using useRef and going back to the previous input box
+    5. Chips input - 
+        i. Push the input data into the Array
+        ii. Delete the array element on the basis of index, as without index it was deleting the duplicate element (for deleting on the basis of index we can use splice() method
+    6. Todo List -
+        1. Handling and updating the value in array of objects
+        2. How to handle the empty space comdition - using trim() function
+        3. id - array.length + 1
+    7. Accordion -
+        1. Show and hide onClick

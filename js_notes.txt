@@ -1,0 +1,1182 @@
+Javascript by KG coding (Prashant)
+
+    1. Javascript was originally names as Mocha, then LiveScript and finally Javascript
+    2. Javascript is an interpreted language (thats the reason why JavaScript runs on browers console as it runs line by line), mainly it is executed line by line
+    3. Javascript is a high-level, dynamic programming language commonly used for creating interative effects within browser.
+
+Q) Javascript is a synchronous or asynchronous language ?
+Ans) JavaScript is synchronous and single-threaded by default, but it can perform asynchronous operations using callbacks, promises, async/await, and the event loop provided by the runtime environment.
+    
+Q) What is Runtime environment?
+Ans) It provides infrastructure to execute Javascript code, it includes engines(e.g V8 engine, SpiderMonkey)
+        - Browser Environment: Offers APIs for DOM manipulation, events, and network requests. 
+        - Node.js: Extends JavaScript capabilities to server-side programming.
+        - Node.js is an open-source, cross- platform runtime environment for executing JavaScript code outside of a browser. - - - NodeJs is a JavaScript in a different environment means Running JS on the server or any computer.
+
+Q) Variables systex rules
+Ans) 1. Can't use keywords or reserved words 
+     2. Can't start with a number 
+     3. No special characters other than $ and
+    4. = is for assignment ; means end of instruction  5.
+
+Q) How typescript is run in browser?
+Ans) 1. JavaScript runs at the client side in the browser. 
+     2. Coffee Script / TypeScript are transpiled to JavaScript.
+
+Q) var vs let vs const?
+Ans) 
+1. Scope:
+    - var
+        - Function-scoped (or global if outside a function)
+        - Ignores block scope ({})
+
+        if (true) {
+            var x = 10;
+        }
+        console.log(x); // 10 ✅ (still accessible)
+
+    - let and const
+        - Block-scoped (limited to {})
+
+        if (true) {
+            let y = 20;
+        }
+        console.log(y); // ❌ ReferenceError
+
+2. Re-declaration
+
+    - var
+        - Can be re-declared in the same scope
+            var a = 1;
+            var a = 2; // ✅ allowed
+
+    - let and const
+        - Cannot be re-declared in the same scope
+            let b = 1;
+            let b = 2; // ❌ Error
+
+3. Re-assignment
+
+    - var and let
+        - Can be reassigned
+
+            let c = 5;
+            c = 10; // ✅ allowed
+
+    - const
+        - Cannot be reassigned
+
+        const d = 5;
+        d = 10; // ❌ Error
+
+        ⚠️ But objects/arrays declared with const can still be mutated:
+
+        const obj = { name: "John" };
+        obj.name = "Jane"; // ✅ allowed
+
+4. Initialization requirement
+
+    - var and let
+        - Can be declared without a value
+            -let x;
+            
+    - const
+        - Must be initialized at declaration
+            -const x; // ❌ Error
+
+5. Hoisting
+
+    - var
+        - Hoisted and initialized as undefined
+            - e.g., console.log(a); // undefined
+                    var a = 5;
+
+    - let and const
+        Hoisted but not initialized
+        Exist in a Temporal Dead Zone (TDZ) until declared
+            e.g., console.log(b); // ❌ ReferenceError
+                  let b = 5;
+
+
+
+Q) What is Hoisting?
+Ans) Hoisting is JavaScript’s behavior of moving declarations to the top of their scope before code execution. Variables can thus be referred before they are declared in Javascript
+
+    But the behavior differs for:
+
+        - var
+        - let
+        - const
+        - function declarations
+
+    1. var Hoisting
+
+        Variables declared with var are:
+
+        - Hoisted
+        - Automatically initialized with undefined
+
+        Example:
+
+            console.log(a); // undefined
+            var a = 10;
+            console.log(a); // 10
+
+    2. let and const Hoisting
+
+        let and const are also hoisted, BUT:
+
+        ❌ They are not initialized
+
+        This creates something called the: 🔥 Temporal Dead Zone (TDZ)
+
+        Example:
+
+            console.log(x); // ❌ ReferenceError
+            let x = 5;
+
+    3. Function Declarations
+
+        Function declarations are fully hoisted.
+
+        greet();
+
+        function greet() {
+        console.log("Hello");
+        }
+
+        Note: But this doesn't work with Array function
+
+    4. Function Expressions
+
+        Function expressions behave like variables.
+        Example using var:
+
+            sayHi(); // ❌ TypeError
+
+            var sayHi = function () {
+            console.log("Hi");
+            };
+
+        Internally:
+
+            var sayHi;
+            sayHi(); // undefined()
+
+        So:
+
+        variable is hoisted
+        function value is not
+
+Q) What are Data Types?
+Ans) There are 2 types of Data Types in JavaScript
+
+    1. Primitive Data types: Primitive types store single values and are immutable.
+    2. Non-primitive data types: These store collections or complex data.
+
+        1. Primitive Data Types:
+            - Number
+            - String
+            - Boolean
+            - Null
+            - undefined
+            - Symbol: Used to create unique identifiers.
+            - BigInt: Used for very large integers.
+
+        2. Non-Primitive (Reference) Data
+            - Object
+            - Array
+            - Function
+
+Q) 4 === 4.0 ?
+Ans) It will return true, as in JS we only have Number as a data types.
+
+Q) Why are Array called as object in JS?
+Ans) Arrays are Specialized Objects, an array is just an object with:
+
+        - indexed keys
+        - built-in array methods
+    
+    let arr = ["a", "b"];
+    Internally it behaves somewhat like:
+        {
+            0: "a",
+            1: "b",
+            length: 2
+        }
+    That’s why:
+        typeof arr // "object"
+
+
+Q) When to use for, while or do while loop?
+Ans) 
+    1. for Loop
+
+        Use for when:
+        - You know how many times the loop should run.
+        - You need a counter/index.
+
+        Best Use Cases
+        - Iterating arrays
+        - Fixed number of repetitions
+        - Counting loops
+
+    2. while Loop
+
+        Use while when:
+        - You don’t know how many times the loop will run
+        - The loop depends on a condition, Here, we don’t know how many attempts the user will take.
+
+        Best Use Cases
+        - Waiting for user input
+        - Running until some condition changes
+        - API polling
+
+    3. do...while Loop
+
+        Use do...while when: You want the code to run at least once, even if the condition is false.
+
+        Example:
+        - Showing menu at least once
+        - Asking user whether to continue
+
+Q) What are callbacks?
+Ans) A callback in JavaScript is a function that is passed into another function and executed later.
+
+    Example: 
+
+    function greet(name, callback) {
+        console.log("Hello " + name);
+
+        callback();
+    }
+
+    function sayBye() {
+        console.log("Bye!");
+    }
+
+    greet("Shanawaz", sayBye);
+    - Here, sayBye is the callback.
+
+    -- uses of callback:
+
+        1. API Calls / Fetching Data: When data comes from a server, it takes time. Callbacks help execute code after data arrives.
+
+        function fetchData(callback) {
+            setTimeout(() => {
+                callback("Data received");
+            }, 2000);
+        }
+
+        fetchData(function(data) {
+            console.log(data);
+        });
+
+        2. Timers & Scheduling
+
+            setTimeout(() => {
+                console.log("Show popup");
+            }, 3000);
+
+        3. Array Operations: Callbacks are heavily used in modern JavaScript array methods.
+
+            const nums = [1, 2, 3];
+            const doubled = nums.map(num => num * 2);
+
+Q) What is callback hell?
+Ans) When many callbacks are nested deeply:
+    Ex. 
+        login(function() {
+        getProfile(function() {
+                getPosts(function() {
+                    logout(function() {
+                        console.log("Done");
+                    });
+                });
+            });
+        });
+
+    Problems:
+
+        - difficult to read
+        - hard to maintain
+        - error handling becomes messy
+
+    -- To avoid callback hell, JavaScript introduced: 
+
+        Promises
+        Async/Await
+
+Q) What are Promises and Async/Await?
+Ans) A Promise is an object that represents: the eventual completion or failure of an asynchronous operation.
+
+    - Why Promises Were Introduced: Before promises, JavaScript mainly used callbacks, which creates Callback Hell
+
+        - Promise States: A Promise has 3 states:
+
+            Pending -	Initial state
+            Resolved / Fulfilled - Operation successful
+            Rejected - Operation failed
+
+    -- Real-World Example
+
+    function fetchUser() {
+        return new Promise((resolve, reject) => {
+
+            setTimeout(() => {
+            resolve("User Data");
+            }, 2000);
+
+        });
+    }
+
+    fetchUser()
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+
+    -- Problem with Promises: Even though promises are better, too many .then() chains can still become messy.
+    Ex.
+        fetchData()
+        .then(data => {
+            return processData(data);
+        })
+        .then(result => {
+            return saveData(result);
+        })
+        .then(final => {
+            console.log(final);
+        });
+
+    To solve this, JavaScript introduced:
+    🔥 async/await
+        
+    Q) What is async/await?
+
+    - async/await is syntactic sugar over promises, It makes asynchronous code look synchronous and cleaner.
+
+    ==> Real Comparison
+
+    - Callback Style ❌
+
+        login(function() {
+            getProfile(function() {
+                getPosts(function() {
+                console.log("Done");
+                });
+            }); 
+        });
+
+    - Promise Style ✅
+
+        login()
+        .then(getProfile)
+        .then(getPosts)
+        .then(() => console.log("Done"));
+
+    - Async/Await Style 🚀
+
+        async function run() {
+
+            await login();
+
+            await getProfile();
+
+            await getPosts();
+
+            console.log("Done");
+
+        }
+
+
+Q) How Javascript works
+Ref: https://www.youtube.com/watch?v=fFd8OhrHfIM&list=PLinedj3B30sDi0keEOQU3n5p3Op28eN2e&index=2&pp=iAQB
+Ans) As we know that Javascript is an Synchronous, single-threaded language, then how do Javascript runs Asynchronous task
+
+    It consist of components given below :
+
+        1. Global Execution Context - it consists of 2 parts: Memory phase creation(consist of all the variables and function declaration with body: Which is possible only becayse of HOISTING ) and Code component
+        2. Call Stack (JS Engine) - If we want to execute any code then we need to push that particular code into the call stack, with the help of queues(Micro Task Queue, Task Queue/Callback Queue)
+        3. Web API - It is a part of Web browers to provide Web API's, it is not a part of JS
+        4. Micro Task Queue - It has more priority than Task Queue, (It takes Promises, async/await) 
+        5. Task Queue/Callback Queue - It has second priority after MicroTask Queue (It consists takes setTimeout, setInterval, DOM event listener, setImmediate)
+        6. Event Loop
+
+
+ Web API -
+
+Q) What if we have setTimeout set to 0ms then also the execution of the setTimeout comes after the execution of complete code?
+Ans) This is Event loop only send the code into the call stack once it is completely empty.
+
+Q) Types of task queues?
+Ans) 
+1. Micro Task Queue - It has more priority than Task Queue, (It takes Promises, async/await)  
+2. Task Queue - It has second priority after MicroTask Queue (It consists takes setTimeout, setInterval, DOM event listener, setImmediate)
+
+Q) What is Starvation?
+Ans) 
+
+Q) what is closure?
+Ans) closure = Inner Function(closure) + Refereces of each variables(Lexical Environment) 
+                                            OR
+    A function remembers and can access variables from its outer scope even after the outer function has finished executing.
+    
+    Example 1:
+
+        function init() {
+            var name = 'Mozilla'; // name is a local variable created by init
+                function displayName() {
+                    // displayName() is the inner function, a closure
+                    console. log(name); // use variable declared in the parent function
+                }
+            name = "Harry"
+            return displayName;
+        }
+        let c = init();
+        c()
+
+        Note***: As per logic it should print 'Mozilla' but instead it prints 'Harry' it is because while returning the inner function the reference of the surrounding state is also returned
+
+    Example 2: Data Privacy / Encapsulation - Closures help create private variables.
+
+        function createBankAccount() {
+
+            let balance = 1000;
+
+            return {
+                deposit(amount) {
+                    balance += amount;
+                },
+
+                getBalance() {
+                    return balance;
+                }
+            };
+        }
+
+        const account = createBankAccount();
+        account.deposit(500);
+
+        console.log(account.getBalance());  //1500
+
+        Note: 
+            Here:
+                - balance cannot be accessed directly
+                - only through provided methods
+
+            Used in:
+
+                - banking apps
+                - authentication
+                - secure data handling
+
+    Example 3: setTimeout / Async Operations
+
+        function greet(name) {
+
+            setTimeout(function() {
+                console.log("Hello " + name);
+            }, 2000);
+
+        }
+
+        greet("Shanawaz");
+
+    After 2 seconds:
+
+        - callback still remembers name
+
+    Closures power:
+
+        - timers
+        - promises
+        - async/await internally
+
+Q) What is Currying ?
+Ans) A function with multiple arguments is transformed into a sequence of functions, each taking one argument at a time.
+
+    Example 1:
+        function add(a) {
+            return function(b) {
+                return function(c) {
+                return a + b + c;
+                };
+            };
+        }
+
+        console.log(add(1)(2)(3));
+
+        //Using ES6 Arrow function
+        const add = a => b => c => a + b + c;
+
+        console.log(add(1)(2)(3));
+
+    Example 2: 
+
+        function setEmail(to){
+            return function(subject){
+                return function(body){
+                    console.log(`Send this mail to ${to} with subject ${subject}: ${body}`)
+                }
+            }
+        }
+        
+        //Using ES6 Arrow function
+        const setEmail = (to) => (subject) => (body) => console.log(`Send this mail to ${to} with subject ${subject}: ${body}`)
+        
+        setEmail("bahadurshanawaz@gmail.com")("leave application")("This is the body");
+
+Q) What is IIFE(Immediately Invoked Function Expression)?
+Ans) A function that runs immediately after being defined.
+
+    Basic Example:
+
+        (function () {
+            console.log("IIFE Executed");
+        })();
+
+    - Execution Flow:
+
+        Function Created
+            ↓
+        Immediately Executed
+            ↓
+        Destroyed after execution
+
+    Example: 
+
+        const counter = (function () {
+            let count = 0;
+            return {
+                increment() {
+                count++;
+                return count;
+                }
+            };
+        })();
+        console.log(counter.increment());
+
+        -- Used for:
+
+            - private variables
+            - encapsulation
+            - library design
+
+Q) What is iterator pattern? What are Generators Functions ? What is Yield keywords
+Ans) As before in for loops the Array is traverse from left to right, but what if we want to make it customizable
+
+    -- Iterator in JavaScript
+        - An iterator is an object having:
+            - a next() method
+            The next() method returns:
+                {
+                    value: something,
+                    done: true/false
+                }
+
+    -- Problem with Manual Iterators
+
+        Writing iterators manually is:
+            ❌ verbose
+            ❌ difficult
+            ❌ repetitive
+
+        To solve this, JavaScript introduced:
+
+    🔥 Generator Functions: A Generator Function is a special function that: can pause and resume execution. It automatically creates iterators, bydefault it also has the next() with done and value.
+
+        - Generator functions automatically return iterators.
+        - Special function that can pause/resume execution and creates iterators automatically.
+
+    Simple Example:
+
+        function* numbers() {
+            yield 1;
+            yield 2;
+            yield 3;
+        }
+        const gen = numbers();
+
+        console.log(gen.next());
+        console.log(gen.next());
+        console.log(gen.next());
+        console.log(gen.next());
+
+        Output:
+
+        { value: 1, done: false }
+        { value: 2, done: false }
+        { value: 3, done: false }
+        { value: undefined, done: true }
+
+    What is yield Keyword?
+
+        yield is used inside generator functions, Pauses generator execution and returns a value temporarily.
+
+        It:
+            ✅ pauses function execution
+            ✅ returns a value
+            ✅ saves function state
+
+    -- Real-World Applications
+        Example 1: Infinite Sequences
+
+            function* infiniteCounter() {
+            let i = 1;
+                while (true) {
+                    yield i++;
+                }
+            }
+
+            const counter = infiniteCounter();
+
+            console.log(counter.next().value);
+            console.log(counter.next().value);
+
+        Used in:
+
+            - ID generators
+            - pagination
+            - streaming
+
+        Example 2: Pagination / Lazy Loading - Instead of loading everything: Load next 10 items only when needed
+
+    ***Now the question arises - Return vs Yield
+
+        Return: Ends function, One-time value, Function terminates
+        Yield: Pauses function, Multiple values possible, Function resumes later
+
+
+    Q) What is Promisification?
+    Ans) Converting a callback-based asynchronous function into a Promise-based function, It is mainly used to modernize old JavaScript code that uses callbacks.
+    
+Q) Do let and const get hoisted?
+Ans) YES, but let and const remain inside:
+
+        🔥 Temporal Dead Zone
+
+Q) When did class keyword was introduced in JS?
+Ans) In ES6 (ECMAScript 2015)
+
+    - Before ES6 we where using Function Constructor
+
+        function Person(fname, lname, contact) {
+            this.fname = fname;
+            this. lname = lname;
+            this.contact = contact;
+
+            this.getName = function () {
+            console. log(this.fname, this. lname);
+        }
+
+        const person1= new Person("Piyush", "Garg", "999999999")
+
+    - After ES6 we use class keyword
+
+        class Person {
+                constructor(fname, lname, contact) {
+                this.fname = fname;
+                this. lname = lname;
+                this.contact = contact;
+
+                getContact() {
+                    console. log(this.contact);
+                }
+            }
+        }
+
+        person1 = new Person("Shanawaz", "Bahadur", 2397424793)
+        person2 = new Person("Aarif", "Shaikh",98972347461)
+
+Q) What is the difference between prototype and __proto__ ?
+Ans) In JavaScript, every function automatically gets a special property called:
+
+    🔥 prototype: This property is an object used for:
+
+    - sharing methods/properties
+    - inheritance
+
+    Example: 
+
+        function Person(name) {
+            this.name = name;
+        }
+
+        Person.prototype.greet = function() {
+            console.log("Hello " + this.name);
+        };
+
+        const user1 = new Person("John");
+        const user2 = new Person("Jane");
+
+        user1.greet();
+        user2.greet();
+
+    Here:
+
+        - greet() is stored once in Person.prototype
+        - all objects can access it
+
+
+    Q) What is __proto__?
+    Ans) It is an Objects reference to parent prototype
+
+    It links an object to its parent prototype.
+
+    Example together:
+
+        function Person() {}
+
+        const user = new Person();
+
+        console.log(Person.prototype);
+        console.log(user.__proto__);
+
+Q) What is Debouncing and Throttling in JavaScript?
+Ans) Both Debouncing and Throttling are techniques used to: control how frequently a function executes.
+
+Some browser events fire MANY times rapidly:
+
+    Examples:
+
+    - scrolling
+    - resizing
+    - typing
+    - mouse movement
+
+    1. Debouncing
+
+        Debouncing means: Execute function only AFTER a delay once events stop firing.
+            - to understand it morw you can draw 2 lines one above the other where below line is the server and above one as client and request starts after one key is pressed and before reaching the server the other key is pressed then the timer will again get restart from 0 and incase the other is not pressed for some fixed amount of time then we will hit the api call
+
+        Simple Meaning
+                                "Wait until user stops doing something"
+
+        - Debounce Visualization
+        
+            Typing...
+            Typing...
+            Typing...
+            (stop)
+                ↓
+            Function executes ONCE
+
+    Real-World Uses of Debouncing
+
+        ✅ Search bars
+        ✅ Auto-save forms
+        ✅ Resize events
+        ✅ API optimization
+        ✅ Input validation
+
+    2. Throttling
+    
+        Throttling means: Execute function at fixed intervals, no matter how many times event occurs.
+
+        Simple Meaning
+                                "Allow execution once every X milliseconds"
+
+    Real-World Uses of Throttling
+
+        ✅ Scroll tracking
+        ✅ Mouse movement
+        ✅ Game controls
+        ✅ Window resizing
+        ✅ Rate limiting
+        ✅ lazy loading
+
+
+    ✅ Final Definitions
+
+        🔥 Debouncing: Delays function execution until events stop firing for a specified time.
+
+        🔥 Throttling: Limits function execution to once every specified interval.
+
+***Q) How to create Debounce in useEffect?
+Ans) In the below code the most important part is the return statement which is called after the component unmounts and it is mainly used for garbage collection or to close the DB connection, here it is used to reset the timer
+
+    Example:
+        const [input, setInput] = useState("");
+
+        useEffect(() => {
+            const timer = setTimeout(fetchData, 300);
+
+            return () => {
+            clearTimeout(timer);
+            }
+        }, [input]);
+
+        <input
+            type="text"
+            className="search-bar"
+            value={input}
+            onChange={(e) => {
+                setInput(e.target.value);
+            }}
+        />
+
+Q) What is Event Bubbling in JavaScript?
+Ans) When an event happens on a child element, it automatically propagates upward to its parent elements.
+
+    Example: 
+
+        - HTML
+
+        <div id="parent">
+            <button id="child">Click Me</button>
+        </div>
+
+        - JS
+
+        document.getElementById("parent").addEventListener("click", () => { console.log("Parent clicked") });
+
+        document.getElementById("child").addEventListener("click", () => { console.log("Button clicked") });
+
+        - When button is clicked:
+
+        Button clicked
+            ↓
+        Parent clicked
+
+    -- If you want you can also stop this propogation
+    Ans) By using stopPropagation()
+
+    Example: Now parent handler won’t execute.
+
+    button.addEventListener("click", function(event) {
+        event.stopPropagation();
+        console.log("Only button");
+    });
+
+Q) What is Event Delegation?
+Ans) Instead of attaching event listeners to multiple child elements, attach ONE listener to a parent and handle children using bubbling. This works because of: 🔥 Event Bubbling
+
+    -- Why Event Delegation is Useful
+
+        - HTML
+            <ul id="list">
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+            </ul>
+
+        - JS
+
+            const items = document.querySelectorAll("li");
+
+            items.forEach(item => {
+
+                item.addEventListener("click", () => {
+                    console.log(item.textContent);
+                });
+
+            });
+
+        Problem:
+
+            - many listeners
+            - memory usage increases
+
+    ✅ With Event Delegation
+
+        document.getElementById("list").addEventListener("click", function(event) {
+            console.log(event.target.textContent);
+        });
+
+    Now:
+        ✅ only ONE listener
+        ✅ handles all child elements
+
+Q) What is bind() function?
+Ans) It is used to: create a new function with a fixed this value, It allows you to control what this refers to inside a function, MOST IMPORTANTLY: bind() returns a new function
+
+    🔹 Example Without bind()
+
+    const user = {
+            name: "Shanawaz",
+            greet() {
+                console.log("Hello " + this.name);
+            }
+        };
+        const fn = user.greet; // function lost its original object context.
+        fn();
+
+    🔹 Using bind()
+
+        const user = {
+            name: "Shanawaz",
+            greet() {
+                console.log("Hello " + this.name);
+            }
+        };
+        const fn = user.greet.bind(user);
+        fn();
+
+        ✅ this permanently points to user
+
+Q) What are call() and apply() function?
+Ans) call() and apply() are methods used to: manually set the value of this while invoking a function.
+
+    🔹 Main Difference
+        Method  Arguments Format
+
+        call() - Comma-separated
+        apply() - 	Array
+
+    🔹 Example of call()
+
+        const person = {
+            name: "Shanawaz"
+        };
+        function greet(city) {
+            console.log(this.name + " from " + city);
+        }
+        greet.call(person, "Mumbai");
+
+        Output:
+            Shanawaz from Mumbai
+
+        Here:
+            this becomes person
+
+    🔹 Example of apply()
+
+        const person = {
+            name: "Shanawaz"
+        };
+        function greet(city, country) {
+            console.log(this.name, city, country);
+        }
+        greet.apply(person, ["Mumbai", "India"]);
+
+        Output:
+            Shanawaz Mumbai India
+
+Q) Where to keep the <script> tag in HTML page?
+Ans) Place <script> just before the closing </body> tag
+
+    Why This is Best
+        When browser loads HTML:
+
+        1. HTML is parsed from top → bottom
+        2. If browser encounters <script>
+        3. It pauses HTML parsing
+        4. Downloads & executes JavaScript
+        5. Then continues HTML parsing
+
+    🔹 Problem if Script is in <head>
+
+        ❌ browser blocks page rendering, until Javascript is downloaded and executed completely
+        ❌ HTML loading pauses
+        ❌ slower page load
+        ❌ element may not exist yet, if we are using any getElement()
+
+Q) async vs defer vs module?
+Ans) 1. defer: Nowadays the MOST recommended approach is: ✅ Use defer inside <head>
+
+        <head>
+            <script src="app.js" defer></script>
+        </head>
+
+    🔹 Why defer is Powerful
+        defer:
+            ✅ downloads script in parallel
+            ✅ does NOT block HTML parsing
+            ✅ executes after HTML parsing completes
+
+    🔹 Execution Flow with defer
+
+        HTML parsing continues
+                ↓
+        Script downloads in background
+                ↓
+        HTML finished
+                ↓
+        Script executes
+
+    2. async:
+            - downloads in parallel
+            - executes immediately after download
+
+        Problem:
+            ❌ execution order not guaranteed
+
+    3. type="module"
+
+        - Enables ES6 modules (import/export)
+        - Automatically behaves like defer
+
+Q) How to abort API call in JS?
+Ans) Best way to abort an API call in JavaScript is by using: AbortController()
+
+    🔹 Basic Example
+
+        const controller = new AbortController();
+        const signal= controller.signal
+
+        async function apiCall(){
+            setTimeout(()=>{
+                controller.abort()
+            }, 1000);
+
+            const url ="https://jsonplaceholder.typicode.com/posts/";
+            let response = await fetch(url, {
+                signal: signal
+            })
+
+            response = await response.json();
+            console.log(response);
+        }
+
+Q) Deep Copy vs Shallow Copy?
+Ans)Note: object is copied by reference whether primitives are copied by value
+
+    --> Before Shallow and Deep copy
+
+    let obj = {
+        name: "Shanawaz",
+        age: 27
+    }
+
+    let obj2 = obj
+
+    obj2.name = "Bahadur"
+
+    console.log(obj.name) //output: Bahadur
+
+    -- Shallow copy hota hai jab aap kisi object ko copy krein with Object.assign() ke through ya fir spread operator ke through, in dono hi cases mein top level props copy ho jaati hai par kisi bhi nested object ki props copy hone ki jagah fir se reference pass kar deti hai, isiliye Shallow copy ke case me agar mai copied object ke nested object me kuch bhi changes karta hu to original object me bhi changes ho jaate hai
+        To ye issue ko solve karne ke liye we use DEEP COPY JSON.parse(JSON.stringify(obj))
+
+    🔹 1. Shallow Copy
+
+        A shallow copy: copies only the first level of properties.
+
+        If nested objects/arrays exist:
+            ❌ references are copied
+        NOT actual nested values.
+
+        Example of Shallow Copy: which will work same if we use Object.assign({},user)
+
+            const user = {
+                name: "John",
+                address: {
+                    city: "Mumbai"
+                }
+            };
+            const copiedUser = { ...user };
+            copiedUser.name = "Jane";
+            console.log(user.name); //Output: John
+
+    🔹 Problem with Nested Objects:
+
+        copiedUser.address.city = "Delhi";
+        console.log(user.address.city); // Output: Delhi 
+        //This is because Both objects share same nested reference
+
+    🔹 2. Deep Copy
+
+        Nested objects/arrays become:
+            ✅ completely independent copies
+
+        Example:
+
+            const user = {
+                name: "John",
+                address: {
+                    city: "Mumbai"
+                }
+            };
+            const deepCopy = structuredClone(user); //Moder Best Way, other way are JSON.parser(JSON.stringify(user))
+            deepCopy.address.city = "Delhi";
+            console.log(user.address.city); //Output: Mumbai
+
+            Now:
+                ✅ original object unaffected
+
+Q) What are spread an rest operator
+Ans) rest operator(Collects / Packs) - 1. Mostly appears on the left side of the assignment
+                                       2. The name of the rest variable can be anything
+
+    spread operator(Expands / Unpacks) - 1. Mostly appears on the Right side of the assignment 
+                                         2. The name of the rest variable should be the same as the variable you are spreading
+
+    1. Spread Operator (...)
+
+        Spread operator: expands iterable values into individual elements.
+        Used mainly in:
+
+            - function parameters
+            - Array and object destructuring (React - useState)
+
+        Used for:
+            - arrays
+            - objects
+            - function arguments
+
+        Example:
+
+            const arr1 = [1, 2, 3];
+            const arr2 = [...arr1, 4, 5];
+            console.log(arr2); //[1, 2, 3, 4, 5]
+
+
+    🔹 Common Uses of Spread
+
+        ✅ array copying
+        ✅ object copying
+        ✅ merging arrays
+        ✅ merging objects
+        ✅ passing arguments
+
+
+    🔥 2. Rest Operator (...): collects multiple values into a single array/object.
+
+    Example:
+
+        function sum(...numbers) {
+            console.log(numbers);
+        }
+        sum(1, 2, 3, 4); // [1, 2, 3, 4]
+
+    Here:
+        all arguments are collected into array.
+
+Q) What is Type Coersion in JavaScript?
+Ans) Type coercion in JavaScript is the automatic or implicit conversion of a value from one data type to another (e.g., string to number) to make an operation possible.
+
+- Key Types of Coercion
+
+    1. String Coercion: Occurs primarily with the "+" operator. If any operand is a string, JavaScript converts the others to strings and concatenates them.Example: '5' + 10 results in "510".
+
+    2. Numeric Coercion: Happens with mathematical operators like -, *, /, and %. JavaScript attempts to convert strings or booleans into numbers.Example: '10' - 5 results in 5.Example: true + 1 results in 2 (since true is coerced to 1).
+
+    3. Boolean Coercion: Occurs in logical contexts like if statements or using logical operators (&&, ||, !). Values are coerced to true (truthy) or false (falsy).Falsy values include: false, 0, "", null, undefined, and NaN.
+
+Q) What is difference between Local storage, Session storage and cookies
+Ans)
+
+Q) What is the difference between NaN, undefined and null?
+Ans) 
+
+Note: 
+
+Javascript can be used to manipulate the DOM using document.querySelector(), document.getElement, addEventListener... and much more
+
+1. Array can have heterogenouse values (number, String, object, boolean)
+
+2. map() and forEach() difference - 
+
+    - forEach():
+
+        loops through array
+        performs operations
+        does NOT return a new array
+
+    - map():
+
+        loops through array
+        transforms elements
+        returns a NEW array
+
+3. Every class has final __proto__ as Object
+
+DOM - HTML boiler plate tags is called as DOM in terms of Browser

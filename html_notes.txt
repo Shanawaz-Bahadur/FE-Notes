@@ -1,0 +1,122 @@
+23/05/2026
+
+Q) What is semantic HTML and why is it important?
+Ans) Semantic HTML means using meaningful tags that describe the purpose of the content.
+    Examples:
+
+        <header>
+        <article>
+        <section>
+        <nav>
+        <footer>
+
+    instead of only using <div> everywhere.There Benefits:
+
+        - Better accessibility
+        - Better SEO
+        - Easier maintenance
+        - Better readability
+        - Helpful for screen readers
+
+Q) What are inline, block and inline-block elements?
+Ans) Block
+        - takes full width
+        - starts on new line
+
+    Examples:
+        div
+        p
+        section
+
+    Inline
+        - takes content width
+        - no new line
+
+    Examples:
+        span
+        a
+        strong
+
+    Inline-block
+        - behaves inline
+        - but can set width/height
+
+Q) What is the difference between id and class?
+Ans) 
+    - Local Storage: Permanent until deleted, ~5MB, Client-side only
+
+        Why it's used: You close your browser, turn off your computer, and return a week later. The website reads your Local Storage and instantly loads the dark theme. It does not need to ask the server for this information.
+
+    - Session Storage: Deleted when tab is closed, ~5MB, Client-side only
+
+        Why it's used: If you accidentally refresh Tab A, your form data is still there. However, the moment you close Tab A, that specific checkout data is permanently deleted.
+
+    - Cookies: Manual expiration date, ~4KB, Optionally can sent with HTTP request
+
+        Why it's used: The server needs to know who you are on every single page so you stay logged in.
+
+Q) What is the difference between HTTP and HTTPS?
+Ans) HTTP is a protocol used for communication between client and server, but it transfers data in plain text. HTTPS is the secure version of HTTP that uses SSL/TLS encryption to protect data transmission, making communication secure and reliable.
+
+Q) What are attributes in HTML?
+Ans) HTML attributes are special properties added inside HTML tags to provide additional information or configure the behavior of an element.
+
+Q) What is a form tag and how does it work?
+Ans) The <form> tag in HTML is used to collect user input and send that data to a server for processing.
+
+    It acts as a container for form elements like:
+
+        - input fields
+        - buttons
+        - checkboxes
+        - radio buttons
+        - dropdowns
+
+    When the submit button is clicked:
+
+        1. browser collects form data
+        2. sends it to the URL specified in action
+
+Q) What is <!DOCTYPE> in HTML?
+Ans) <!DOCTYPE> declaration in HTML specifies the type and version of the document being used, helping browsers render the content correctly by using the appropriate standards and rendering modes.
+
+Q) What is the purpose of the meta tag in HTML?
+Ans) Metadata is information about the page that is not directly visible on the UI but is used by:
+
+        - browsers
+        - search engines
+        - social media platforms
+        - other web services
+
+    <meta> tags are placed inside the <head> section.
+
+Q) What are the differences between the <canvas> and <svg> elements in HTML5?
+Ans) Both <canvas> and <svg> are used for rendering graphics in HTML5, but they work differently.
+
+    - <canvas> is pixel-based and works like a drawing board. Graphics are drawn using JavaScript.
+    - <svg> is vector-based and uses XML elements to define graphics.
+
+Q) What are HTML templates? How can they improve web performance?
+Ans) HTML templates are reusable chunks of HTML markup that are defined using the <template> tag. The content inside a <template> tag is not rendered immediately when the page loads. It remains inactive until it is explicitly used through JavaScript.
+
+    Example
+
+        <template id="cardTemplate">
+            <div class="card">
+                <h2>Title</h2>
+                <p>Description</p>
+            </div>
+        </template>
+
+    Using JavaScript:
+
+        const template = document.getElementById("cardTemplate");
+        const clone = template.content.cloneNode(true);
+        document.body.appendChild(clone);
+
+Q) title tag in HTML?
+Ans) Defines the title of the document, shown in the browser's title bar or tab.
+
+Notes:
+
+    1. HTML is the root element of all element

@@ -1,0 +1,211 @@
+28/05/2026
+==> CSS question
+
+Q) Explain CSS Box Model
+Ans) The CSS Box Model is a fundamental concept that treats every HTML element as a rectangular box.
+
+    Total Width=margin+border+padding+content
+    Box model consists of:
+
+        - content
+        - padding
+        - border
+        - margin
+
+Q) Difference between content-box and border-box?
+Ans) Mainly we do box-sizing: border-box; at the start of the project, just to avoid overflow of border or padding once we make any updates
+
+    content-box (default)
+        Width excludes:
+
+        - padding
+        - border
+
+    border-box (Usually preferred)
+        Width includes:
+
+        - padding
+        - border
+
+Q) Difference between Flexbox and Grid?
+Ans) Both are used to create the responsive layout:
+
+    Feature             Flexbox                                 Grid
+
+    Dimension    1D (Row or Column)                         2D (Rows and Columns)
+    Approach        Content First                           Layout First
+    Best For    Aligning single lines of items          Complex page structures & grids
+    Spacing     gap, justify-content, align-items       grid-template-columns, gap, grid-area
+
+Q) Difference between relative, absolute, fixed and sticky?
+Ans)
+    - relative: Position relative to itself.
+    - absolute: Relative to nearest positioned parent, it gets up in their dimension once position is set to absolute
+    - fixed: Relative to viewport.
+    - sticky: Acts relative until scroll threshold.
+
+    Note: Without setting the position value we cannot use top, left, right, bottom 
+
+Q) What is z-index?
+Ans) Controls stacking order, Higher z-index appears on top.
+        - Works only on positioned elements.
+
+Q) Difference between visibility:hidden and display:none?
+Ans) visibility:hidden - Space remains, Hidden visually
+    display:none - Space removed, Completely removed
+
+Q) Explain CSS specificity
+Ans) Priority:
+
+        - Inline > ID > Class > Element
+
+Q) What is the Difference between inline, block and inline-block
+Ans) 
+    Block elements:
+
+        - always start on a new line
+        - take full available width by default
+
+    Inline elements:
+
+        - do NOT start on new line
+        - only take required content width
+
+    *** Important Limitation of Inline Elements
+
+        -- Width and height usually do NOT work properly.
+
+    Inline-block:
+
+        - behaves like inline
+        - BUT allows width/height like block
+        - Elements appear side-by-side
+        - Width/height works properly
+
+Q) What are the different type of units in CSS?
+Ans) 
+    - Absolute:
+
+        px: Absolute unit, Fixed size, Does NOT scale relative to parent 
+
+    - Relative:
+
+        em: Relative to Parent Element's Font Size
+
+            <div style="font-size:20px">
+                <p style="font-size:2em">Hello</p>
+            </div>
+
+            Calculation:
+                2em=2×20px=40px
+
+        rem: Relative to Root (html) Font Size
+            Example:
+                Usually browser default:
+                    html {
+                        font-size: 16px;
+                    }
+
+                My element CSS:
+                    font-size: 2rem;
+
+            Calculation:
+                2rem=2×16px=32px
+
+
+        %: Depends on parent dimension.
+            Example:
+
+                width: 50%; Meaning: 50% of parent width
+        
+        vh: Viewport Height
+            Example: height: 100vh; Meaning: 100% of screen height
+
+            If screen height = 900px
+
+                100vh=900px
+
+        vw: Viewport Width
+            Example: width: 100vw; Meaning: full screen width
+
+            If viewport width = 1200px
+
+                100vw = 1200px
+
+Q) What are pseudo-class and pseudo-element?
+Ans) 
+
+    1. Pseudo-classes (:) target an existing element when it enters a specific state (e.g., being hovered over).
+
+        Example:
+            :hover – Styles an element when the mouse is over it.
+            :nth-child(n) – Targets the nth child of a parent.
+            :focus – Styles an element when it has keyboard focus.
+            :visited – Styles links the user has already clicked.
+
+    Pseudo-elements (::) target a specific part of an element or create a "virtual" element that isn't in the HTML (e.g., styling just the first line of a paragraph).
+
+        Example:
+
+            ::before / ::after – Inserts decorative content before or after an element's actual content (requires the content property).
+            ::first-letter – Styles only the very first letter of a block of text.
+            ::selection – Styles the part of the document currently highlighted by the user.
+
+Q) What are media queries?
+Ans) Used for responsive design.
+
+    Example:
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+
+Q) What is the difference between opacity:0 and visibility:hidden?
+Ans) 
+    opacity:0
+
+        Element invisible but clickable.
+
+    visibility:hidden
+
+        Invisible and non-interactive.
+
+Q) How would you make a website responsive?
+Ans) 
+    - Flexbox/Grid
+    - Media queries
+    - Relative units
+    - Mobile-first design
+    - Responsive typography
+    - Responsive images
+
+Q) How do you center a div?
+Ans) 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+Q) Why is CSS considered render-blocking?
+Ans) Browser waits for CSS before painting UI to avoid layout flashes.
+
+Q) What are some common accessibility practices in frontend?
+Ans) 
+    - semantic HTML
+    - alt text
+    - keyboard navigation
+    - proper labels
+    - focus management
+    - contrast ratio
+    - ARIA roles
+
+Q) Can we use align-item and justify-content without display: flex
+Ans) 
+
+
+Note: 
+
+    1. We need to set the position=relative in which we need to make the child relative
+    2. To make the element one after the other we need to make the parent element as relative
+    3. We cannot add Width to the block elements like span
+    4. % - it is used to compare the property of the parent, and also just make sure we have set the height and widht of the parent element

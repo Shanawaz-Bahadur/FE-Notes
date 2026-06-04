@@ -1,0 +1,290 @@
+Q) Why to learn React?
+Ans)1. React has a component-based architecture
+        - break UI into small, reusable pieces, which can be composed to make more complex Uls
+
+    2. React is declarative
+
+        - describe what you want the UI to look like, and React takes care of building and updating the actual UI
+        - think of it like ordering food at a restaurant
+        - you tell the waiter what you want (a burger with fries) and the waiter will take care of the rest
+
+Q) What is Component in React ?
+Ans) It is a basic building block for any react application,a component is just a JavaScript function that returns some HTML describing what should appear on screen
+
+Q) Why we need to start the Component name with capital letter?
+Ans) This is the way the react distinguishes between React components and in-built HTML components
+
+Q) What is the difference between Class based component and function based component?
+Ans) 
+
+Q) What is the use of state as we have variable available?
+Ans) 
+
+Q) Why do we use setCount(prev => prev + 1) instead of setCount(count = count +1)
+Note: State does not persist the values in between the refresh, as we refresh the state will go to the initial state
+
+Q) How to decide where to implement in the login of the component, either it is in parent or child component?
+Ans) 
+
+Q) What is the difference between Export default and Export function variable ?
+Ans In Export default we can import it with any name, but in the function name export we need to import it with the same name as exported ( ***Which is much helpfull for debugging)
+
+Q) What is children promps in React ?
+Ans) The children prop is a special, built-in property in React that allows you to pass content (text, HTML elements, or other React components) between the opening and closing tags of a component. 
+
+Example: 
+
+    function CustomButton({ children }) {
+        return <button className="btn">{children}</button>;
+    }
+
+
+    // Content "Click Me!" is passed as children
+    <CustomButton>Click Me!</CustomButton>
+
+Q) Different ways to render the component conditionally?
+Ans) 
+        1. If statements - Great for completely different renders or returning null
+        2. Ternary operator ( ?: ) - Perfect for either/or situations
+        3. AND operator (&&) - Ideal for show/hide scenarios
+        4. Variables - Best for complex logic that would make your JSX messy
+        5. Activity component (React 19.2)
+
+Q) Rules of keys in React?
+Ans) Rules of keys
+
+        1. The key prop goes on the outermost repeated element
+        2. key is a special prop that React uses internally. It's not a prop that you pass to a child component and destructure there to get access to it
+
+Q) Why does React need keys?
+Ans) 1. Keys are used by React to track the items in the list
+     2. They're crucial for React to efficiently update the UI while comparing the element before updating
+
+Q) When is it actually safe to use index as a key?
+Ans) 
+1. Your items don't have a unique ID (if they do, always use that instead!)
+2. The list is completely static - you never add or remove items
+3. The list is never reordered or filtered
+
+        Ex: navigation menu links
+
+    If you ever see weird behavior in your lists - like data jumping between items, inputs losing focus, or animations glitching - check your keys first
+
+Q) What is the advantages of giving module.css while creating the css file?
+Ans) module.css in React is used to create locally scoped CSS for a component. Normally, CSS is global, so class names can conflict between components. With CSS Modules, React generates unique class names automatically, which helps avoid style collisions.
+
+    Example:
+
+    /* Button.module.css */
+        .primary {
+        background-color: blue;
+        color: white;
+        }
+
+    /* JS file */
+    import styles from "./Button.module.css";
+
+    function Button() {
+    return <button className={styles.primary}>Click Me</button>;
+    }
+
+Q) While giving the function for the event handlers like onClick, onChange, we didn't add the paranthesis at the end, why?
+Ans) This is because if we add paranthesis on the onClick event it will directly call that function on the first render thats the reason we didn't add the paranthesis on the element, instead we give the function name or provide the callback function
+
+    Example: 
+        return <button onClick={handleClick()}>Like</button>; ❌
+        return <button onClick={handleClick}>Like</button>; ✅
+        return <button onClick={() => return // logic code }>Like</button>; ✅
+
+Q) How to send the data from child to parent 
+Ans) In React, data is passed from parent to child using props.
+But to send data from child to parent, we pass a callback function from the parent to the child, and then call that function from the child component.
+
+Example:
+    Parent Component:
+
+        function Parent() {
+            const handleData = (data) => {
+                console.log(data);
+            };
+            return <Child sendData={handleData} />;
+        }
+
+    Child Component:
+
+        function Child({ sendData }) {
+
+        const handleClick = () => {
+            sendData("Hello Parent");
+        };
+
+        return <button onClick={handleClick}>Send Data</button>;
+        }
+
+Q) What is state in React ?
+Ans) State is a component's memory
+    It is special data that:
+        1. Triggers a re-render when it changes (solving our screen update problem)
+        2. Persists between renders (solving our reset problem)
+        3. It is local to its component, it does not affect the other component
+
+Q) When to send the function as an initial value in the useState paranthesis?
+Ans) useState - lazy initialization
+
+    Useful when you have any expensive computation you need to do to calculate the initial state
+
+        - reading from local storage
+        - fetching data from an API
+        - doing any other heavy computation
+
+    Example:
+
+        const [count, setCount] = useState(()=>{
+            console.log("Initial state function called"); I
+            return 0;
+        })
+
+Q) Two golden rules of hooks
+Ans) 
+    Rule 1: Only call hooks at the top level of your function
+
+        - not inside loops
+        - not inside conditions
+        - not inside nested functions
+        - not in try/catch blocks
+
+    Rule 2: Only call hooks from React functions
+
+        - from React components
+        - from custom hooks
+
+Q) Event after updating the state, why the updated value is not immediately available on the next line?
+Ans) Because React does not instantly change the state variable.
+    Instead, it:
+
+        1. Schedules the update
+        2. Re-renders the component
+        3. Then provides the new state value
+
+    Example:
+        const [cound, setCount] = useState(0)
+
+        const handleClick = () => { 
+            console. log("Before setCount, count is: ", count); //0
+            setCount(count + 1);
+            console. log("After setCount, count is: ", count) ; //0
+        }
+
+    Solution:
+
+        1. Use useEffect (Most Common)
+            const [count, setCount] = useState(0);
+
+            useEffect(() => {
+                console.log("Updated count:", count);
+            }, [count]);
+
+            const handleClick = () => {
+                setCount(1);
+            };
+
+Q) How Batching works in React ?
+Ans) 
+    1. waits until your event handler finishes
+    2. gathers all your state updates
+    3. applies them in one render
+
+    Example: Imp - The console for rendering display only once, as this is because of Batching in react, as it waits until the complete event handler function finishes executing, then gather all the state update and then apply it together
+
+        console.log("Rendering the component); 
+        const handleClick= () => {
+            setCount((prev) => {
+                return prev + 1;
+            });
+
+            setCount((prev) => {
+                return prev + 5;
+            });
+
+            setCount((prev) => {
+                return prev + 10;
+            });
+
+            setName ("Updated") ;
+
+            setIsActive(true);
+        }
+
+Q) What are the disadvantages of props drilling?
+Ans) 1. Reduced Code Maintainability: Intermediate components may receive props that they do not use, just to pass them further down.
+     2. Increased Complexity: As the application grows, managing and tracking props across many levels becomes difficult, as in future if project demands to shift some of the component then the path of that props will be disturbed which leads to data leakage
+
+Q) How to destructure the nested objects?
+Ans) 
+    let user = {
+        name: "Piyush",
+        age: 24,
+        fullName: {
+            first: "Piyush",
+            last: "Agarwal",
+        }
+    }
+
+    const { fullName: {first} } = user;
+    console.log(first)
+
+Q) How to update the value of the nested Array ?
+Ans) 
+
+    const handleChange = (e) => {
+        setData((prev) => ({
+            ...prev,
+            interest: prev.interest.map((elem, index) => {
+                if (e.target.name === elem.label) {
+                    return { ...elem, isChecked: !elem.isChecked };
+                }
+                return elem;
+            }),
+        }));
+    };
+
+    const [data, setData] = useState({
+        name: "",
+        age: null,
+        email: "",
+        interest: [
+            { label: "Coding", isChecked: false },
+            { label: "Gym", isChecked: false },
+            { label: "Reading Books", isChecked: false },
+            { label: "Problem", isChecked: false },
+            { label: " Solving", isChecked: false },
+        ],
+        theme: "Light",
+    });
+
+    <label>
+        {elem.label}:
+        <input
+            type="checkbox"
+            name={elem.label}
+            checked={elem.isChecked}
+            onChange={handleChange}
+        />
+    </label>
+
+Q) What are the new updates in React 19
+Ans) //Incomplete
+
+    Some optimization techniques like - Now we don't need to use the useMemo and useCallback for memoization
+
+Note:
+    1. Never mutate a state directly by reassigning the value of state, you should always do it using the setState function.
+    2. Never change the value of state in the child component, as props are read-only in child component
+    3. For Debouncing we have the inbuild react hook (from react-use)
+    4. React is an JS library with massive ecosystem of libraries, plug in when rquired
+    5. As we write HTML in jsx file, the primary tool used to transpile JSX into React.createElement() is Babel
+    6. We can use filter().map() to render the JSX on some condition
+    7. React support all the events from regular JavaScript it just starts with on (onClick, onChange, onSubmit)
+    8. To remove item from an array in useState we can make use of filter() function
+    9. Bydefault every element is inline if we create the new element with any name
+    10. If the dependency arraty of useEffect is empty then it will be called only once after the complete page has been rendered

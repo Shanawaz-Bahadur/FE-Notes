@@ -1,0 +1,380 @@
+Important hooks
+
+    1. useState 
+    2. useEffect
+    3. useRef
+    4. useCallback
+    5. useReducer
+
+Difference between Class comp and Funtional comp
+
+    1. CC have to extend Components Class but FC need not to extend any Class and we need to use the render() function to return the HTML
+    2. In FC we dont need to use the this to access the states but in the CC we have to use the this keyword to access the state    
+    3. Lifecycle hooks
+    4. Stateless and Statefull Components
+    5. Lifecycle methods of CC gets update to hooks in FC
+        componentDidMount -> useEffect with empty array
+        componentDidUpdate -> useEffect with dependancy array
+        componentWillUnmount -> useEffect with return
+
+Q) Why to use useState instead of using any data type
+-> As state instantly changes dynamically, and call render function after changing without refreshing the page it just re-render the comp in which the variable is changed not the whole page which is a very good functionality to update the page, which is not possible by using normal variable
+
+Q) Why do we use const when using useState instead of using any other data type
+-> it is used to avoid accidental reassignment of the variable as when we update the state variable declared with const , a new state object is created, causing a re-render with the updated value.
+
+- Render and Rerender in React
+
+--------------HOOKS----------------
+
+There are 3 rules for hooks:
+
+- Hooks can only be called inside React function components.
+- Hooks can only be called at the top level of a component.
+- Hooks cannot be conditional
+- Hooks will not work in React class components.
+
+1) useState :- The React useState Hook allows us to track state in a function component.The useState Hook can be used to keep track of strings, numbers, booleans, arrays, objects, and any combination of these useState accepts an initial state and returns an array with exactly two values using destructuring, and usetState cannot be used inside the class component:
+
+    1. The current state. During the first render, it will match the initialState you have passed.
+    2. The set function that lets you update the state to a different value and trigger a re-render.
+
+Imprtant point :- Better way to increament count is - 
+  If we want to update the state we have to use setCount(prev => prev + 1) instead of setCount(count => count + 1)
+
+Example:
+  As for the below code:
+    setCount(count + 1);
+    setCount(count + 1);
+    setCount(count + 1);
+    setCount(count + 1);
+    setCount(count + 1);
+
+    Even after the count updated multiple times, then also the count value will be increatsed by 1.
+    
+Q) What if we only want to update the color of our car?
+
+function Car() {
+  const [car, setCar] = useState({
+    brand: "Ford",
+    model: "Mustang",
+    year: "1964",
+    color: "red"
+  });
+
+  const updateColor = () => {
+    setCar(previousState => {
+      return { ...previousState, color: "blue" }
+    });
+  }
+
+  return (
+    <>
+      <h1>My {car.brand}</h1>
+      <p>
+        It is a {car.color} {car.model} from {car.year}.
+      </p>
+      <button
+        type="button"
+        onClick={updateColor}
+      >Blue</button>
+    </>
+  )
+}
+
+
+2) useEffect :- The useEffect Hook allows you to perform side effects in your components. Some examples of side effects are: fetching data directly updating the DOM, and timers.
+
+useEffect accepts two arguments. The second argument is optional.
+Syntax : 
+        useEffect(<function>, <dependency>)
+
+Q) How to perform clean up in useEffect ?
+  -> We can perform cleanup by returning the function which calls a function to disconnect or clear the fetching, timers, timeouts
+
+e.g., 
+      useEffect(() => {
+          const timeoutId = setTimeout(() => {
+            setCounter(counter + 1);
+          }, 3000);
+      //This is the return function for the clean up activity
+          return () => {
+            clearTimeout(timeoutId);
+          };
+        }, [counter]);
+
+
+3) useMemo - 
+
+As we know when the component get re-render it calls all the functions which comes under the component function, so If we want to avoid running some expensive program then we can useMemo to cache the data and only run when required (By giving the value in the dependency array)
+e.g.,
+
+const App = () => {
+  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState([]);
+  const calculation = useMemo(() => expensiveCalculation(count), [count]);
+
+  const increment = () => {
+    setCount((c) => c + 1);
+  };
+  const addTodo = () => {
+    setTodos((t) => [...t, "New Todo"]);
+  };
+
+  return (
+    <div>
+      <div>
+        <h2>My Todos</h2>
+        {todos.map((todo, index) => {
+          return <p key={index}>{todo}</p>;
+        })}
+        <button onClick={addTodo}>Add Todo</button>
+      </div>
+      <hr />
+      <div>
+        Count: {count}
+        <button onClick={increment}>+</button>
+        <h2>Expensive Calculation</h2>
+        {calculation}
+      </div>
+    </div>
+  );
+};
+
+const expensiveCalculation = (num) => {
+  console.log("Calculating...");
+  for (let i = 0; i < 1000000000; i++) {
+    num += 1;
+  }
+  return num;
+};
+
+Q) useMemo and useEffect Difference
+
+4) useRef - It allows you to persist values between renders,that does not cause a re-render when updated, It is used to give a reference to a DOM element, useRef() only returns one item. It returns an Object called current.
+
+Example: 1. Accessing or manipulating DOM elements directly
+
+    function InputFocus() {
+      const inputRef = useRef();
+
+      const focusInput = () => {
+        inputRef.current.focus();
+      };
+
+      return (
+        <>
+          <input ref={inputRef} />
+          <button onClick={focusInput}>Focus</button>
+        </>
+      );
+    }
+
+  2. Storing values without triggering re-render
+
+    const countRef = useRef(0);
+    countRef.current++;
+
+
+--> //Refer PracticeUseRef.js inside components folder
+
+Q) ***useMemo and useCallback Difference with example***Pending
+-> The useMemo and useCallback Hooks are similar. The main difference is that useMemo returns a memoized value and useCallback returns a memoized function. useMemo is used to memoized the variable and useCallback is used to memoized a function
+
+5) useContext - It is used to provide the global state to all of the children from the global provider, as it is a way to manage state globally and it is used to avoid prop drilling.
+
+How to create useContext
+
+  Step 1 - use createContext from react export it 
+  Step 2 - Then wrap that component all around to the component who need that value
+  Step 3 - Then we can pass the value as an attribute to the wrapped element
+  Step 4 - Now we can use value which is passed in all the component using useContext hook
+
+But it has some disadvantages while using it: 
+
+  1. Unnecessary Re-renders: Whenever the context value changes, all consuming components re-render, even if they only use a small part of the state.
+  2. Poor Scalability: As the application grows, managing multiple contexts becomes difficult and messy.
+  3. Tight Coupling: Components become tightly coupled to specific contexts, making reuse and testing harder.
+  4. Frequent State Updates Can Be Expensive: If the state changes very frequently (like real-time updates, forms, animations, websocket data), useContext can cause many re-renders.
+
+6) useCallback -
+As we know in react if any of the state changes in component then complete component gets re-rendered, so without useCallback in the parent component even if the function has not changed any of state which is used in the function then also the function gets re-rendered each time the current component get rendered, so just to avoid such re-creation of the function we need to freeze that function thats why we use useCallback().
+
+ useCallback Hook returns a memoized callback function,It is used to freeze the function, so that it can avoid re-rendering
+//See the example From the folder PracticeUseReducer
+  
+  Example without useCallback: 
+
+      const handleClick = () => {
+        console.log("Clicked");
+      };
+      <Child onClick={handleClick} />
+
+      Even if logic is same, handleClick gets recreated every render, so child re-renders.
+
+  Example with useCallback:
+
+    const handleClick = useCallback(() => {
+      console.log("Clicked");
+    }, []);
+
+    const Child = React.memo(({ onClick }) => {
+      console.log("Child rendered");
+      return <button onClick={onClick}>Click</button>;
+    });
+
+    Using useCallback prevents unnecessary child re-renders
+
+  When to use useCallback:
+
+    1. Passing functions to memoized child components
+    2. Preventing unnecessary re-renders
+
+  When to avoid useCallback
+
+    1. Small/simple applications
+    2. Functions not passed as props
+    3. Overusing it everywhere
+
+7) useReducer - useReducer Hook is similar to the useState Hook, If you find yourself keeping track of multiple pieces of state that rely on complex logic, useReducer may be useful
+
+Q) Pure and Impure Function
+
+-----------React Redux-------------------
+
+React Redux is used for the state management for cross component, 
+
+Q) Why from React context to React Redux?
+
+- React context has low performance 
+- Setup and coding is tough in react context
+
+---------Need for Redux Toolkit----------
+
+1. In Redux action types were difficult to maintain
+2. Reducer and Store Become too big
+
+------------Rest and Spread Operator------------
+
+-> Rest Operator : The rest parameter syntax allows a function to accept an indefinite number of arguments as an array, providing a way to represent variadic functions in JavaScript, example.,
+
+function myFun(a, b, ...manyMoreArgs) {
+  console.log("a", a);
+  console.log("b", b);
+  console.log("manyMoreArgs", manyMoreArgs);
+}
+
+myFun("one", "two", "three", "four", "five", "six");
+
+// a, "one"
+// b, "two"
+// manyMoreArgs, ["three", "four", "five", "six"] <-- an array
+
+
+A function definition can only have one rest parameter, and the rest parameter must be the last parameter in the function definition, the below code is not allowed
+
+function wrong1(...one, ...wrong) {}
+function wrong2(...wrong, arg2, arg3) {}
+
+-> Spread Operator : The spread (...) syntax allows an iterable, such as an array or string, to be expanded in places where arguments are expected, example.,
+
+function sum(x, y, z) {
+  return x + y + z;
+}
+
+const numbers = [1, 2, 3];
+
+console.log(sum(...numbers));
+// Expected output: 6
+
+---------Revision (w3School)-----------
+
+ECMAScript was created to standardize JavaScript
+
+var vs let vs const
+
+- var has a function scope, not a block scope: 
+	If you use var outside of a function, it belongs to the global scope.
+
+	If you use var inside of a function, it belongs to that function.
+
+	If you use var inside of a block, i.e. a for loop, the variable is still available outside of that block.
+
+- let has a block scope.
+	let is the block scoped version of var, and is limited to the block (or expression) where it is defined.
+
+	If you use let inside of a block, i.e. a for loop, the variable is only available inside of that loop.
+
+
+- const is a variable that once it has been created, its value can never change.const has a block scope.
+
+--Object Destructuring
+
+We can even destructure deeply nested objects by referencing the nested object then using a colon and curly braces to again destructure the items needed from the nested object:
+
+const vehicleOne = {
+  brand: 'Ford',
+  model: 'Mustang',
+  type: 'car',
+  year: 2021, 
+  color: 'red',
+  registration: {
+    city: 'Houston',
+    state: 'Texas',
+    country: 'USA'
+  }
+}
+
+myVehicle(vehicleOne)
+
+function myVehicle({ model, registration: { state } }) {
+  const message = 'My ' + model + ' is registered in ' + state + '.';
+}
+
+-- React supports if statements, but not inside JSX.
+
+-- React Memo
+
+React.memo is a Higher Order Component (HOC) used to optimize functional components by preventing unnecessary re-renders.It memoizes the component and re-renders it only when its props change.
+
+Q) Why do we need React.memo?
+Ans) In React, when a parent component re-renders, all child components also re-render by default, even if their props have not changed. React.memo helps avoid those unnecessary renders.
+
+Using memo will cause React to skip rendering a component if its props have not changed.
+
+Example.,
+
+  const Child = React.memo(({ name }) => {
+    console.log("Child Rendered");
+
+    return <h1>{name}</h1>;
+  });
+
+//Before when memo was not used the Child component gets rendered each time when the parent component gets rendered
+
+Q) How it works internally
+Ans) React.memo performs a shallow comparison of previous props and new props.
+
+      - If props are the same:
+
+        React skips re-rendering
+
+      - If props changed:
+
+        component re-renders
+
+Q) When to avoid React.memo
+Ans) 1. Small or Simple Components: For lightweight components, memoization overhead may be unnecessary.
+    2. Props Changing Frequently: If props change on every render, React.memo gives no benefit.
+    3. Overusing Optimization: Using React.memo everywhere can make code more complex and sometimes even reduce performance.
+
+---------------------------------------------------------------------------------------
+
+-- SASS Styling - In Sass files you can use variables and other Sass functions:
+Example.,
+
+$myColor: red;
+
+h1 {
+  color: $myColor;
+}

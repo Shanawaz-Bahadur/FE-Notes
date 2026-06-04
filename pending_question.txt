@@ -1,0 +1,439 @@
+Q) Explain the complete Lifecycle of React - mounting, updating, unmounting?
+Q) How does DOM comparison happen in React?
+Q) Does React compare the Virtual DOM directly with the Real DOM?
+Q) Why do we need a Virtual DOM if comparison could be done on the Real DOM?
+Q) What is React Reconciliation?
+Q) What causes a React component to re-render?
+Q) Why are keys important in lists?
+Q) What are the lifecycle methods equivalent in React Hooks?
+Q) When does useEffect run?
+Q) What lifecycle method is replaced by React.memo()?
+Q) What causes unnecessary re-renders in React?
+Q) How can we optimize React performance?
+Q) What is memoization in React?
+Q) What is the prototype of an Array?
+Q) Explain the prototype chain in JavaScript.
+Q) What is Event loop, call stack, Micro/Macro task queues, Global Execution Stack?
+Q) What is HOC?
+Q) What is the need for Middleware in react (Saga, Thunk) - Mostly used for calling API's
+Q) What is Extra Reducers
+Q) What are React portal
+Q) What are React Profilers
+Q) What are render props
+Q) What is Source Map in react? - It  maps our code to the bundled code
+Q) How to use debugger in React applicati0on
+Q) What are meta tags in html
+Q) What is the difference between fetch and axios, and what is the advantages of axios over fetch
+Q) What is application type while making the api call
+Q) Can we access DOM element without useRef ?
+Q) What are generator function in JS
+q) What are core web vital in React and their types ?
+Q) What are web accessibility ? - design for the disable person
+Q) What is Babel in React?
+Q) What are the advantage of using React over JS
+Q) In html file which one is better script tag just before the closing body tag or inside head tag but with type defer ?
+Q) If we add the import statement after the console.log() then also the import statement will get execute first, why ? - Mainly due to hoisting
+Q) What are the difference between promiseAll() and promise.allSettle()
+
+Q) What is the difference between 
+Ans)
+    <button onClick={handleClickV1()}>click by calling</button> // Gets called each time the component renders
+    <button onClick={handleClickV2}>click by Passing</button> // Gets called when used clicks on button as this is the reference of the function
+    <button onClick={() => handleClickV3("Code With Jangir")}>click with Argument</button> // Get called when user clicks on button and wants to pass some argument
+
+Q) What are the common issue in React and how to resolve it ?- Re-rendering
+Ans) Yes, DOM elements can be accessed using methods like document.getElementById() or querySelector(), but in React the preferred approach is useRef because it works cleanly with React’s component model and avoids direct DOM querying.
+
+YT Ref: https://www.youtube.com/watch?v=uYrfh-t9hKE&t=777s
+
+Q) What new tags has been added in HTML5
+Ans) Semantic tags
+
+Q) techniques for SEO friendly
+
+Q) What are the difference between position - Absolute, Relative, fixed an sticky
+
+Q) What is the difference between display = none and display=hidden
+
+Q) What is pseudo class and pseudo element
+
+Q) ES6 features
+Ans) let and const added in ES6, before that JS uses var
+
+DSA Round
+Q) Find the second largest no from an Array
+Q)Reverse the String 
+Q) Remove duplicate from an Array
+
+    React-
+
+Q) How to create the custom hook
+Q) What is the difference between useEffect and useLayoutEffect ?
+Q) What is the difference between contolled and uncontrolled component?
+Ans) In uncontrolled component, react doesn't update the component as it does not used the state in its component as it is a Stateless component
+mainly it only manipulate the DOM using useRef
+//Pending
+Q) What is pure and impure component
+Q) In Redux which component is a pure component?
+Ans) Reducer - as it takes the input and provides us the output
+Q) Guess the output
+Ans) 
+    const [count, setCount] = React.useState(0);
+    setCount(count + 1);
+    return <h1>{count}</h1>;
+
+It will go into Infinite loop
+Q) How to optimize the FE application if we get 10,000 of data from the API
+Q) Coding techniques to optimize the performance
+
+YF Ref: https://www.youtube.com/watch?v=QnkwCwZK-uc
+
+Q) What is the difference between HTML and HTML5 - Semantic tags
+Q) What is the difference between units - px, em, rem, %
+Q) How to make image responsive - media query
+Q) What is the difference between CSS Grid and Flex box
+Q) ***What is the difference between async/await and promises
+
+DSA
+
+Q) Occurence of each characters in an Array
+Q) Faltten the Array
+Q) In which version of React hooks where introduced
+Q) What is code splitting and lazy loading and how to implement this ?
+Q) What are Error boundary in React
+Q) merge 2 array
+Q) implement Debounce and throthling
+Q) Output of this react component: This will explain the mounting process
+
+    function App() {
+        const [count, setCount] = React.useState(0);
+        React.useEffect(() => {
+            setCount(10);
+        }, []);
+        return <h1>{count}</h1>;
+    }
+Q) ***React optimization tectniques
+
+
+
+Q) How to handle multiple API calls in React ?
+Q) ***What is React Reconciliation and React Fibre 
+Q) Why React state is asynchronous
+Q) What is the difference between map(), filter() and reduce()
+Q) What is the difference between <a> and <Link> tags
+Q) What is the difference between for...of and for...in ?
+Ans) for...of and for...in are both looping constructs in JavaScript, but they are used for different purposes.
+
+    => for...of - Used to iterate over values of iterable objects.Works with: arrays, strings, maps, sets
+
+    Example:
+
+        const arr = ["a", "b", "c"];
+
+        for (const value of arr) {
+        console.log(value);
+        }
+
+    => for...in - Used to iterate over keys or property names, Mostly used for objects.
+
+    Example:
+
+        const obj = {
+            name: "John",
+            age: 25
+        };
+
+        for (const key in obj) {
+            console.log(key);
+        }
+
+DSA
+Q) output based
+
+    console.log([] == 0) //true // [] get converted to "" get converted to 0 using Type coersion
+    console.log([] == []) //false // 2 different address
+    console.log([1,2] == "1,2") //true // [1,2] get converted to "1,2",using Type coersion
+
+Q) Output based
+
+    let obj = {
+        a: 10, 
+        b: () => console.log(this.a), // undefined - Arrow functions do NOT have their own this. They capture this lexically from their surrounding scope. Here, the surrounding scope is the global scope.
+        c() { console.log(this.a) } // 10 - For regular functions, this refers to the object before the dot during invocation.
+    }
+    obj.b();
+    obj.c();
+
+Q) output based
+
+    const [x, setX] = useState(0);
+
+    setX(x + 1);
+    setX(x + 2);
+
+    console.log(x); // 0 - State updates in React are: asynchronous, batched, So setX() does not update the state immediately.
+
+Q) output based:
+
+    useEffect(() => console.log("A"),[]):
+    console.log("B");
+
+    //output B then A - The output is B followed by A because code outside useEffect runs during the render phase, while useEffect callbacks execute after the component has rendered and the DOM has been updated
+
+Q) output based:
+
+    const [data, setData] = useState(( n: 1 });
+    data.n = 5;
+    console.log(data.n):; // 5 - The output is 5 because objects are mutable and the object property is directly modified. However, this is not the correct React approach because direct state mutation does not trigger a re-render. State should always be updated immutably using the state setter function.
+
+Q) output based:
+
+    const v = useMemo(() => Math.random(), []);
+    console.log(v); // Same value each time untill component unmount - useMemo memoizes the computed value. Since the dependency array is empty, Math.random() executes only once during the initial render, and the same random value is reused across subsequent re-renders.
+
+Q) Output based
+
+    const r = useRef(0);
+    r.current++;
+    console.log(r.current); // 1 - useRef stores a mutable value that persists across renders. Incrementing r.current updates the value without triggering a re-render, so the logged value increases on each render cycle
+
+YT ref: https://www.youtube.com/watch?v=XsEldYXfWso
+
+Q) Why do we require react as we have JS
+Q) Why Vite is faster than CRA ? webpack and parcel they bundle our JS files
+Q) Why React returns only one element ? - Because finally it Babel convert that element into object and we can return only one element from an function, as function cannot return 2 values or element
+Q) In react, as we use React.fragment or div to wrap the multiple element, but if we dont have any of them then what can we use - We can add all the element in an array and loop it using .map() function and return that array
+
+=============================================================================================================================================
+
+YT Ref: https://www.youtube.com/watch?v=dAHTXKDsrZ8&list=PL9EjyAFX2zLAYIKX_uVIGXcHApR-Uefb3&index=1
+
+--> Hard Interview questions
+
+Q) What is React Fiber and how does it differ from the old reconciliation algorithm?
+Q) How does React determine when to re-render a component?
+Ans) It triggers when the state or the props gets changed as React does Shallow comparison
+
+    Optimizations:
+
+        - React.memo() to avoid unnecessary renders
+        - useMemo & useCallback to cache values/functions
+        - Avoid inline objects/arrays in JSX
+
+Q) Explain React's batching behavior and what changed in React 18.
+Q) How does Suspense work, and what are some real use cases beyond lazy loading? ***Pending
+Ans) 
+    Example: 
+
+        const LazyComponent = React.lazy(() > import("./BigComponent'));
+
+        <Suspense fallback={<div>Loading ...< /div>}>
+        <LazyComponent />
+        </Suspense>
+
+Q) ***How do you optimize large lists in React for example you have got 10,000 data on UI how can you render without slowling down the performance?
+Ans) It can be done using Virtualization, for this we have 2 good libraries from react -
+
+    1. react-Window
+    2. react-virtualized
+
+Q) What is Hydration and how does React handles Hydration in SSR?
+
+--> scenario based question
+
+Q) Your React app suddenly becomes slow after adding new features. How do you find and fix the issue?
+Ans) 1. Check React dev tools and Chrome dev tools
+    2. Virtualization using react libraries like - react-virtualized or react-Window to load the multiple records from API
+    3. Use React.memo, useCallback, useMemo
+
+Q) Question 2: How do you prevent a login page from being accessible after the user is logged in?
+Ans) We can make use of ProtectedRouters by maintaining the flag and storing it in the Redux stores
+
+Q) How do you handle API errors gracefully in the UI?
+Ans) We can use - try-catch blocks
+
+Q) A component is fetching the same data multiple times unnecessarily. How do you fix it?
+Ans) 1. We can make use of external library like - React Query for Caching
+    2. we can store data in redux or context api, if tha data is present then we will not call the api again
+
+Q) How do you optimize bundle size in a large React app?
+Ans) 1. Code Splitting - React.lazy using Suspense
+    2. Tree Shaking - used to remove unused imports: vite, webpacks
+    3. Dynamic imports
+
+Q) How do you handle a form with 20+ fields efficiently?
+Ans) 1. We can make use of external libraries like - Formik/ReactHook Form
+    2. Conditional/ Dynamic Rendering
+    3. ZOD library - For validation
+
+Q) Your React app needs to support dark mode. How do you implement it?
+Ans) 1. We can store the selected theme from the user into localStorage, so that next time user comes to page can get the same theme
+    2. Then pass the theme to redux so that all component has the same theme
+
+Q) How do you prevent XSS (Cross-Site Scripting) in frontend apps?
+Ans) 1. We can use eval or DOM purify library
+    2. CSP 
+
+Q) How do you handle offline/online state gracefully in React with Service Workers?
+Ans) We can make use of navigator.online variable which is provided by Browser and as per there response we can give notify the user either it is online or offline and if it is offline we can make use of caching to show the data
+
+Q) Production is not getting the latest deployed update unless in incognito. How do you solve this?
+Ans) 1. Check for the service worker whether it is caching the data, even if the new data is available then also it is getting the data from the cache
+    2. Check the bundle as sometimes the same file name can confuse whether the data is changed or not, so to resolve this we can make use of hashing which add some unique value as the suffix e.g., main.12X34.js and main.56x78.js
+
+--> Memory leakage in React
+
+Q) What causes a memory leak in a React component using useEffect ?
+Ans) Example:
+
+    useEffect(()=> {
+        const interval = setInterval(() => {
+        console.Log("Running ... ");
+    }, 1000);
+
+    // Forgetting cleanup causes memory leak
+    // Correct:
+    return () => clearInterval(interval);
+    }, []);
+
+    - Memory happer when component subscribe to any event like event listener, setInterval and doesn't cleans it up when the component unmount
+    - Bonus tips - If there is any leakage then the browser gives an React Warning - > "Can't perform a state update on unmounted component" 
+
+
+Q) How can API calls cause memory leaks in React ??
+Ans) In case before fetching the data the component gets unmounted and you are tryng to set the state then after unmounting react can't clean that memory stays in that state, to prevent this we can make use of AbortController JS API here we can abort the fetch request before setting the state
+
+    Example:
+
+        useEffect(()=>{
+            const controller = new AbortController();
+
+            fetch("/api/data", {signal: controller.signal })
+            .then(res => res.json())
+            .then(data => setData(data))
+            .catch(err =>
+                if (err.name !== "AbortError") console.error(err);
+            });
+
+            return () => controller.abort(); //Prevents leak
+        }, []);
+
+Q) How do event listeners create memory leaks in React?
+Ans) Every re-render will add an event listener because the component will run in each re-render it will add the new event-listener in each re-render, to avoid this we can always use cleanup function in useEffect to remove that particular event listener
+
+    Example:
+        useEffect(()=>{
+            const handleResize = () => console. Log(window.innerWidth);
+            window.addEventListener("resize", handleResize);
+
+            // Cleanup
+            return () => window.removeEventListener("resize", handleResize);
+        }, []);
+
+Q) Can setInterval or setTimeout cause memory leaks?
+Ans) YES
+
+        - setinterval / setTimeout -> runs even after unmount
+        - Not cleared = background memory usage
+        - Use clearInterval/clearTimeout in cleanup
+        - Good practice -> always cleanup side effects
+
+--> Redux Toolkit questions
+
+Q) Why do we need Redux if we already have context API?
+Ans) - Context API is great for simple global state variable like theme, user info as it causes some rendering issues 
+     - In Redux we have single store, but in context we have context for each state, context is like filling distributing the water by hand manually but on the other hand redux is like a complete pipeline to distribute the state Globally
+
+     - In context When the context value changes, all consuming components re-render, but thats not the case in redux, Redux allows components to subscribe to only the specific slice they need.
+
+    Redux supports middleware for:
+
+        - API calls
+        - logging
+        - analytics
+        - error tracking
+
+    Examples:
+
+        - Redux Thunk
+        - Redux Saga
+        - RTK Query
+
+Q) What is the difference between redux and redix toolkit?
+Ans) Redux is core, redux toolkit is an Applied version, Redux toolkit has its built in immer, thunk it is faster 
+
+    Redux Toolkit is the official abstraction built on top of Redux that simplifies Redux development by reducing boilerplate and providing best practices out of the box. Traditional Redux requires manually creating action types, action creators, reducers, and store configuration, whereas Redux Toolkit provides utilities like createSlice, configureStore, and createAsyncThunk to simplify state management. Redux Toolkit also uses Immer internally, allowing us to write simpler immutable update logic.
+
+Q) How does redux handles Async API calls ?
+Ans) By default, Redux reducers must be pure functions and cannot perform asynchronous operations, So Redux uses middleware to handle async logic. Today, with Redux Toolkit, the most common approach is:
+
+        - createAsyncThunk()
+        - RTK Query
+
+    Why can't reducers make API calls?
+
+        They must:
+
+            - be synchronous
+            - be pure
+            - have no side effects
+
+Q) What are the three core principals of redux ?
+Ans) Redux is based on three core principles: 
+
+    1. First, the entire application state is stored in a single store, making it the single source of truth. 
+    2. Second, state is read-only and can only be changed by dispatching actions. 
+    3. Third, changes are only made through pure reducer functions that take the current state and an action and return a new state without mutating the existing state.
+
+Q) What is the role of immer in redux toolkit ?
+Ans) Immer is a library used internally by Redux Toolkit that allows us to write "mutating" logic while actually producing immutable state updates.
+
+    Traditional Redux, Suppose state is:
+
+        {
+            user: {
+                name: "John",
+                age: 25
+            }
+        }
+
+    To update age:
+
+        return {
+            ...state,
+            user: {
+                ...state.user,
+                age: 26
+            }
+        };
+
+        For deeply nested state, this becomes verbose and error-prone.
+
+    Redux Toolkit with Immer, This looks like mutation, but Immer intercepts it.
+
+        incrementAge: (state) => {
+            state.user.age = 26;
+        }
+
+    Internally, Immer:
+
+        1. Creates a draft copy of state
+        2. Tracks changes made to the draft
+        3. Produces a new immutable state object
+        4. Leaves the original state untouched
+
+Q) What is RTK Query in React and What is the difference between RTK Query and Redux Thunk?
+
+Q) 
+--Cross questions
+
+1.If both class and functional components can now do the same things using hooks, is there any reason to still use class components?
+2. What happens if you update state using the same value? Will it still cause a re-render?
+3. What happens if you don't provide a dependency array to useEffect?
+4. Can a child component modify its props?
+5. Where would you handle form validation - inside the form component or
+separately?
+6. What if the parent component re-renders - does the child always re-render too?
+7. Does the virtual DOM completely eliminate re-rendering issues?
+
+
