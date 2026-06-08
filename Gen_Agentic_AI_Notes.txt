@@ -547,15 +547,6 @@ Video 16 ==> RAG
     - Final Answer: Paris is the capital of France and has a population of ~2.1 million.
 
 
-
-
-
-
-
-
-
-
-
         Note:
             1. Agents - Are chatbot on steroids
             2. chunk_size -  It is ideally preferred 10% to 20% of chunk_size

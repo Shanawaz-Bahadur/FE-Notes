@@ -1,0 +1,230 @@
+05/06/2026
+
+1. Artificial Neural Network(ANN)
+
+    It is used to mimic the working of Brain, by implementing the similar component which is used in Brain which are:
+
+        1. Neurons(Nodes) - which stores some data inside it, in the form of vector(e.g 1.223,2.2, 4.2, 0.54)
+        2. Layers - Layers of Neurons
+        3. Connections - Connections of multiple layers with their weights 
+        4. Activation Function - Converting non-linear outputs to linear one (e.g 0 to 1)(Example of Activation function - Sigmoid, Relu, leky Relu)
+
+2. Convolutional Neural Network(CNN) - 
+
+    Is is Specialized Neural Network for images. videos, Spatial Data
+
+3. Recurrent Neural Network(RNN)
+
+    Before RNNs, traditional neural networks treated every input independently as it is done in ANN.
+    The one of the most important feature of RNN is ,it remembers previous information while processing the sequence.
+
+        In RNN introduces a hidden state (memory): It remembers previous information while processing the sequence.
+
+            Word1 → Memory
+                ↓
+        Word2 → Updated Memory
+                ↓
+        Word3 → Updated Memory
+
+    Example
+
+        Input:
+            I love AI
+
+        When processing "AI", the network has already seen:
+            I
+            love
+
+    - Problem with RNN
+
+        Vanishing Gradient Problem(the difficulty of training the network to remember long-term patterns.)
+
+        Suppose:
+            The food at the restaurant was amazing because ...
+
+        - The model may need information from words far back in the sentence.
+        - RNN struggles to remember long-term dependencies.
+        - Information gradually fades.
+
+4. LSTM (Long Short-Term Memory) - It is an imporved version of RNN
+
+    Remember long-term information, and decide what to forget and what to keep 
+
+    LSTM has 2 types of memory:
+
+        1. Cell State (Lond-term memory)
+        2. Hidden State (Short-term memory)
+
+    Q) Why was LSTM introduced?
+    Answer: To solve the vanishing gradient problem and improve long-term memory retention.
+
+5. Encoder-Decoder Architecture
+
+    Problem:
+        Input length and output length can differ.
+        Traditional RNNs struggled with this.
+
+    Solution: Encoder-Decode(Two networks)
+        - Encoder
+            1. Reads input
+            2. Converts it into a context representation.
+
+        - Decoder
+            1. Uses that representation.
+            2. Generates output.
+
+    - Flow
+    
+        Input Sentence
+            ↓
+        Encoder
+            ↓
+        Context Vector
+            ↓
+        Decoder
+            ↓
+        Output Sentence
+
+    Problem
+        - Everything is compressed into one context vector.
+        - Important information gets lost.
+
+    Interview Question
+    Q) Why Encoder-Decoder?
+    Answer: To support sequence-to-sequence tasks like translation where input and output lengths differ.
+
+6. Transformer: Attention Mechanism
+
+    This is the major breakthrough.
+
+        Researchers realized:
+            Why force the decoder to rely on only one compressed vector?
+
+        Instead:
+            Let the decoder look back at important words whenever needed.
+
+    Published in the famous paper in 2017
+        ***Attention Is All You Need
+
+    --> Biggest Idea
+
+        Remove:
+            - RNN
+            - LSTM
+
+        and use only attention.
+
+    Q) Why?
+
+        --> RNN processing(Sequential):
+
+            Word1
+              ↓
+            Word2
+              ↓
+            Word3
+              ↓
+            Word4
+
+            Cannot process all words simultaneously.
+
+        --> Transformer:
+
+            Word1
+            Word2
+            Word3
+            Word4
+
+            Processed in parallel, Much faster.
+
+7. Self-Attention
+
+    This is the heart of Transformers, Every word can look at every other word.
+
+    Foundation of Modern LLMs
+
+        - GPT
+        - Claude
+        - Gemini
+        - Llama
+
+        all rely on Transformers.
+
+8. Encoder vs Decoder in Transformers
+
+    Transformer originally contains both:
+
+        1. Encoder: Used for understanding text.
+            Examples:
+            - Search
+            - Classification
+            - Embeddings
+
+                Models like: BERT
+
+        2. Decoder: Used for generating text.
+            Examples:
+            - Chatbots
+            - Content generation
+            - Code generation
+
+                Models like: GPT
+
+    Q) Why did we move from RNN → LSTM → Transformer?
+    Ans) 
+        - RNN introduced memory for sequential data but struggled with long-term dependencies.
+        - LSTM solved the vanishing gradient problem and improved long-term memory retention.
+        - Encoder-Decoder enabled sequence-to-sequence tasks such as machine translation.
+        - However, encoder-decoder models compressed information into a fixed context vector, which became a bottleneck.
+        - Attention allowed models to focus on relevant parts of the input dynamically.
+        - Transformers replaced recurrence with self-attention, enabling parallel processing, better context understanding, faster training, and scalability.
+        - Modern LLMs like GPT and Claude are built on Transformer architectures.
+    
+RAGAs
+True Lens
+
+YT ref: https://www.youtube.com/watch?v=7_LTU0LA374, https://www.youtube.com/watch?v=5fp6e5nhJRk
+Q) What is RAG Evaluation: Precision, Recall, Faithfulness, RAGAS ?
+Ans) In RAG the 2 most important aspects is 
+
+        1. Retrieval(***Retrieved Context - mainly depend on Embedding models used) and 2. Generation(***Generated Answer - mainly depend on LLM model used)
+
+    - Comparing answer with Query(Embedding based)
+
+    Precision - How much of the retrieved context/chunks is relevant?
+
+                Precision = relevant chunks / Total Retrieved chunks
+
+    Recall - How much of the relevant information was retrieved?
+
+                Recall = retrieved relevant chunks/total retrieved chunks
+
+    Answer Relevance - How well does the answer address the question? or How much relavant is the answer to the question?
+
+    - Comparing Generated response with retrieved context(Deep Reasoning)
+
+    Faithfulness - How well the Generated answer is fully supported by the retrieved Context or it has generated the response on its own - Bad Faithfulness(Hallucination)
+
+    Groundedness - How well the Generated Answer used retrieved context instead of relying on the models internal memory
+
+    ***Note : In practice computing all the above metrics is sometime not possible, so in place of this we can make use of LLM-as-a-Judge
+
+        Here LLM act as an evaluator it reads 3 things, 1. Query, 2. Retrieved Context, 3. Generated Answer
+        And provide us all the metrics like Faithfulness, Groundedness, Relevance
+
+    To make all of this standardize we have a framework called - RAGAS(Open source framework for RAG Evaluation) - Internally it used Embedding and LLM-as-as-judge concept to evaluate the RAG system
+
+    For we need to provide 4 things -
+
+        1. Query
+        2. Ground truth
+        3. Answer - to Evaluate (Response from LLM)
+        4. Context - to Evaluate (Retrieved context/chunks from document)
+
+    Note: RAGAS is used only in development phase not in the production, for production we can make use of Trulens(As in production we can have any query and we cannot provide the ground truth)
+
+    
+
+
+    
+
