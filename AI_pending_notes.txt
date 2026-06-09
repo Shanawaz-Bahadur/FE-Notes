@@ -223,8 +223,82 @@ Ans) In RAG the 2 most important aspects is
 
     Note: RAGAS is used only in development phase not in the production, for production we can make use of Trulens(As in production we can have any query and we cannot provide the ground truth)
 
+YT Ref: https://www.youtube.com/watch?v=ruiLq0OzjkI, https://www.youtube.com/watch?v=7V1w5gnZ-kw
+Doc Ref: https://docs.langchain.com/oss/python/langchain/guardrails
+Q) What is Guardrail, how to implement Guardrails?
+Ans) Guardrails in Al (LLM Applications) are the safety boundaries-protective limits and control mechanisms-that keep a model's behavior on the right, safe, and controlled path.                         OR
+
+    Guardrails are safety mechanisms that control what goes into and comes out of an Al agent. They sit around your agent pipeline and ensure the agent:
+
+        - only processes safe, appropriate inputs
+        - only performs approved actions
+        - only returns validated, compliant outputs
+
+    framework to implement Guardrail:
+        - Guardrails-AI: https://www.guardrailsai.com/docs (Pythonic library)
+        - OpenAl Guardrails: https://openai.github.io/openai-guardrails-python/ (From OpenAI)
+        - NeMo Guardrails: https://docs.nvidia.com/nemo/guardrails/latest/index.html (from Nvidia)
+        - LMQL (Language Model Query Language): https://Imql.ai/docs/
+
+    - While implementing Guardrails we have 2 approaches:-
+
+        1. Deterministic approach:
+            - Rule based - keyword, regex
+            - Zero LLM cost, but it cannot understart the semantic meaning of prompt(cons)
+            
+        2. Model based approach
+            - use LLM
+            - understands semantic meaning and catches any voilation, but with some cost(cons)
+
+    LangChain provides both built-in guardrails (e.g., PII detection, human-in-the-loop) and a flexible middleware system for building custom guardrails using either approach.
+
+    1. PII(Personally Identifiable Information) Detection
+
+        - Detcct Credits card no., URL, IP's, email, mac address
+        - Masks the details
+        - applies on input, output, tool calls
+
+    2. Human in loop - Pauses agent execution before sensitive operations and waits for human approval before calling the tool.
+
+        - Pauses agent before sensitive call through tools
+        - approves or reject
+        - Thread and checkpointer
+
+        Best for:
+            . Financial transactions
+            . Sending emails to external parties
+            . Deleting production data
+            . Any operation with significant business impact
+    --> custom guardrails
     
+    3. Before agent hooks (before_agent()) -Use before_agent() to validate or block requests before any LLM processing begins.
+ 
+        - Runs before LLM calls
+        - Zero cost for clocked request(pros)    
 
+        Best for:
 
+            . Keyword/content filtering
+            . Authentication checks
+            . Rate limiting
+            . Blocking specific categories of requests
+
+    4. After agent hooks
+ 
+        - Validates final response before user sees it
+        - Replace or mutate unsafe Content
+
+    5. Layered guardrails
+
+        Applying all the above techniques together
+
+Q) What is MCP (Model Context Protocol)? 
+
+    MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems(data sources(local files, databases), tools(search engines, calculators), workflows(specialized prompts)).
+    MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems(data sources(local files, databases), tools(search engines, calculators), workflows(specialized prompts)).
+    
+        Using MCP, AI applications like Claude or ChatGPT can connect to data sources (e.g. local files, databases), tools (e.g. search engines, calculators) and workflows (e.g. specialized prompts)—enabling them to access key information and perform tasks.
+
+    Avoid Glue Code
     
 
