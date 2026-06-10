@@ -293,12 +293,41 @@ Ans) Guardrails in Al (LLM Applications) are the safety boundaries-protective li
         Applying all the above techniques together
 
 Q) What is MCP (Model Context Protocol)? 
+Ans) As before MCP for creating the Agent we need to write seperate code to integrate different tools(DB, Duck Duck Go search, search engine) with LLM(Which can be called as Glue Code) in case for my LLM I have 100 different tools then I need to write different Glue code for 100 of tools and in case if there any changes in the integration of the tool then we need to update the integration glue code
 
-    MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems(data sources(local files, databases), tools(search engines, calculators), workflows(specialized prompts)).
     MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems(data sources(local files, databases), tools(search engines, calculators), workflows(specialized prompts)).
     
         Using MCP, AI applications like Claude or ChatGPT can connect to data sources (e.g. local files, databases), tools (e.g. search engines, calculators) and workflows (e.g. specialized prompts)—enabling them to access key information and perform tasks.
-
-    Avoid Glue Code
     
+    There are mainly 3 component involved in integrating the MCP
 
+        1. MCP Host (VS code IDE, or any other IDE, or any other applicationy)
+        2. MCP client
+        3. MCP Server
+
+Q) What is the flow of MCP ?
+Ans) 
+    Step 1) Input gets into the MCP client and then sends it forward using MCP client to the LLM
+    Step 2) Then LLM decides which tool to call as per the query and the doc string available with the tool
+    Step 3) The MCP client will call the MCP server and then MCP server will call the required tool
+
+        MCP Client
+            ↓
+           LLM
+            ↓
+         MCP Client
+            ↓
+         MCP Server
+            ↓
+      Tool / Database / API
+
+=============================================================AI Agents ===============================================================
+
+Q) What is Langgraph
+Ans) 
+    - LangGraph is an orchestration framework for building intelligent, stateful, and multi-step LLM workflows.
+    - It enables advanced features like parallelism, loops, branching, memory, and resumability - making it ideal for agentic and production-grade Al applications.
+    - It models your logic as a graph of nodes (tasks) and edges (routing) instead of a linear chain.
+
+Q) Multi-Agent orchestration
+Ans) Distributed system
