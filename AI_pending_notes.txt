@@ -112,7 +112,7 @@
             - RNN
             - LSTM
 
-        and use only attention.
+        and use only ***attention.
 
     Q) Why?
 
@@ -305,6 +305,9 @@ Ans) As before MCP for creating the Agent we need to write seperate code to inte
         2. MCP client
         3. MCP Server
 
+Q) Do each tool should have there own personal MCP server?
+Ans) 
+
 Q) What is the flow of MCP ?
 Ans) 
     Step 1) Input gets into the MCP client and then sends it forward using MCP client to the LLM
@@ -327,7 +330,604 @@ Q) What is Langgraph
 Ans) 
     - LangGraph is an orchestration framework for building intelligent, stateful, and multi-step LLM workflows.
     - It enables advanced features like parallelism, loops, branching, memory, and resumability - making it ideal for agentic and production-grade Al applications.
-    - It models your logic as a graph of nodes (tasks) and edges (routing) instead of a linear chain.
+    - It models your logic as a graph of nodes (tasks - it can be a simple python function) and edges (routing) instead of a linear chain.
+
+Q) What are Workflow?
+Ans) 
+    - LLM workflows are a step by step process using which we can build complex LLM applications.
+
+    - Each step in a workflow performs a distinct task - such as prompting, reasoning, tool calling, memory access, or decision-making.
+
+    - Workflows can be linear, parallel, branched, or looped, allowing for complex behaviours like retries, multi-agent communication, or tool-augmented reasoning.
+
+    There are multiple types of workflows which are:
+
+        1. Sequential workflow
+        2. Parelled workflow
+        3. Conditional workflow (branching)
+        4. Iterative workflow
+
+Q) What are states in LLM workflow
+Ans) In LangGraph, state is the shared memory that flows through your workflow - it holds all the data being passed between nodes as your graph runs.
+
+Q) What are Reducers?
+Ans) Reducers in LangGraph define how updates from nodes are applied to the shared state.
+    Each key in the state can have its own reducer, which determines whether new data replaces, merges, or adds to the existing value.
+
+Q) Langgraph workflow Execution model
+Ans) 
+    1. Graph Definition
+        You define:
+            . The state schema
+            . Nodes (functions that perform tasks)
+            . Edges (which node connects to which)
+
+    2. Compilation
+        You call .compile() on the StateGraph.
+        This checks the graph structure and prepares it for execution.
+
+    3. Invocation
+        You run the graph with .invoke(initial_state)
+        LangGraph sends the initial state as a message to the entry node(s).
 
 Q) Multi-Agent orchestration
 Ans) Distributed system
+
+============================================== Interview Question===================================
+
+
+------------------------ LLM 
+
+Q) What is an LLM?
+Ans) A Large Language Model (LLM) is a deep learning model trained on massive amounts of text data to understand and generate human-like language.
+
+    LLMs are built on the Transformer architecture and learn patterns, relationships, grammar, reasoning capabilities, and domain knowledge from training data.
+
+Q) On which architecture does an LLM work?
+Ans) Modern LLMs are built on the Transformer architecture, where self-attention enables the model to understand contextual relationships between tokens and generate coherent outputs.
+
+Q) If an LLM is only predicting the next token, then how can it answer user questions?
+Ans) An LLM only predicts the next token mathematically, but because it has learned language, facts, and reasoning patterns from massive training data, next-token prediction emerges as question answering, coding, summarization, and reasoning capabilities.
+
+Q) Will Top-K and Top-P work if Temperature is set to 0?
+Ans) Top-K and Top-P are sampling techniques. When temperature is set to 0, generation becomes nearly deterministic and behaves like greedy decoding. Since there is no meaningful sampling occurring, Top-K and Top-P usually have little or no practical effect on the generated output.
+
+Q) What is tokenization?
+Ans) Tokenization is the critical first step in large language models where raw text is broken down into smaller, manageable chunks called tokens. Since LLMs are mathematical engines that only understand numbers, tokenization translates human language into a sequence of unique numerical IDs
+
+    Tokens are the smallest units of text processed by an LLM.
+
+    Production Example
+
+    If an LLM supports 128k tokens, both prompt and response must fit within that limit.
+
+Q) What is Context Window?
+Ans) A context window is the maximum number of tokens an LLM can process in a single request.
+
+    It includes:
+
+        Input Tokens
+                +
+        Conversation History
+                +
+        Retrieved Documents
+                +
+        Output Tokens
+
+    Example
+
+        If the model has: 128k context window
+        and the prompt uses: 100k tokens
+        then only around: 28k tokens remain for output.
+
+    Why Important?
+        Large context windows help with:
+            - Long conversations
+            - RAG applications
+            - Document analysis
+
+Q) What is Temperature?
+Ans) Temperature controls the randomness of the model's output.
+
+    Lower temperature: 0.0 - 0.3
+        - More deterministic
+        - More factual
+        - Less creative
+
+    Higher temperature: 0.7 - 1.5
+        - More creative
+        - More diverse
+        - Less predictable
+
+    Production Usage:
+        Code Generation: 0 - 0.2
+        Content Writing: 0.7 - 1.0
+
+Q) What is Top-P?
+Ans) Top-P (Nucleus Sampling) controls token selection by choosing from the smallest set of tokens whose cumulative probability reaches P(Parameter set for the LLM).
+
+    Temperature controls randomness, while Top-P controls how many likely token candidates the model can choose from, it is not same as top-k as in top-k we have fixed number of outputs
+
+Q) What is Hallucination?
+Ans) Hallucination occurs when an LLM generates information that sounds plausible but is incorrect, fabricated, or unsupported by facts.
+
+    Mitigation Techniques
+        - RAG
+        - Function Calling
+        - Grounding with external data
+        - Validation pipelines
+        - Human review
+
+--------------------------------------- Prompt 
+Q) What is Prompt Engineering?
+Ans) Prompt Engineering is the process of designing and optimizing prompts to guide an LLM toward producing accurate, relevant, and consistent outputs.
+
+    Prompt engineering involves:
+
+        . Providing clear instructions
+        . Giving context
+        . Defining constraints
+        . Specifying output format
+        . Including examples when needed
+
+    - Zero-Shot Prompting: In Zero-Shot Prompting, we ask the model to perform a task without providing any examples.
+        Example
+            Translate the following sentence into French: "I love artificial intelligence."
+
+    - Few-Shot Prompting: Few-Shot Prompting improves performance by providing example input-output pairs that demonstrate the expected behavior.
+
+        Example
+            - Input: Great service
+            - Sentiment: Positive
+
+            - Input: Terrible experience
+            - Sentiment: Negative
+
+            - Input: Product quality is amazing
+            - Sentiment:
+
+        Use Cases
+            - Classification
+            - Data extraction
+            - Domain-specific tasks
+            - Custom formatting
+
+    - Role Prompting: Assigning a role or persona to the model.
+
+        Example
+            Act as a Senior React Architect.
+            Explain Redux Toolkit to a junior developer.
+        
+    - Chain of Thought (CoT): Encouraging the model to reason through intermediate steps before producing the final answer. Chain of Thought Prompting improves reasoning by asking the model to generate intermediate reasoning steps before arriving at the final answer.
+
+        Example
+            A train travels 60 km in 1 hour.
+            How far will it travel in 5 hours?
+            Think step by step.
+        
+        Model
+            Distance per hour = 60 km
+            Time = 5 hours
+            Distance = 60 × 5
+            Answer = 300 km
+
+    - ReAct Pattern (Reason + Act): ReAct combines reasoning and tool usage, allowing an agent to think, perform actions, observe results, and continue reasoning until the task is completed.
+
+        Example
+            User:
+                What's the weather in Mumbai today?
+
+            Agent:
+                Thought:
+                I need weather information.
+
+                Action:
+                Call Weather API
+
+                Observation:
+                31°C, Cloudy
+
+            Final Answer:
+                The current temperature in Mumbai is 31°C and it's cloudy.
+
+    - Structured Prompting: Organizing prompts into clearly defined sections. Structured Prompting reduces ambiguity by clearly separating instructions, context, constraints, and expected output format.
+
+        Example
+            Task:
+                Extract customer information.
+
+            Input:
+                John Smith
+                john@gmail.com
+
+            Output Format:
+                {
+                    "name": "",
+                    "email": ""
+                }
+
+    - Output Formatting: Explicitly instructing the model how the response should be formatted.
+
+        Example
+            Instead of:
+                John is 25 years old and lives in Mumbai.
+
+            Return:
+                {
+                    "name": "John",
+                    "age": 25,
+                    "city": "Mumbai"
+                }
+
+
+    
+
+Q) Why Do we need Agentic RAG intead of RAG?
+Ans) For simple query we can make use of RAG but When there is multiple retrieval query for example - When can I receive my replacement of my order
+    It has to check order details, delivery timeline, product availability to retrive multple source we can make use of agentic RAG
+
+---------------------------------------- RAG
+
+Q) RAG Architecture
+Ans) 
+    A typical RAG pipeline:
+
+        User Query
+            ↓
+        Embedding Model
+            ↓
+        Vector Search
+            ↓
+        Retrieve Relevant Chunks
+            ↓
+        Prompt Construction
+            ↓
+        LLM
+            ↓
+        Final Answer
+    
+    Runtime:
+
+        User Question
+            ↓
+        Query Embedding
+            ↓
+        Similarity Search
+            ↓
+        Top K Chunks
+            ↓
+        LLM
+            ↓
+        Answer
+
+Q) Why Use RAG?
+Ans) 
+    - Reduces hallucinations
+    - Access to latest information
+    - No need to retrain model
+    - Enterprise data access
+
+Q) What are Embeddings?
+Ans) Embeddings convert text into numerical vectors that capture semantic meaning, enabling similarity search.
+
+    Example:
+        "Car"
+            and
+        "Automobile"
+
+        have different words but similar embedding vectors.
+
+    Q) Why Needed?
+        Similarity search operates on embeddings.
+
+            Without embeddings: Keyword Search
+            With embeddings: Semantic Search
+
+Q) What is Chunking?
+Ans) Chunking is the process of breaking large documents into smaller pieces before generating embeddings to improve retrieval accuracy.
+
+Q) What is Chunk Overlap?
+Ans) Chunk overlap preserves contextual continuity by repeating portions of adjacent chunks.
+    Benefits
+        - Preserves context
+        - Better retrieval
+        - Reduced information loss
+
+Q) What is Retrieval?
+Ans) Retrieval is the process of finding the most relevant chunks for a user query.
+
+    Example:
+
+        User:
+            What is Redux Toolkit?
+
+        System:
+            - Convert query to embedding
+            - Search vector DB
+            - Retrieve relevant chunks
+        
+        Goal
+            - Only send relevant information to the LLM.
+
+Q) What is Similarity Search?
+Ans) Similarity search finds vectors closest to the query embedding.
+
+    Example:
+
+        Query:
+        "state management in React"
+
+        Retrieved:
+        Redux Toolkit document - because vectors are close in semantic space.
+
+        Most common metrics:
+
+            - Cosine Similarity
+            - Dot Product
+            - Euclidean Distance
+
+Q) What is Re-ranking?
+Ans) Re-ranking is a second-stage ranking process applied after retrieval.
+
+        Vector Search
+            ↓
+        Top 20 Chunks
+            ↓
+        Re-ranker Model
+            ↓
+        Best 5 Chunks
+            ↓
+        LLM
+
+    Why Needed?
+        - Vector search may return approximately relevant chunks, Re-rankers improve precision.
+
+Q) What is Hybrid Search?
+Ans) Hybrid Search combines: Hybrid Search combines semantic vector search and keyword search to improve retrieval accuracy.
+        Vector Search
+            +
+        Keyword Search
+
+    Example:
+
+        User: Error code 5001
+
+            - Embedding search may struggle.
+            - Keyword search finds exact error code
+            - Combined result is better.
+
+        Benefits:
+            - Semantic matching
+            - Exact keyword matching
+            - Better enterprise search
+
+Q) What is Metadata Filtering?
+Ans) Metadata filtering narrows search results before or during vector search.
+
+    Example Metadata:
+        {
+            "department": "HR",
+            "year": 2025,
+            "region": "India"
+        }
+
+    User asks:
+        Show HR policies for India.
+
+    Filter:
+        {
+            "department": "HR",
+            "region": "India"
+        }
+
+-- Scenario-Based Questions
+
+Q) Users complain that RAG responses are missing important information from PDFs.
+Ans) I would investigate:
+
+        - Chunk size
+        - Chunk overlap
+        - Embedding model quality
+        - Retrieval top-k value
+        - Document parsing issues
+        - Re-ranking effectiveness
+
+    Most commonly, context is lost due to poor chunking or insufficient overlap.
+
+Q) Your RAG system retrieves irrelevant documents despite good embeddings.
+Ans) Possible solutions:
+
+        - Introduce re-ranking
+        - Improve chunking strategy
+        - Tune Top-K retrieval
+        - Evaluate embedding model
+
+    Often retrieval is broad but not precise, so re-ranking significantly improves results.
+
+Q) A user asks: What was the leave policy in 2024? but the system retrieves 2025 documents.
+Ans) How would you solve this?
+    Expected Answer: Use metadata filtering.
+
+Q) Users search for exact product IDs and retrieval quality is poor.
+Ans) Expected Answer: Vector search is optimized for semantic similarity, not exact identifier matching.
+    Example:
+        PROD-12345
+
+    Solution:
+        - Hybrid Search
+        - Keyword Search
+        - BM25
+
+Q) Your RAG system retrieves relevant chunks, but answers are still incorrect.
+Ans) Expected Answer
+
+        Several possibilities:
+
+            - Retrieved chunks exceed context window.
+            - Poor prompt design.
+            - Retrieved context not passed correctly.
+            - LLM ignores retrieved context.
+        I would inspect the final prompt being sent to the LLM.
+
+Q) Why not simply increase chunk size to 5000 tokens?
+Ans) Expected Answer
+
+        Large chunks create multiple issues:
+            - More noise
+            - Lower retrieval precision
+            - Higher token costs
+            - Context dilution
+        Smaller semantically meaningful chunks generally retrieve more accurately.
+
+Q) When would you use Re-ranking?
+Ans) Expected Answer: When initial vector retrieval has high recall but low precision.
+
+        Example: Vector search returns 20 potentially relevant chunks.
+        Re-ranking helps identify the most relevant 5 before sending them to the LLM.
+
+Q) How would you reduce hallucinations in a RAG system?
+Ans) Expected Answer
+        I would:
+
+            - Improve retrieval quality
+            - Use metadata filtering
+            - Add re-ranking
+            - Use high-quality embeddings
+            - Ground answers only on retrieved context
+            - Ask the model to say "I don't know" when context is insufficient
+            - Add citations/sources
+
+Q) Users report that answers are irrelevant. What would you debug first?
+Ans)
+    Step 1: Verify Retrieved Chunks - The first thing I'd check is:
+        Are the retrieved chunks actually relevant to the user's question?
+    If retrieval itself is wrong, the LLM cannot generate a good answer.
+
+    Step 2: Check Chunking Strategy
+    Questions I'd ask:
+
+        - Is chunk size too large?
+        - Is chunk size too small?
+        - Is context split across chunks?
+        - Is chunk overlap sufficient?
+
+    Step 3: Evaluate Embeddings
+        I would verify:
+            - Which embedding model is being used?
+            - Does it perform well on our domain?
+
+    Step 4: Review Retrieval Strategy
+        I'd inspect:
+            - Top-K value
+            - Similarity threshold
+            - Hybrid search usage
+            - Re-ranking effectiveness
+
+    Step 5: Check Metadata Filters - Sometimes overly restrictive filters remove relevant documents.
+
+Q) Hallucinations increased after deployment. How would you investigate?
+Ans) 
+    Step 1: Compare Before vs After Deployment
+        I would investigate:
+            - Was embedding model changed?
+            - Was chunking strategy changed?
+            - Was retrieval pipeline modified?
+            - Was prompt updated?
+
+    Step 2: Verify Retrieval Quality
+        Questions:
+            - Are relevant chunks still being retrieved?
+            - Has retrieval precision dropped?
+        Poor retrieval often appears as hallucination.
+
+    Step 3: Review Prompt
+
+        I would inspect whether the prompt contains instructions such as:
+            Answer only from provided context.
+            If information is unavailable, say "I don't know."
+
+    Step 4: Check Context Window Usage
+        Possible issue:
+            Retrieved Context = 20,000 tokens
+            Important chunks may be truncated.
+
+    Step 5: Review Temperature
+        If temperature was increased:
+            0.2 → 0.8
+            hallucinations may increase.
+
+Q) You have a 500-page PDF. How would you build a RAG system for it?
+Ans) For a 500-page PDF, I would build an ingestion pipeline involving text extraction, cleaning, semantic chunking with overlap(500-1000 token chunks, 50-100 token overlap), embedding generation, vector indexing, metadata enrichment, retrieval, re-ranking, and grounded answer generation.
+
+    Retrieval Pipeline:
+
+        User Query
+            ↓
+        Embedding
+            ↓
+        Vector Search
+            ↓
+        Top-K Retrieval
+            ↓
+        Re-ranking
+            ↓
+        LLM
+
+Q) Two very similar questions retrieve completely different documents.
+Ans) This indicates a retrieval consistency issue - I would compare query embeddings, retrieval scores, metadata filters, chunk boundaries, and similarity thresholds. If needed, I would introduce hybrid search and re-ranking to improve retrieval consistency.
+
+    Example
+        Question 1:
+            What is the leave policy?
+
+        Question 2:
+            Explain employee leave rules.
+        Different results appear.
+
+Q) Retrieved documents are correct, but answers are still wrong.
+Ans) This is a generation-stage problem rather than a retrieval problem - If retrieval is correct but answers are wrong, I would inspect prompt design(Answer only using the provided context. If the answer is not present, say "I don't know."), context truncation, chunk ordering, temperature settings, and grounding instructions. In many cases, the model is not effectively using the retrieved context even though retrieval itself is working correctly.
+
+    ***==> When asked any RAG debugging question, use this framework:
+
+        1. Verify Retrieval
+        2. Inspect Chunking
+        3. Evaluate Embeddings
+        4. Review Metadata Filters
+        5. Check Re-ranking
+        6. Inspect Final Prompt
+        7. Verify Context Window Usage
+        8. Review Generation Parameters
+
+----------------------------------Embeddings
+
+Q) What are Embeddings?
+Ans) Embeddings convert text into numerical vectors that preserve semantic meaning, enabling similarity-based retrieval.
+
+    
+
+---------------------------------
+
+Q)What is Agentic Al? How is it different from Generative Al?
+Ans) 
+    Generative AI -> models that generate content (text, images) in response to a prompt - reactive, stateless, one-shot.
+    Agentic Al -> systems built on top of these models that autonomously pursue goals through multi-step reasoning and action. An agent perceives its environment, reasons about actions, uses tools, observes results, and iterates until the goal is achieved.
+
+    Simple: GenAI answers. Agentic Al acts.
+
+    Example: GenAI writes a marketing plan. An agent researches the market, writes the plan, emails stakeholders, and schedules a review meeting - autonomously.
+
+Q) Explain the ReAct framework with an example.
+Ans) ReAct = Reasoning + Acting. 
+
+    Each cycle: Thought (internal reasoning) -> Action (tool invocation) -> Observation (result). Loop continues until task is complete.
+
+    Example: Task = 'Compare Delhi vs Tokyo population.' 
+            Agent Thinks: 'Search Delhi first.' 
+            Acts: web_search(). Observes: 32M. 
+            Thinks: 'Now Tokyo.' 
+            Acts: web_search(). Observes: 37.6M. Calculates difference. Done.
+
+    Key advantage: Each step grounded in real observations - reduces hallucination vs one-shot generation.
+
+Q)How do you handle hallucination in an Al Agent?
+Ans) 
