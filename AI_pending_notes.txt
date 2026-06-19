@@ -903,9 +903,301 @@ Ans) This is a generation-stage problem rather than a retrieval problem - If ret
 Q) What are Embeddings?
 Ans) Embeddings convert text into numerical vectors that preserve semantic meaning, enabling similarity-based retrieval.
 
-    
+    The goal is to place semantically similar text close together in vector space.
 
----------------------------------
+        Example:
+            - Car
+            - Automobile
+            - Vehicle
+        Although these words are different, their embeddings will be close to each other.
+
+        While:
+            - Car
+            - Pizza
+            - Football
+        will be far apart.
+
+        Example
+            Text:
+                React is a frontend library.
+
+            Embedding:
+                [0.12, -0.44, 0.82, 0.19, ...]     The actual numbers aren't important, What matters is the relative position in vector space.
+
+Q) What are Semantic Search?
+Ans) Semantic search retrieves documents based on meaning rather than exact keyword matching.
+
+    Traditional Keyword Search
+
+        Query:
+            How do I reset my password?
+
+        Document:
+            Steps to change account credentials.
+
+        Keyword search may fail because:
+            password ≠ credentials
+
+    Semantic Search
+
+        Embeddings understand that:
+            - password
+            - credentials
+            - login information
+
+        are semantically related, So retrieval succeeds.
+
+Q) What are Embedding Models?
+Ans) Embedding models generate vector representations of text and must remain consistent between indexing and querying.
+
+    Examples include:
+
+        - OpenAI Embeddings
+        - Sentence Transformers
+        - BGE Models
+
+    Each model differs in:
+
+        - Accuracy
+        - Latency
+        - Cost
+        - Domain specialization
+
+Q) What are Similarity Search?
+Ans) Similarity search retrieves documents whose embeddings are closest to the query embedding.
+
+    Process:
+        User Query
+            ↓
+        Embedding
+            ↓
+        Vector Search
+            ↓
+        Top K Similar Chunks
+
+
+    Common Metrics:
+        - Cosine Similarity
+        - Dot Product
+        - Euclidean Distance
+
+Q) What are Cosine Similarity?
+Ans) Cosine Similarity measures the angle between two vectors, The closer the angle, the more similar the vectors.
+
+    Q) Why It's Popular
+        - Cosine similarity focuses on semantic direction rather than vector size.
+        - This works well for text embeddings.
+
+Scenario Based
+Q) Search quality suddenly drops after changing embedding models.
+Ans) 
+    Verify Re-indexing
+        Whenever an embedding model changes:
+            All documents
+            must be re-embedded
+
+        and re-indexed.
+
+    Check Vector Dimensions
+        Example:
+            Old Model = 768 dimensions
+            New Model = 1536 dimensions
+        Mismatch can cause failures.
+
+    Evaluate Retrieval Metrics
+
+        Compare:
+            - Recall
+            - Precision
+            - Hit Rate
+        before and after migration.
+
+Q) The same query retrieves unrelated chunks.
+Ans) Unrelated retrieval can result from poor chunking, embedding quality issues, incorrect similarity metrics, missing metadata filters, weak thresholds, or the absence of re-ranking. I would inspect retrieval scores and evaluate each stage of the retrieval pipeline systematically.
+
+Q) Can embeddings understand synonyms?
+Ans) Yes. Because embeddings capture semantic meaning, words such as "car" and "automobile" are typically placed close together in vector space even though they are different keywords.
+
+Q) Why can't we use keyword search alone instead of embeddings?
+Ans) Keyword search depends on exact word matches and often fails when users phrase questions differently. Embeddings enable semantic search by retrieving documents based on meaning rather than exact terms, which significantly improves retrieval quality in RAG systems.
+
+Q) How do you select an embedding model for a use case?
+Ans) The best embedding model is the one that performs best on your data and retrieval tasks, not necessarily the one with the highest benchmark score.
+
+    I select an embedding model based on:
+
+        - Domain of the data: The first factor I consider is whether the data is general-purpose or domain-specific because domain-aligned embeddings often improve retrieval quality.
+
+        - Retrieval quality requirements
+        - Latency requirements
+        - Cost constraints: At enterprise scale, embedding generation and storage costs become important factors when selecting a model.
+                Need to consider:
+
+                    . Token pricing
+                    . Re-indexing cost
+                    . Storage cost
+
+        - Multilingual support: User queries may come in(English, Hindi, Arabic, French), the embedding model must support multilingual retrieval.
+        - Embedding dimensions size: I evaluate embedding dimensions because larger vectors may improve retrieval quality but increase storage and search overhead. Higher dimensions often:
+
+            - Capture richer semantics
+            - Require more storage
+            - Increase search costs
+
+        - Benchmark performance
+        - Deployment requirements
+
+Q) You are building a RAG system for an internal HR portal.
+Ans) I would first gather representative HR queries and documents, then evaluate a few candidate embedding models on retrieval metrics such as Recall@K. Since HR documents are mostly natural language, a strong general-purpose embedding model would likely be sufficient. I would also evaluate latency, cost, multilingual support, and storage requirements before making the final selection.
+
+Q) You changed the embedding model. What should you do before deployment?
+Ans) Since each embedding model creates a different vector space, I would re-embed the entire document corpus, rebuild the vector index, validate retrieval quality using benchmark queries, and compare metrics against the previous model before deploying.
+
+-----------------------------------------Vector Databases
+
+Q) Why do we need a Vector Database?
+Ans) A Vector Database is designed to efficiently store, index, and search high-dimensional embedding vectors.
+
+    Without a Vector DB:
+
+        Query Embedding
+            ↓
+        Compare Against Every Vector
+            ↓
+        Find Similar Documents
+
+    This becomes extremely slow when dealing with millions of vectors.Brute-force comparison against every vector would be computationally expensive.
+
+    A Vector DB uses specialized indexes to perform Approximate Nearest Neighbor (ANN) search efficiently.
+
+    What does a Vector DB provide?
+
+        - Vector Storage
+        - Similarity Search
+        - Metadata Filtering
+        - Indexing
+        - Scalability
+        - Fast Retrieval
+
+Q) What is Similarity Search?
+Ans) Similarity Search retrieves vectors that are closest to the query vector.
+    Process:
+
+        User Query
+            ↓
+        Embedding Model
+            ↓
+        Query Vector
+            ↓
+        Vector Search
+            ↓
+        Top-K Similar Vectors
+
+    Example
+
+        Query:
+        How can I reset my password?
+
+        Retrieved document:
+        Steps to change account credentials.
+
+        - Although keywords differ, embeddings are semantically similar.
+
+Q) What is Metadata Filtering?
+Ans) Metadata filtering allows us to restrict retrieval based on structured attributes.
+
+    Example document metadata:
+        {
+        "department": "HR",
+        "region": "India",
+        "year": 2025
+        }
+
+    Query
+        Show HR policies for India
+
+        Apply filter:
+            {
+            "department": "HR",
+            "region": "India"
+            }
+        before or during vector search.
+
+Q) What is Indexing?
+Ans) Indexing organizes vectors in a way that enables fast similarity search.
+
+    Without indexing:
+        O(N)
+    - search complexity.
+    - Every vector must be compared.
+
+    With Indexing
+
+    Vector databases use Approximate Nearest Neighbor (ANN) algorithms.
+
+        Examples:
+
+        - HNSW (Hierarchical Navigable Small World - )
+        - IVF
+
+Scenario based:
+Q) Users from different departments should only see their own documents.How would you implement this?
+Ans) This is a classic metadata filtering use case.
+
+    Document Example
+        {
+            "department": "HR",
+            "document": "Leave Policy"
+        }
+        {
+            "department": "Finance",
+            "document": "Tax Guidelines"
+        }
+
+    User Login
+        {
+            "user": "John",
+            "department": "HR"
+        }
+
+    Retrieval Filter
+        {
+            "department": "HR"
+        }
+        ***Applied before vector search.
+
+    Search Flow
+        User Query
+            ↓
+        Department = HR
+            ↓
+        Metadata Filter
+            ↓
+        Vector Search
+            ↓
+        Results
+
+    Why Not Filter After Retrieval?
+
+        Bad approach:
+
+        Retrieve All Departments
+            ↓
+        Filter Later
+
+        Problems:
+
+            - Security Risk
+            - Performance Issues
+            - Possible Data Leakage
+
+Q) Why not store embeddings in a relational database instead of a vector database?
+Ans) Relational databases are optimized for exact lookups and structured queries, whereas vector databases are optimized for nearest-neighbor search on high-dimensional embeddings. As data grows to millions of vectors, vector databases provide significantly better retrieval performance through ANN indexing techniques.
+
+Q) What's the biggest mistake people make with Vector Databases?
+Ans) Treating vector search as the entire retrieval solution. In production systems, vector search is usually combined with metadata filtering, re-ranking, and sometimes hybrid search to achieve high retrieval quality.
+
+--------------------------------- AI Agents
 
 Q)What is Agentic Al? How is it different from Generative Al?
 Ans) 
