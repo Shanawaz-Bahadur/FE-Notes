@@ -1827,6 +1827,125 @@ Ans) Because context windows are limited, costs increase with prompt size, laten
 
 Q) is langgraph state consider to be a memory?
 Ans) LangGraph State acts as workflow-level memory because it stores and shares information between nodes. However, it is typically considered short-term or working memory. Long-term memory usually involves persistent storage such as vector databases, databases, or memory stores that survive beyond a single workflow execution.
-            
 
-      
+---------------------------------- AI Evaluation
+
+Q) What is AI Evaluation?
+Ans) AI Evaluation is the systematic measurement of model and system performance using objective metrics and user feedback.
+
+
+    -- Generation Evaluation
+
+        1. Relevance: Relevance measures whether the response actually addresses the user's question.
+            How to Measure
+                - Human evaluation
+                - LLM-as-a-Judge
+                - Benchmark datasets
+
+            Example
+
+                User:
+                    What is Redux Toolkit?
+
+                Answer:
+                    Redux Toolkit is a library for simplifying Redux development.
+                    High Relevance ✔
+
+                Bad Answer:
+
+                    React is a frontend framework.
+                    Low Relevance ✖
+
+            How to Measure
+                - Human evaluation
+                - LLM-as-a-Judge
+                - Benchmark datasets
+
+        2. Faithfulness: Faithfulness measures whether the generated answer is grounded in and supported by the provided context.
+
+            Example
+
+                Retrieved Context:
+                    Company was founded in 2015.
+
+                Answer:
+                    Company was founded in 2015.
+                    Faithful ✔
+                
+                Answer:
+                    Company was founded in 2010.
+                    Not Faithful ✖
+
+            Important Difference: Many candidates confuse: Relevance with Faithfulness
+                Example:
+
+                    Answer:
+                        The company was founded in 2010.
+                    Could be relevant to the question.
+
+                    But if context says:
+                        2015
+                    it is not faithful.
+
+        3. Hallucination Rate: Hallucination rate measures the percentage of responses containing unsupported or fabricated information.
+    
+        4. User Satisfaction: Ultimately, users determine whether the system is valuable.
+
+            Common signals:
+                - Thumbs Up / Down
+                - Ratings
+                - Surveys
+                - Retention
+                - Repeat Usage
+    
+    -- Retrival Evaluation: get this answer in the below scenario based question(Layer 1)
+
+Scenario based
+Q) ***How would you evaluate a RAG system?
+Ans) A RAG system should be evaluated at multiple layers.
+
+    Layer 1: Retrieval Evaluation
+
+        Questions:
+            Did we retrieve the correct documents?
+
+        Metrics:
+            - Recall@K
+            - Precision@K
+            - Hit Rate
+
+    Layer 2: Generation Evaluation
+
+        Metrics:
+            - Relevance
+            - Faithfulness
+            - Hallucination Rate
+
+    Layer 3: User Evaluation
+
+        Metrics:
+            - User Satisfaction
+            - Feedback Scores
+
+Q) How would you measure hallucinations?
+Ans) There are multiple approaches.
+
+    Method 1: Human Review
+        Experts compare:
+            Agent Answer
+                vs
+            Source Context
+
+    Method 2: LLM-as-a-Judge
+        Prompt another model:
+            Is this answer supported by the provided context?
+
+Q) Users complain about poor answer quality. What metrics would you analyze?
+Ans) I would analyze relevance, faithfulness, hallucination rate, retrieval quality, task success rate, and user feedback. Poor answer quality is often caused by retrieval failures rather than generation failures, so I would investigate both layers.
+
+Q) What's the difference between Relevance and Faithfulness?
+Ans) Relevance measures whether the answer addresses the user's question, while faithfulness measures whether the answer is supported by the provided context. An answer can be relevant but still unfaithful if it contains information not present in the retrieved sources.
+
+    
+
+
