@@ -1199,6 +1199,168 @@ Ans) Treating vector search as the entire retrieval solution. In production syst
 
 --------------------------------- AI Agents
 
+Q) What is an AI Agent?
+Ans) An AI Agent is a system that can:
+
+        - Understand a goal
+        - Reason about the goal
+        - Decide what actions to take
+        - Use tools when needed
+        - Observe results
+        - Continue until the goal is achieved
+
+    Unlike a simple LLM call:
+
+        Input
+          ↓
+        LLM
+          ↓
+        Output
+
+    An Agent follows:
+
+        Goal
+          ↓
+        Reason
+          ↓
+        Act
+          ↓
+        Observe
+          ↓
+        Reason
+          ↓
+        Act
+          ↓
+        Final Result
+
+    Example
+        User:
+            Find the cheapest flight from Mumbai to Dubai next week and summarize the options.
+
+        Agent:
+            - Searches flights
+            - Retrieves results
+            - Compares prices
+            - Summarizes options
+        This requires multiple actions and decisions.
+
+Q) What is a Planner?
+Ans) The Planner is responsible for breaking a complex goal into smaller executable steps.
+
+    Example:
+
+        User:
+            Analyze last month's sales and email the report.
+
+        Planner:
+            Step 1 → Retrieve sales data
+            Step 2 → Analyze trends
+            Step 3 → Generate report
+            Step 4 → Send email
+
+        The planner decides:
+
+            - What needs to be done
+            - In what order
+            - Which tools are required
+
+    Why Important?
+
+        Without planning:
+            The agent may execute actions randomly.
+
+Q) What is an Executor?
+Ans) The Executor performs the actions defined by the planner.
+
+    Example:
+        Planner:
+            Fetch sales data
+
+        Executor:
+            Call Database Tool
+
+        Planner:
+            Send email
+
+        Executor:
+            Call Email Tool
+
+Q) What is Tool Usage?
+Ans) Tools extend an agent's capabilities beyond what the LLM knows.
+
+    Examples:
+        - Web Search
+        - Database Query
+        - Weather API
+        - Email API
+        - CRM System
+        - Calculator
+
+    Why Important?
+        Without tools:
+        Agent is limited to training data.
+
+Q) What is Tool Selection
+Ans) Tool Selection is the process of choosing the most appropriate tool for a given task.
+
+    Factors Used
+        - Tool description***
+        - Tool schema
+        - User intent
+        - Available parameters
+
+Q) What is Tool Validation?
+Ans) Tool Validation ensures:
+        - Inputs are correct
+        - Parameters are valid
+        - Responses are usable
+        - Errors are handled safely
+
+    Example:
+
+        User:
+            Weather in ?
+        Missing city.
+
+        Agent should:
+            Ask for clarification
+
+        instead of calling:
+            getWeather("")
+
+    Why Important?
+
+        Prevents:
+            - API failures
+            - Invalid outputs
+            - Security issues
+
+Q) What is the Agent Loop?
+Ans) The Agent Loop is the iterative cycle:
+
+        Think
+          ↓
+        Act
+          ↓
+        Observe
+          ↓
+        Think
+          ↓
+        Act
+          ↓
+        Observe
+
+        until:
+            Goal Achieved
+        or
+            Stop Condition Reached
+
+Q) What is the difference between a chatbot and an AI agent?
+Ans) A chatbot primarily generates responses to user input, while an AI agent is goal-oriented and can reason, plan, use tools, observe outcomes, and take multiple actions to achieve an objective.
+
+Q) Can an agent exist without tools?
+Ans) Technically yes, but its capabilities are limited to the LLM's internal knowledge. Tools allow the agent to access external data and perform real-world actions, which is what makes agentic systems truly useful.
+
 Q)What is Agentic Al? How is it different from Generative Al?
 Ans) 
     Generative AI -> models that generate content (text, images) in response to a prompt - reactive, stateless, one-shot.
@@ -1223,3 +1385,448 @@ Ans) ReAct = Reasoning + Acting.
 
 Q)How do you handle hallucination in an Al Agent?
 Ans) 
+
+Q) Does ChatGPT internally use AI Agents?
+Ans) Sometimes yes, sometimes no. Modern AI assistants can operate both as direct LLM systems and as agentic systems. Simple queries may require only a single LLM call, while complex tasks often involve planning, tool usage, reasoning loops, and multi-step execution similar to AI agents.
+
+Scenario Based question
+Q) Agent repeatedly performs the same action. How would you stop it?
+Ans) Debugging Steps
+
+    1. Add Iteration Limits
+
+        Example:
+            Max Iterations = 10
+        Stop execution after limit.
+
+    2. Track Action History
+
+        Store:
+            Action A
+            Action A
+            Action A
+
+    Detect repetition.
+
+    3. Add Completion Criteria
+
+        Example:
+            Task Complete = TRUE
+        Terminate loop.
+
+    4. Improve Prompt
+
+        Prompt should explicitly state:
+            "Do not repeat completed actions".
+
+Q) Agent completes only part of a task. How would you debug?
+Ans) I would inspect the execution trace to verify whether the planner generated all subtasks, whether tool calls succeeded, and whether the agent maintained awareness of unfinished tasks throughout execution.
+
+Q) Agent produces different execution paths for the same request. What could be causing it?
+Ans) Variability can result from high temperature*** settings, ambiguous prompts, non-deterministic planning, or changing external tool responses. I would first test with lower temperature and inspect planning consistency.
+
+Q) Agent chooses the wrong tool.How would you debug?
+Ans) I would investigate:
+
+        1. Tool Descriptions
+            Poor descriptions often cause wrong tool selection.
+        Bad:
+            Tool A: General utility tool
+
+        Good:
+            Tool A: Retrieves current weather information.
+
+        2. Prompt Design
+            Check system prompt:
+                Use Weather Tool for real-time weather requests.
+
+        3. Tool Schemas
+            Ambiguous schemas can confuse the model.
+
+        4. Execution Logs
+
+            Review:
+                User Query
+                    ↓
+                Reasoning
+                    ↓
+                Selected Tool
+            to identify why the tool was chosen.
+
+
+Q) Weather tool is available but the model answers from memory.Why might this happen?
+Ans) Several possibilities.
+
+        Reason 1: Prompt does not require tool usage.
+
+            Bad Prompt:
+                Answer weather questions.
+
+            Good Prompt:
+                Always use the Weather Tool for current weather requests.
+
+        Reason 2: Tool Selection Failure
+            The model incorrectly believes it already knows the answer.
+
+        Reason 3: Tool Not Advertised Properly
+            Tool description may be weak.
+
+        Reason 4: Temperature Too High
+            The model may choose alternative reasoning paths.
+
+Q) What is LangGraph?
+Ans) LangGraph is a stateful workflow orchestration framework that models AI applications as graphs of nodes connected by edges.
+                                                                OR
+    Production-Level Summary:
+        LangGraph is a graph-based orchestration framework for building stateful AI workflows. Nodes perform actions, state carries information, edges control execution flow, conditional routing enables dynamic paths, checkpointing supports recovery, and human-in-the-loop allows approval-based workflows. These capabilities make LangGraph ideal for production-grade agent systems.
+
+    1. State: State is the shared memory that carries information between nodes in a LangGraph workflow.
+        Why Important?
+            Without state:
+                Nodes cannot share information.
+
+    2. Nodes: Nodes are executable components that perform actions and update the workflow state.
+        Examples:
+            - LLM Call
+            - Tool Call
+            - Database Query
+            - Validation Step
+            - Human Approval Step
+
+    3. Edges: Edges define how execution moves from one node to another within the graph.
+
+    4. Conditional Routing: Conditional routing dynamically selects the next node based on workflow state.
+        Example:
+            User Request
+                ↓
+            Request Type?
+                / \
+               /   \
+            HR     Finance
+            |       |
+            Node A  Node B
+
+    5. Checkpointing: Checkpointing persists workflow state so execution can resume from the last successful step after a failure.
+
+        Example
+            Workflow:
+                1. Retrieve
+                2. Analyze
+                3. Generate
+                4. Approve
+                5. Send
+            Checkpoint after each step.
+                If Step 5 fails:
+                    Resume from Step 5.
+
+    6. Human-in-the-Loop: Human-in-the-loop enables workflows to pause and wait for human review before proceeding.
+        Why Important?
+            For:
+
+                - Financial approvals
+                - Legal decisions
+                - Customer communications
+                - High-risk actions
+
+Scenario based
+Q) Workflow crashes after 10 steps.How would you recover?
+Ans) Solution
+        Save workflow state after each critical step.
+        Example:
+            Step 1 ✔
+            Step 2 ✔
+            ...
+            Step 10 ✔
+            Step 11 ❌
+
+        Resume:
+            Start from Step 10
+        instead of rerunning the entire workflow.
+
+    Additional Debugging
+        Check:
+            - Node logs
+            - Tool failures
+            - State corruption
+            - API errors
+
+Q) An approval step is required before proceeding. How would you design it?
+Ans)This is a Human-in-the-Loop use case.
+
+    Workflow:
+
+        Generate Contract
+                ↓
+        Human Review
+                ↓
+        Approved?
+            /    \
+            Yes     No
+            |       |
+        Proceed   Revise
+
+    State Example:
+        {
+            "approval_status": "pending"
+        }
+
+    Pause workflow.
+    Wait for human action.
+    Resume after approval.
+
+Q) Different request types should follow different workflows.How would you implement this?
+Ans) Use Conditional Routing: I would use conditional edges that inspect workflow state and dynamically route execution to the appropriate workflow branch.
+
+Q) State becomes inconsistent between nodes.How would you debug it?
+Ans) This is a state management problem.
+
+    Step 1: Inspect state before and after each node.
+        Example:
+
+        Node A Input
+            {
+                "user_id": 123
+            }
+
+        Node A Output:
+            {
+                "user_id": None
+            }
+        Problem identified.
+
+    Step 2: Check State Mutations
+        A node may accidentally overwrite fields.
+
+    Step 3: Review Routing Logic
+        Wrong branch may modify state unexpectedly.
+
+Q) When should I choose LangGraph over a simple agent?
+Ans) I would choose LangGraph when workflows require multiple steps, conditional routing, long-running execution, human approvals, checkpointing, or fine-grained control over agent behavior. For simple question-answering agents, a standard agent framework is often sufficient.
+
+Q) What is a Multi-Agent System?
+Ans) A Multi-Agent System (MAS) consists of multiple AI agents that collaborate to solve a problem.
+
+    Why Use Multi-Agent Systems?
+        Benefits:
+
+            - Better specialization
+            - Improved scalability
+            - Easier maintenance
+            - Parallel execution
+            - Better separation of concerns
+
+    Example
+        User:
+            Create a market research report.
+
+        Workflow:
+            Research Agent
+                ↓
+            Data Collection
+
+            Analysis Agent
+                ↓
+            Insights Generation
+
+            Report Agent
+                ↓
+            Final Report Creation
+
+    1. Agent Collaboration: Agent collaboration means multiple agents working together by sharing information and delegating tasks.
+
+    2. Orchestration: Orchestration is the coordination mechanism that controls how agents interact and execute.
+
+        The orchestrator decides:
+            - Which agent runs first
+            - Which agent runs next
+            - What data is passed
+            - When execution stops
+
+        Example:
+            User Request
+                ↓
+            Orchestrator
+            /   |   \
+        AgentA AgentB AgentC
+
+            The orchestrator acts like a project manager.
+
+        -- Types of Orchestration:
+
+        i. Centralized(Most common)
+                Orchestrator
+                    ↓
+                All Agents
+
+        ii. Decentralized(More complex)
+            Agents coordinate directly.
+                Agent A ↔ Agent B ↔ Agent C
+
+    3. Communication: Communication allows agents to exchange information.
+        Shared Memory: All agents access a common state.
+
+    4. Shared State: Shared State is common data accessible by multiple agents.
+
+        Example:
+            {
+                "research": "...",
+                "analysis": "...",
+                "report": "..."
+            }
+
+        Each agent can:
+            - Read State
+            - Modify State
+            - Write State
+        
+        Why Important? Without shared state:
+            Agents lose context.
+
+Scenario Based
+Q) Two agents produce conflicting results.How would you resolve it?
+Ans) I would compare the underlying data sources, validate evidence supporting each result, use confidence scoring or a dedicated validation agent, and escalate to human review when conflicts impact critical decisions.
+
+Q) Research Agent finishes but Report Agent never starts.How would you investigate?
+Ans) This is usually an orchestration or communication issue.
+
+    Step 1: Check Workflow Logs
+        Verify:
+            Research Agent
+                ↓
+            Completed Successfully?
+    
+    Step 2: Inspect Shared State
+        Verify:
+        {
+            "research_status": "completed"
+        }
+        exists
+
+    Step 3: Review Conditional Logic
+        Possible issue:
+            if research_status == "done":
+        but state contains:
+            "completed"
+
+Q) Multiple agents update the same state simultaneously.What problems can occur?
+Ans) This is a classic concurrency problem: Simultaneous state updates can cause race conditions, lost updates, inconsistent reads, and non-deterministic behavior. I would use synchronization mechanisms such as locks, versioning, transactions, or clearly defined ownership of state fields to ensure consistency.
+
+Q) When would you choose a Multi-Agent System over a Single Agent?
+Ans) I would choose a Multi-Agent System when the problem naturally decomposes into specialized responsibilities, such as research, analysis, validation, and reporting. For simple workflows, a single agent is usually easier to maintain and operate.
+
+------------------------- Memory
+
+Q) Why Do Agents Need Memory?
+Ans) LLMs only see the context provided in the current prompt.They do not automatically remember previous conversations unless that information is included again.
+
+    Memory allows agents to:
+        - Maintain context
+        - Personalize responses
+        - Track goals
+        - Store preferences
+        - Continue long-running workflows
+
+    Types of Memory:
+
+        1. Conversation Memory: Conversation Memory stores information within the current conversation.
+            Example:
+                User: My favorite language is Python.
+                User: Suggest a project for me.
+
+                Agent remembers:
+                Favorite Language = Python
+
+                and suggests Python projects.
+
+            Characteristics
+                - Short-lived
+                - Exists during the conversation
+                - Usually stored in context history
+
+        2. Session Memory: Session Memory persists information during a user session.
+            Example: Memory survives across multiple requests in the same session.
+
+                Login Session Started
+                    ↓
+                Multiple Interactions
+                    ↓
+                Session Ends
+
+            Characteristics
+                - Lives for the duration of a session
+                - Cleared when session expires
+
+        3. Long-Term Memory: Long-Term Memory persists information across multiple sessions.
+            Example:
+                Today:
+                    I prefer Python.
+
+                Next Week:
+                    Suggest a programming language.
+
+                Agent still remembers:
+                    Preferred Language = Python
+
+            What is Stored?
+                Examples:
+
+                    - User preferences
+                    - Goals
+                    - Historical interactions
+                    - Project information
+
+                Storage Options
+                    - Database
+                    - Vector Database
+                    - Knowledge Graph
+                    - Key-Value Store
+
+
+    Memory Storage: Memory must be stored externally because LLMs themselves do not retain information.
+
+        Common approaches:
+            1. Relational Database
+                Good for:
+                    - User Preferences
+                    - Profiles
+                    - Settings
+                
+            2. Vector Database
+                Good for:
+                    - Semantic Retrieval
+                    - Conversation History
+                    - Knowledge Memory
+                    
+            3. Key-Value Store
+                Good for:
+                    - Session Data
+                    - Temporary State
+
+            4. Knowledge Graph
+                Good for:
+                    - Relationships
+                    - Entity Tracking
+                    - Complex Context
+                
+Scenario Based
+Q) Agent forgets information mentioned earlier.How would you fix it?
+Ans)I would verify that the information was captured, stored, retrieved, and injected into the prompt correctly. Most memory failures occur during retrieval or prompt construction rather than storage.
+
+Q) Memory becomes extremely large.How would you manage it?
+Ans) Large memory causes:
+
+        - Increased latency
+        - Higher costs
+        - Context window issues
+        - Retrieval inefficiency
+
+    I would use summarization, memory pruning, and retrieval-based memory so that only relevant information is loaded into the prompt instead of the entire memory store.
+
+Q) Why can't we simply keep the entire conversation in the prompt forever?
+Ans) Because context windows are limited, costs increase with prompt size, latency grows, and retrieval quality may decrease due to information overload. Memory systems selectively retrieve only relevant information instead of sending the entire history.
+
+Q) is langgraph state consider to be a memory?
+Ans) LangGraph State acts as workflow-level memory because it stores and shares information between nodes. However, it is typically considered short-term or working memory. Long-term memory usually involves persistent storage such as vector databases, databases, or memory stores that survive beyond a single workflow execution.
+            
+
+      
