@@ -403,6 +403,8 @@ Ans) Tokenization is the critical first step in large language models where raw 
 
 Q) What is Context Window?
 Ans) A context window is the maximum number of tokens an LLM can process in a single request.
+                                                OR
+    The context window is the maximum number of tokens a Transformer can attend to at once. Self-attention operates over all tokens within that window, allowing the model to use earlier parts of the conversation when generating responses.
 
     It includes:
 
@@ -1946,6 +1948,457 @@ Ans) I would analyze relevance, faithfulness, hallucination rate, retrieval qual
 Q) What's the difference between Relevance and Faithfulness?
 Ans) Relevance measures whether the answer addresses the user's question, while faithfulness measures whether the answer is supported by the provided context. An answer can be relevant but still unfaithful if it contains information not present in the retrieved sources.
 
+Q) In a RAG application, there are multiple documents (PDF, DOCX, XLSX, etc.). The user wants not only the answer but also wants to know which document the answer came from. How would you implement this?
+Ans) I would store metadata along with every chunk during the ingestion phase.
+
+    1. During Document Processing
+
+        Suppose we have:
+            Employee_Handbook.pdf
+            Leave_Policy.docx
+            Salary_Bands.xlsx
+
+    After chunking:
+
+        Chunk 1:
+        {
+            "text": "...leave policy details...",
+            "metadata": {
+                "document_name": "Leave_Policy.docx",
+                "page": 3
+            }
+        }
+
+        Chunk 2:
+            {
+            "text": "...salary information...",
+            "metadata": {
+                "document_name": "Salary_Bands.xlsx",
+                "sheet": "Band_A"
+            }
+        }
+
+    2. Store Metadata in Vector DB
+
+        When generating embeddings:
+
+        vector_db.add(
+            embedding=embedding,
+            text=chunk,
+            metadata={
+                "document_name": "Leave_Policy.docx",
+                "page": 3
+            }
+        )
+
+    3. Retrieval Phase
+
+        When retrieval happens:
+
+            User Query
+                ↓
+            Embedding
+                ↓
+            Vector Search
+                ↓
+            Top K Chunks
+
+        Returned result:
+
+            [
+                {
+                    "text": "...leave policy...",
+                    "metadata": {
+                        "document_name": "Leave_Policy.docx",
+                        "page": 3
+                    }
+                }
+            ]
+            
+    4. Response Generation
+
+        Pass both:
+            Chunk Text
+                +
+            Metadata
+        to the LLM.
+
+        Prompt:
+
+            Answer the question using the provided context.
+
+            Also mention the source document and page number.
+
+    Example Output
+
+        User:
+            How many annual leaves are allowed?
+
+        Response:
+            Employees are entitled to 24 annual leaves per year.
+            Source:
+            Leave_Policy.docx (Page 3)
+
+Q) ***Explain me the working of transformers in LLM ?
+Ans) What is a Transformer?
+        A Transformer is the neural network architecture that powers modern LLMs such as:
+            - GPT
+            - Claude
+            - Gemini
+            - Llama
+        It was introduced in the paper: "Attention Is All You Need" 
+
+            In the above phrase the "Attention" means this architecture tries to mimic the Human brain, we as a human as we get any sentence we only focus on some words of the sentence instead of the complete sentence
+                (e.g., I went to the "park" to see the "dog") here 2 words have the highest attention
+
+            "The key innovation was Self-Attention, which allows the model to understand relationships between words regardless of their distance in a sentence."
+
+
+    Transformer consist of main 2 sections - Encoder(With multiple layers) and Decoder(With multiple layers)
+
+    The original Transformer architecture consists of two parts:
+        Input Text
+            ↓
+        Encoder
+            ↓
+        Encoded Representation
+            ↓
+        Decoder
+            ↓
+        Output Text
+
+    So before passing the prompt to the encoder the query has to be pre-prossessed with 2 steps - 1. Tokenization and 2. Word Embedding(e.g., WORD2VEC) + Positional Embedding
+
+    High-Level Flow of Transformer
+
+        Input Text
+            ↓
+        Tokenization
+            ↓
+        Embeddings
+            ↓
+        Positional Encoding
+            ↓
+        Transformer Layers
+            ↓
+        Next Token Prediction
+
+    Step 1: Tokenization
+
+        Suppose the user asks:
+            What is AI?
+                The tokenizer converts it into tokens:
+                ["What", "is", "AI", "?"]
+
+            Then each token gets an ID:
+                [101, 205, 9876, 34]
+                The model does not understand words directly.
+
+        It only understands numbers.
     
+    Step 2: Embeddings
 
+        Tokens are converted into vectors.
+        Example:
+            "What" → [0.12, -0.43, 0.87, ...]
+            "is"   → [0.54, 0.21, -0.11, ...]
 
+            These vectors capture semantic meaning.
+
+        Words with similar meanings tend to have similar embeddings.
+
+        Example:
+
+            King ≈ Queen
+            Car ≈ Vehicle
+            Doctor ≈ Physician
+
+    Step 3: Positional Encoding
+
+        Transformers process all tokens simultaneously.
+        Because of this, they need a way to know word order.
+
+            Example:
+                Dog bites man
+                vs
+                Man bites dog
+            Same words.
+
+        Different meaning.
+        So position information is added to embeddings.
+
+    Step 4: Self-Attention (Most Important Part): This is the heart of the Transformer.
+
+        Consider:
+            The animal didn't cross the street because it was tired.
+
+        Question:
+            What does "it" refer to?
+            The model must understand:
+                it → animal
+                not
+                it → street
+
+        Self-attention helps the model determine which words are important to each other.
+
+        -- Multi-Head Attention
+
+            Instead of one attention mechanism, Transformers use many.
+            Example:
+                Head 1 → Grammar
+                Head 2 → Subject/Object
+                Head 3 → Context
+                Head 4 → Meaning
+
+            Each head learns different relationships.
+            Then results are combined.
+
+        -- Transformer Layer
+
+            One Transformer block looks like:
+                Input
+                  ↓
+                Multi-Head Attention
+                  ↓
+                Add & Normalize
+                  ↓
+                Feed Forward Network
+                  ↓
+                Add & Normalize
+                  ↓
+                Output
+
+            Modern LLMs contain many such layers.
+
+    Short summary of transformers
+
+        Transformers are the architecture behind modern LLMs. They convert text into token embeddings, add positional information, and process tokens using self-attention mechanisms that learn relationships between words. Multiple transformer layers refine these representations, and the model finally predicts the next token. By repeating next-token prediction many times, the LLM generates coherent responses while leveraging the knowledge learned during training.
+
+Q) What are Encoder and Decoder in Transformers?
+Ans) Think of it as:
+
+        Encoder → Understand
+        Decoder → Generate
+
+    1. Encoder
+        Purpose:
+            The encoder reads the input and creates a rich contextual representation of it
+
+        Example:
+            Input:
+                "The cat sat on the mat"
+
+            The encoder processes the entire sentence and learns:
+
+                - Meaning of each word
+                - Relationships between words
+                - Context of the sentence
+
+            Output:
+                Contextual Representation
+
+            Not human-readable text, but numerical vectors containing semantic information.
+
+        Encoder Architecture
+
+        Each encoder layer contains:
+
+        Input
+        ↓
+        Self-Attention
+        ↓
+        Feed Forward Network
+        ↓
+        Output
+
+        And multiple encoder layers are stacked.
+
+        Example:
+
+        Encoder Layer 1
+            ↓
+        Encoder Layer 2
+            ↓
+        Encoder Layer 3
+            ↓
+        ...
+
+    2. Decoder
+        Purpose
+        The decoder generates the output text token by token.
+            Example:
+
+                Input:
+
+                    Translate:
+                    Hello
+
+                Output:
+
+                    Bonjour
+
+        The decoder generates:
+
+            B
+            ↓
+            Bo
+            ↓
+            Bon
+            ↓
+            Bonj
+            ↓
+            Bonjour
+
+        one token at a time.
+
+Q) Types of Transformer Models
+Ans) 1. Encoder-Only Models
+
+        Examples:
+            BERT
+            RoBERTa
+
+        Architecture:
+
+            Input
+              ↓
+            Encoder
+              ↓
+            Output
+
+        Use Cases
+
+            - Classification
+            - Sentiment Analysis
+            - Entity Recognition
+            - Search
+
+        Why?
+            ***Because they are good at understanding text.
+    
+    2. Decoder-Only Models
+        Examples:
+            GPT
+            Llama
+
+        Architecture:
+
+            Input
+            ↓
+            Decoder
+            ↓
+            Generated Text
+
+        Use Cases
+            Chatbots
+            Content Generation
+            Code Generation
+
+        Why?
+        ***Because they are optimized for text generation.
+
+    Encoder-Decoder Models
+        Examples:
+
+            T5
+            BART
+
+        Architecture:
+
+            Input
+              ↓
+            Encoder
+              ↓
+            Decoder
+              ↓
+            Output
+
+        Use Cases
+            - Translation
+            - Summarization
+            - Question Answering
+
+        Why?
+            ***Because one component understands input while the other generates output.
+
+Q) in Encoder-Only Models how does the response gets generated without decoder ? In Decoder-Only Models how does it reads the input without encoder ?
+Ans)Both encoder and decoder can process input tokens. The difference is how they attend to tokens, not whether they can read text.
+
+    Easy Way to Remember:
+
+        Encoder = Read & Understand
+        Decoder = Write & Generate
+
+    Q) In Encoder-Only Models, how does the response get generated without a decoder?
+    Ans) Short answer:
+
+            It usually doesn't generate responses.
+                Encoder-only models like:
+                    - BERT
+                    - RoBERTa
+
+            are designed for:
+                - Understanding
+                - Classification
+                - Prediction
+                - Extraction
+            not free-text generation.
+
+        Example
+            Input:
+                This movie is amazing.
+            BERT processes the sentence and produces embeddings.
+
+            Then a classification head predicts:
+
+            Positive Sentiment Flow:
+
+                Input
+                ↓
+                Encoder
+                ↓
+                Contextual Embeddings
+                ↓
+                Classification Layer
+                ↓
+                Positive
+
+            No text generation occurs.
+
+    Q) In Decoder-Only Models, how does it read input without an encoder?
+    Ans) A decoder-only model like:
+            - GPT
+            - Llama
+        still reads the entire prompt.
+
+        Example:
+            What is the capital of France?
+
+        becomes:
+            [What] [is] [the] [capital] [of] [France] [?]
+
+        The decoder processes all these tokens.
+
+Q) Why Doesn't GPT Need an Encoder?
+Ans)Because during training it learns:
+
+    Predict next token: billions of times.
+
+    Example:
+        The capital of France is ___
+
+    Target:
+        Paris
+
+    To predict correctly, it must understand:
+
+        - Grammar
+        - Context
+        - Meaning
+        - Facts
+        - Relationships
+
+    Therefore the decoder naturally learns comprehension capabilities.
+
+Q) If GPT has no encoder, how does it understand language?
+Ans) GPT uses decoder layers with causal self-attention. Although it lacks a separate encoder, the decoder processes all previous tokens in the prompt and learns contextual representations during next-token prediction training. As a result, the decoder itself develops strong language understanding capabilities.
