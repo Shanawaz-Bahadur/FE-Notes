@@ -1,3 +1,13 @@
 23/06/2026
 
+1. An object is subscriptable in Python if you can access its internal elements using square brackets []. 
+Core Built-in Subscriptable Objects
+Lists: my_list[0]
+Dictionaries: my_dict['key']
+Strings: my_string[2]
+Tuples: my_tuple[1]
+
+Q) if and elif difference?
+Ans) In Python, the core difference is that if starts a brand-new conditional check, while elif (short for "else if") links back to the previous if statement to create a mutually exclusive chain.
+
 Q) Inbuilt modules in python
