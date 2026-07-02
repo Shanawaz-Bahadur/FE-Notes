@@ -11,3 +11,18 @@ Q) if and elif difference?
 Ans) In Python, the core difference is that if starts a brand-new conditional check, while elif (short for "else if") links back to the previous if statement to create a mutually exclusive chain.
 
 Q) Inbuilt modules in python
+
+Q) Difference between append() and extend()
+Ans) The main difference between append() and extend() is that append() adds a single item to the end of a list, whereas extend() iterates over an iterable (like another list, tuple, or string) and adds each of its elements individually.
+    Example:
+        numbers = [1, 2, 3]
+
+        Appending a list (creates a nested list)
+        numbers.append([5, 6])
+        print(numbers)  
+        # Output: [1, 2, 3, 4, [5, 6]]
+
+        # Extending with another list
+        numbers.extend([4, 5])
+        print(numbers)  
+        # Output: [1, 2, 3, 4, 5]
