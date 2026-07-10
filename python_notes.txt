@@ -26,3 +26,29 @@ Ans) The main difference between append() and extend() is that append() adds a s
         numbers.extend([4, 5])
         print(numbers)  
         # Output: [1, 2, 3, 4, 5]
+
+### pending - substring palindrome, Searching and sorting
+
+-------------------------------YT Code and Debug Channel-------------------------------------
+
+07/08/2026
+
+1. Python is Dynamically Types language
+2. Python is a Interpreted language.
+3. In Print there are different ways which is (print("", sep=""), print("". end=""))
+4. There are 2 types of type conversion in python
+    i. Implicit conversion - Python does it automatically (e.g., 5 + 2.0 // it implicitly gets converted to float)
+    ii. Explicit conversion - We need to do it manually ( using int(). float(), str(), bool())
+5. Escape sequence: Works only with the string to add new line, tab, print blackslash, print ", print ' using \n, \t, \\, \", \'
+6. Floating operator(//): result down to the nearest whole number (towards lower number)
+    Example:
+    # Integer floor division
+        print(10 // 3)     # Output: 3
+
+        # Mixed type floor division
+        print(10.0 // 3)   # Output: 3.0
+        print(7.5 // 2)    # Output: 3.0
+
+
+
+
