@@ -48,6 +48,83 @@ Ans) The main difference between append() and extend() is that append() adds a s
         # Mixed type floor division
         print(10.0 // 3)   # Output: 3.0
         print(7.5 // 2)    # Output: 3.0
+7. Parameters and Arguments
+    A parameter is a variable listed inside the function definition. An argument is the actual value you pass when calling the function.
+
+    def greet (name) :
+        print(f"Hello, {name} !")   # name is the parameter
+ 
+    greet("Rahul")  # "Rahul" is the argument
+    greet("Priya")   # "Priya" is the argument
+
+8. Default Arguments
+    A default argument is a value that a parameter takes automatically if no argument is passed for it when calling the function. It makes certain parameters optional.
+
+    Example: 
+        def greet(name, message="Good Morning"): 
+            print(f"{message}, {name}!")  
+            
+        greet("Rahul")  # Good Morning, Rahul!
+        greet("Priya", "Good Evening")   # Good Evening, Priya!
+
+9. Keyword Arguments 
+    Keyword arguments let you pass values to a function by explicitly naming the parameter. This means you can pass them in any order you are no longer dependent on position.
+
+    Example:   
+        def introduce(name, age, city): 
+            print(f"{name} is {age} years old from {city}.")  
+            
+        # Positional - order matters 
+        introduce("Rahul", 21, "Delhi")  
+        
+        # Keyword - order does not matter 
+        introduce(age=21, city="Delhi", name="Rahul") 
+        introduce(city="Mumbai", name="Priya", age=19)
+
+10. Lambda Functions 
+        A lambda function is a small anonymous function written in a single line. It is useful when you need a simple function for a short period and do not want to formally define it with def.
+
+        # Normal function 
+        def square (n): 
+            return n * n  
+        
+        # Same thing as a lambda 
+        
+        square = lambda n: n * n  
+        print (square(5))  # 25
+
+============= Important Datatypes in Python ==================
+
+11. Lists in Python
+    - Operations in list  
+        list_a = [1, 2]
+        list_b = [3, 4]
+
+        combined = list_a + list_b  # [1, 2, 3, 4]
+        repeated = list_a * 3       # [1, 2, 1, 2, 1, 2]
+        print(2 in list_a)          # True
+
+12. Built-In List Methods
+
+    append(): Adds an element to the very end of the list.
+    extend(): Merges an iterable (like another list or tuple) into the current list.
+    insert(): Places an item at a specific index position.
+    remove(): Deletes the first occurrence of a specific value.pop(): Removes and returns the item at a given index (defaults to the last item).
+    clear(): Empties the list completely, removing all elements.index(): Returns the position index of the first occurrence of a specific value.
+    count(): Counts how many times a given element appears in the list.sort(): Sorts the list elements in place (ascending order by default).
+    reverse(): Flips the chronological order of the items in place.
+    copy(): Returns a shallow, distinct copy of the original list.
+
+13. Enumerate in Python: a built-in tool that allows you to loop through an iterable (like a list, tuple, or string) while keeping track of both the index and the value of each item. 
+
+    Example:
+        fruits = ['apple', 'banana', 'cherry']
+        for index, fruit in enumerate(fruits):
+            print(f"Index: {index}, Fruit: {fruit}")
+        
+       
+
+        
 
 
 
