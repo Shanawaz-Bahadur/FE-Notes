@@ -121,9 +121,777 @@ Ans) The main difference between append() and extend() is that append() adds a s
         fruits = ['apple', 'banana', 'cherry']
         for index, fruit in enumerate(fruits):
             print(f"Index: {index}, Fruit: {fruit}")
-        
-       
 
+14. Python list comprehension provides a concise, one-line syntax to create new lists from existing iterables like lists, tuples, or ranges
+    Example: 
+
+        1. Filtering with if
+            Filter out odd numbers to keep only even values.
+                numbers = [1, 2, 3, 4, 5, 6]
+                evens = [x for x in numbers if x % 2 == 0]
+                # Output: [2, 4, 6]
+
+        2. Conditional Logic with if-else
+            grades = [55, 82, 60, 45]
+            status = ["Pass" if score >= 60 else "Fail" for score in grades]
+            # Output: ['Fail', 'Pass', 'Pass', 'Fail']
+
+        3.  Flattening a Matrix (Nested Loops)
+            matrix = [[1, 2], [3, 4]]
+            flat = [num for row in matrix for num in row]
+            # Output: [1, 2, 3, 4]
+
+    Note: Similar to list comprehension dictionary comprehension is also available 
+
+15. q) If tuple is immutable then how the below code is possible?
+ans) The Example below is for the overriding of the tuple as it is not updating the value on the same address.
+        my_tuple = (45, 32, 11, "Hello", "world", "Mumbai", 99) 
+        my_tuple = my_tuple[ 1:4] 
+        print(my_tuple, id(my_tuple)) # o/p: (32, 11, 'Hello')
+
+16. Q) How to create the tuple of sigle element?
+ans) using comma (,) as without comma it will create the element of the element type
+    a = 10 # type = int
+    a = 10, # type = tuple
+
+17. Packing and unpacking in python
+Ans) - Packing: Bundles loose elements into a data structure like a tuple.
+        # Parentheses are optional when packing a tuple
+        coordinates = 10, 20, 30  
+        print(coordinates) # Output: (10, 20, 30)
+
+    - Unpacking: Pulls elements directly out of an iterable into individual variables
+        x, y, z = coordinates
+        print(x, y, z) # Output: 10 20 30
+
+    - Grab the rest: Collects all remaining elements at the end using * operator
+
+        first, *rest = [1, 2, 3, 4, 5]
+        print(first)  # Output: 1
+        print(rest)   # Output: [2, 3, 4, 5]
+
+    - Functions: *args and **kwargs
+        1. Packing Function Arguments
+            *args: Packs a variable number of positional arguments into a single tuple.python
+        
+            def sum_numbers(*args):
+                return sum(args) # args is a tuple: (1, 2, 3)
+
+            print(sum_numbers(1, 2, 3)) # Output: 6
+
+        2. **kwargs: Packs arbitrary keyword arguments into a single dictionary.
+            def show_profile(**kwargs):
+                print(kwargs) # kwargs is a dict: {'name': 'Alice', 'age': 30}
+
+            show_profile(name="Alice", age=30)
+
+    - Merging Collections: The * and ** operators make it easy to unpack variables directly inside list, tuple, set, or dictionary literals to merge them together
+        - Lists and Sets:
+            list_a = [1, 2]
+            list_b = [3, 4]
+            merged_list = [*list_a, *list_b] # Output: [1, 2, 3, 4]
+
+        - Dictionaries:
+            dict_a = {'a': 1}
+            dict_b = {'b': 2}
+            merged_dict = {**dict_a, **dict_b} # Output: {'a': 1, 'b': 2}
+
+==================================== Dictionary ===================
+1. In Dictionary the keys should be immutable, therefore we cannot use list, set as an key but we can use tuple as an key in dictionary
+
+2. Q) While access the value of the dictionary what if that particular key doesn't exist ?
+Ans) If you access a dictionary key that doesn't exist using standard bracket notation, Python will raise a KeyError and crash your program. To handle this gracefully, use the .get() method, which instead returns None (or a custom default value) if the key is missing
+    Example:
+        user = {'name': 'Alice', 'role': 'Admin'}
+
+        # Returns 'Admin'
+        print(user.get('role')) 
+
+        # Returns None because 'age' does not exist
+        print(user.get('age')) 
+
+        # Returns 'Unknown' instead of None
+        print(user.get('age', 'Unknown')) 
+
+3. Q) What is del keyword?
+Ans) The del keyword in Python is primarily used to delete references to objects or remove items from mutable collections.
+    Example: 1)
+        x = "Hello, Python!"
+        del x
+
+        # Attempting to print x will raise an error
+        print(x)  # NameError: name 'x' is not defined
+    
+    2) fruits = ["apple", "banana", "cherry", "date", "elderberry"]
+
+        del fruits[0]      # Removes "apple"
+        del fruits[1:3]    # Removes elements at index 1 and 2
+
+        print(fruits)      # Output: ['banana', 'elderberry']
+
+4. sorted() function: returns a new sorted list from the elements of any iterable, leaving the original data completely unchanged.
+    Example: 
+        1. Basic Sorting (Ascending & Descending)
+            numbers = [42, 4, 15, 8, 23]
+
+            # Ascending order (Default)
+            print(sorted(numbers))  
+            # Output: [4, 8, 15, 23, 42]
+
+            # Descending order
+            print(sorted(numbers, reverse=True))  
+            # Output: [42, 23, 15, 8, 4]
+
+        2. Custom Sorting with key
+
+            words = ["banana", "pie", "watermelon", "apple"]
+
+            # Sort words by their string length
+            print(sorted(words, key=len))  
+            # Output: ['pie', 'apple', 'banana', 'watermelon']
+
+        3. Sorting Complex Data (Lists of Dictionaries)
+
+            users = [
+                {"name": "Alice", "age": 25},
+                {"name": "Bob", "age": 20},
+                {"name": "Charlie", "age": 30}
+            ]
+
+            # Sort by the "age" key
+            sorted_users = sorted(users, key=lambda user: user["age"])
+            print(sorted_users)
+            # Output: [{'name': 'Bob', 'age': 20}, {'name': 'Alice', 'age': 25}, {'name': 'Charlie', 'age': 30}]
+
+
+    - Key Differences: sorted() vs .sort()
+
+        sorted() Function: Returns a new sorted list, Leaves original iterable unaltered, Accepts any iterable (tuples, sets, etc.), Uses more memory (creates a copy)
+
+        sort() method: Returns None, Modifies original list in-place, Only works on lists, More memory efficient
+
+============================= Sets ==================================
+
+1. In sets, the elements within a set must be immutable (e.g., strings, numbers, tuples). Lists or other sets cannot be elements of a set.
+2. No Indexing Elements: cannot be accessed by their position (index) because sets are unordered.
+
+Q) how maintain the order of the list if we are using set to remove the duplicates in python?
+Ans) Dictionaries are guaranteed to maintain insertion order. Passing your list to dict.fromkeys() automatically removes duplicates because dictionary keys must be unique, all while keeping the original order
+    Example:
+        original_list = [3, 1, 2, 3, 4, 1, 2]
+        ordered_unique = list(dict.fromkeys(original_list))
+
+        print(ordered_unique)  # Output: [3, 1, 2, 4]
+
+====> Comparision between 4 data types
+
+    Feature	                List	            Tuple	                Set	                Dictionary
+
+    Syntax	                [ ]	                ( )	                    { }	                {key: value}
+    Ordered	                ✅ Yes	           ✅ Yes	        ❌ No (unordered)	✅ Yes (Python 3.7+)
+    Mutable	                ✅ Yes	            ❌ No	            ✅ Yes	            ✅ Yes
+    Allows Duplicates	    ✅ Yes	           ✅ Yes	            ❌ No	        Keys ❌, Values ✅
+    Indexed Access	        ✅ Yes	           ✅ Yes	            ❌ No	            By key
+    Use Case	        Dynamic collections	  Fixed collections	    Unique items	      Key-value pairs
+
+
+========================================= Strings =================================
+
+Q) If string is immutable then here how we can updating the string ?
+    name = "hello world"
+    print(name, id(name))
+
+    name = 5
+    print(name, id(name))
+Ans) What does "immutable" actually mean?: Immutable means the object's contents cannot be changed after it is created.
+
+    For example:
+        name = "hello"
+
+    You cannot do:
+        name[0] = "H"
+
+    This gives:
+        TypeError: 'str' object does not support item assignment
+    because you're trying to change the contents of the existing string.
+
+
+    But this is allowed
+        name = "hello world"
+        name = 5
+
+    This is not modifying the original string.
+    Python creates a new string "Hello" and updates name to point to it.
+    Both are created with different id's
+
+    Q) The variable name is the same, so why did its id change?
+    Ans) id(name) means "give me the id of the object that name currently refers to."
+        It does not mean "give me the id of the variable name."
+
+Q) Split and join function?
+Ans)Both are string function
+    2 functions:
+        split(): String to list 
+        join(): list to string
+
+========================================================== Advance Python topics ================================================
+YT: https://www.youtube.com/watch?v=YfnhD-4gKUM
+
+Q) == ans 'is' difference: 
+Ans) The == operator compares the values of two objects to see if they are equal, while the is operator compares the memory identities of two objects to see if they are the exact same object in memory
+
+    Example: 
+        a = [4,5,6] 
+        b = [4,5,6] 
+        
+        print(a is b) # False
+        print(a == b) # True
+
+Q) Shallow copy and deep copy
+Ans) A shallow copy creates a new object but only copies the memory addresses of its nested objects, meaning both the original and copy share the same inner data.
+    A deep copy creates a fully independent clone, recursively duplicating both the main object and all nested data so nothing is shared
+
+    Example: 
+    
+    import copy
+
+    original_list = [[1, 2], 3]
+
+    # --- Shallow Copy ---
+    shallow_copied = copy.copy(original_list)
+    shallow_copied[0][0] = 99  # Mutates the nested list
+    # original_list also becomes [[99, 2], 3]
+
+    # --- Deep Copy ---
+    deep_copied = copy.deepcopy(original_list)
+    deep_copied[0][0] = 55  # Mutates the nested list, as it doesn't change the value of the original list
+    # original_list remains [[99, 2], 3]
+
+Q) pass by value and pass by reference?
+Ans) 
+    1. Immutable Objects (Acts like Pass-by-Value)
+        When you pass an immutable object, the function receives the reference. However, because the object cannot be changed, any attempt to modify it forces Python to create a new object in memory and bind the local variable name to it.
+
+            def modify_number(num):
+                # This creates a NEW integer object 15.
+                # The local variable 'num' now points to 15.
+                num += 10 
+                print("Inside function:", num) # 15
+
+            x = 5
+            modify_number(x)
+            print("Outside function:", x) #  5
+
+    2. Mutable Objects (Acts like Pass-by-Reference)
+        When you pass a mutable object, the function receives the same reference to the exact same object. If you modify that object in-place (like appending to a list), the changes will reflect outside the function.
+
+            def modify_list(my_list):
+                # This modifies the original shared object in memory
+                my_list.append(4)
+                print("Inside function:", my_list) # [1, 2, 3, 4]
+
+            numbers = [1, 2, 3]
+            modify_list(numbers)
+            print("Outside function:", numbers) # [1, 2, 3, 4]
+
+    - The Crucial Catch: Reassignment Detaches the Reference
+        Even with mutable objects, if you reassign the variable inside the function using the = operator, you break the link to the original object. You are pointing the local variable to a brand new object.
+
+        def reassign_list(my_list):
+            # Reassignment breaks the link. 
+            # 'my_list' now points to a completely separate list.
+            my_list = [100, 200] 
+            print("Inside function:", my_list) # [100, 200]
+
+        numbers = [1, 2, 3]
+        reassign_list(numbers)
+        print("Outside function:", numbers) # [1, 2, 3]
+
+============================================================== OOP ==========================================
+
+Object-Oriented Programming (OOP) in Python is a programming blueprint that organizes software design around data (attributes) and behaviors (methods) rather than functions and logic
+
+    Core Components: Classes and Objects
+        
+        - Class: A blueprint or template used to create objects. It defines the structure and behavior of data.
+        - Object: An instance of a class containing real-world data and implementations.
+
+Q) What is the difference between method and function?
+Ans) In Python, the core difference is that a function is a standalone block of code called by its name, while a method is a function that belongs to a class or an object and is called using dot notation and also Explicitly requires self in defination.
+
+====> Encapsulation
+
+Q) What is public, private and protected?
+Ans) Python does not have strict public, private, or protected keywords like Java or C++. Instead, it relies on naming conventions using underscores to signal how variables and methods should be accessed for the developer. 
+
+    1. Public Access Modifier
+        By default, every variable and method defined in a Python class is public. They can be modified and accessed from inside or outside the 
+        Example: 
+            class Account:
+                def __init__(self, username):
+                    self.username = username  # Public attribute
+
+            acc = Account("Alice")
+            print(acc.username)  # Works: accessible from outside
+
+    2. Protected Access Modifier
+        You can declare a protected member by adding a single leading underscore (_) to its name. This is purely an honorable agreement among developers. Python will not stop you from accessing it outside the class, but doing so violates standard coding practices.
+        Example: 
+            class Account:
+                def __init__(self):
+                    self._database_id = 4502  # Protected by convention
+
+            acc = Account()
+            print(acc._database_id)  # Works, but discouraged by community standards
+
+    3. Private Access Modifier and Name Mangling(***As in Python we don't have strict data hiding as we have in c++ and Java)
+        You can declare a private member by adding a double leading underscore (__) to its name. Python uses a mechanism called Name Mangling to protect these fields. It automatically changes the internal variable name behind the scenes, making a direct call fail with an AttributeError.
+        Example:
+            class Account:
+                def __init__(self, PIN):
+                    self.__pin = PIN  # Private attribute
+
+            acc = Account(1234)
+            # print(acc.__pin)  # Fails! Raises AttributeError
+
+        -- ***How to Bypass Name Mangling
+            Python renames the private attribute internally to the format _ClassName__variableName. If you absolutely need to access it from the outside for debugging, you can use that mangled format:
+            Example:
+                # Accessing the private member via its mangled name
+                print(acc._Account__pin)  # Works: Outputs 1234 
+
+====> Inheritance
+
+    ***Python doesn't support Method Overloading. In languages like Java or C++, you can define multiple methods with the same name but different signatures. In Python, writing multiple methods with the exact same name results in the last defined method overwriting all previous definitions.
+        If you define multiple methods with the exact same name in a Python class, the last defined method will overwrite all the previous ones.
+        Example:
+            class Example:
+                def calculate(self, x):
+                    return x * 2
+
+                def calculate(self, x, y):  # This completely overwrites the first version
+                    return x + y
+
+            obj = Example()
+            # obj.calculate(5) -> Throws a TypeError: missing 1 required positional argument: 'y'
+
+    --> Types of Inheritance in Python  
+
+        1. Single Inheritance
+        2. Multiple Inheritance
+        3. Multilevel Inheritance
+        4. Hierarchical Inheritance
+
+    Q) What is Diamond problem?
+    Ans) The diamond problem (or "Deadly Diamond of Death") is an ambiguity that arises in multiple inheritance when a subclass inherits from two parent classes that share a common grandparent class
+        Python resolves this conflict completely and predictably using a mechanism called Method Resolution Order (MRO), meaning the diamond problem does not break your code like it does in some other languages.
+
+    Python's Solution: MRO(Method Resolution Order): Python searches for attributes and methods from left to right, then bottom to top.
+
+    Example: Here is how Python predictably prioritizes the left-most parent during a method execution conflict
+        class A:
+            def action(self):
+                print("Action from A")
+
+        class B(A):
+            def action(self):
+                print("Action from B")
+
+        class C(A):
+            def action(self):
+                print("Action from C")
+
+        # D inherits from B first, then C
+        class D(B, C):
+            pass
+
+        obj = D()
+        obj.action()  # Output: Action from B
+
+        # Let's inspect the resolution chain
+        print(D.__mro__)
+        # Output: (<class '__main__.D'>, <class '__main__.B'>, <class '__main__.C'>, <class '__main__.A'>, <class 'object'>)
+
+====> Polymorphism 
+        In Python refers to the ability of different object types to share the same method or operator name but execute distinct, specialized behaviors.
+        Example: Built-in Polymorphism
+            1. Polymorphic Functions: The built-in len() function can accept strings, lists, tuples, or dictionaries, adapting its behavior to count elements based on the exact object type provided.
+                # The same function handles multiple data types
+                print(len("Python"))  # Outputs: 6 (Counts characters)
+                print(len([1, 2, 3]))  # Outputs: 3 (Counts list items)
+            
+            2. Operator Overloading: The + operator behaves entirely differently depending on its operands. It performs mathematical addition on integers, but switches to sequential concatenation when applied to strings or lists.
+                # The same operator performs different operations
+                print(5 + 5)          # Outputs: 10 (Arithmetic addition)
+                print("Py" + "thon")  # Outputs: Python (String concatenation)
+
+        --> Method Overriding (Inheritance-Based Polymorphism)
+            Polymorphism is frequently used alongside class inheritance. When a child class inherits from a parent class, it can override specific methods to change or expand their functionality.
+
+            class File:
+                def open(self):
+                    print("Opening a generic file.")
+
+            class PDFFile(File):
+                def open(self):
+                    print("Rendering PDF pages on screen.")
+
+            class ZipFile(File):
+                def open(self):
+                    print("Extracting zipped archive contents.")
+
+            # A unified list containing different subclass instances
+            files = [PDFFile(), ZipFile(), File()]
+
+            # Python executes the specific overridden version for each object
+            for file in files:
+                file.open()
+
+====> Dunder methods 
+    Dunder methods (short for double underscore methods) are special, predefined methods in Python that begin and end with two underscores (e.g., __init__). Often called magic methods
+
+    Example: 
+        class Cart:
+            def __init__(self, items_list): # The constructor; sets up initial attributes on the newly created object.
+                # Initialize instance variables
+                self.items = items_list
+
+            def __str__(self): # Returns a clean, user-friendly string for print() or str().
+                # User-friendly printout
+                return f"Cart with {len(self.items)} items"
+
+            def __repr__(self): # Returns an unambiguous, developer-friendly string for debugging via repr() or the REPL.
+                # Developer-friendly representation
+                return f"Cart({self.items!r})"
+
+            def __len__(self): # Triggered by the len() function to get collection size.
+                # Allows use of len(cart_instance)
+                return len(self.items)
+
+            def __getitem__(self, index): Enables bracket indexing and slicing lookup (obj[key]).
+                # Allows reading cart_instance[index]
+                return self.items[index]
+
+        # --- Testing the custom class behavior ---
+        my_cart = Cart(['Laptop', 'Mouse', 'Keyboard'])
+
+        print(my_cart)         # Triggers __str__  -> Output: Cart with 3 items
+        print(repr(my_cart))   # Triggers __repr__ -> Output: Cart(['Laptop', 'Mouse', 'Keyboard'])
+        print(len(my_cart))    # Triggers __len__  -> Output: 3
+        print(my_cart[1])      # Triggers __getitem__ -> Output: Mouse
+
+====> Abstration
+    It is a concept that hides complex implementation details and only exposes essential features to the user.
+
+    Core Implementation: Python does not provide built-in abstract classes natively, but it achieves abstraction via the standard ⁠abc module.
+    
+        - ABC Class: The base class that you inherit from to mark a class as abstract.
+        - @abstractmethod: A decorator used to declare methods that must be overridden by child classes.
+
+    -- Rules of Abstraction
+    
+        - No Direct Instantiation: You cannot create an object directly from an abstract class; doing so raises a TypeError.
+        - Enforced Implementation: Any concrete subclass inheriting from an abstract class must implement all of its abstract methods.
+        - Mixed Methods: Abstract classes can contain both abstract methods (empty) and concrete methods (fully implemented code for reusability).
+    
+    Example:
+        from abc import ABC, abstractmethod
+        # Abstract Base Class (The Blueprint)
+        class Vehicle(ABC):
+            
+            @abstractmethod
+            def start_engine(self):
+                """Abstract method; no implementation logic here."""
+                pass
+
+            def honk(self):
+                """Concrete method; shared directly by all subclasses."""
+                return "Beep beep!"
+
+        # Concrete Subclass 1
+        class Car(Vehicle):
+            def start_engine(self):
+                return "Car engine turns over: Vroom!"
+
+        # Concrete Subclass 2
+        class Motorcycle(Vehicle):
+            def start_engine(self):
+                return "Motorcycle engine sparks: Braap!"
+
+        # --- Execution ---
+        # my_vehicle = Vehicle()  # RAISES TYPEERROR: Can't instantiate abstract class
+
+        car = Car()
+        motorcycle = Motorcycle()
+
+        print(car.start_engine())      # Output: Car engine turns over: Vroom!
+        print(motorcycle.honk())       # Output: Beep beep! (Inherited concrete method)
+
+===================================== Exception Handling =========================================
+
+Note: Don't use Bare except 
+
+Q) What is Exception handling in python?
+Ans) Exception handling in Python is a mechanism used to manage runtime errors gracefully, preventing your application from crashing unexpectedly. While syntax errors stop a program before it even runs, exceptions occur during program execution when syntactically correct code encounters an issue, like dividing by zero or trying to open a missing file.Python handles these events using a structured system of try, except, else, and finally blocks.
+
+    Core Keywords and Syntax: The full structure of an exception handler utilizes four distinct blocks:
+        - try: Wraps the code that might trigger an error.
+        - except: Contains the code that executes if an exception occurs in the try block.
+        - else: Runs code only if the try block executed completely without any errors.
+        - finally: Executes always, regardless of whether an exception was raised or handled, making it ideal for clean-up tasks like closing files or closing DB connection or any other garbage collection
+
+    Example:
+        try:
+            # Code that might cause an exception
+            file = open("data.txt", "r")
+            content = file.read()
+            result = 10 / int(content)
+        except FileNotFoundError:
+            # Handles missing file errors
+            print("Error: The file was not found.")
+        except ZeroDivisionError:
+            # Handles division by zero
+            print("Error: Cannot divide by zero.")
+        except ValueError:
+            # Handles bad data conversion
+            print("Error: Invalid data type inside the file.")
+        else:
+            # Runs only if no exceptions occurred
+            print(f"Success! The result is {result}")
+        Gentile:
+            # Always runs to clean up system resources
+            if 'file' in locals() and not file.closed:
+                file.close()
+            print("Cleanup: File stream closed.")
+
+Q) How to print the Full Exception Message and Name?
+Ans) If you print the exception object directly, Python outputs the error details but omits the exception name, for that we can use the below format
+    Example:
+        try:
+            import non_existent_module
+        except Exception as e:
+            # Prints: ModuleNotFoundError: No module named 'non_existent_module'
+            print(f"{type(e).__name__}: {e}")
+
+Q) What is the use of raising the exception though python is raising the exception exception if there is any error found?
+Ans) Python only raises exceptions for errors that it can detect automatically. It cannot know your application's ***business rules. The interpreter raises exceptions only for language-level or runtime errors, such as TypeError, IndexError, or ZeroDivisionError. However, it cannot understand application-specific rules like "balance cannot be negative" or "age cannot be be negative." We use raise to enforce these business rules, stop invalid operations, and provide meaningful error messages to the caller.
+
+    Case 1: Interpreter raises the exception
+    Python knows this is invalid:
+
+        x = 10 / 0
+        Output:
+        ZeroDivisionError: division by zero
+
+    Case 2: You raise the exception
+    Suppose you're writing a banking application.
+
+        def withdraw(balance, amount):
+            return balance - amount
+
+        If:
+        withdraw(1000, 2000)
+
+        Python will happily return:
+        -1000
+
+        The interpreter doesn't know that a bank account shouldn't have a negative balance. From Python's perspective, subtracting numbers is perfectly valid.
+
+        So you write:
+
+        def withdraw(balance, amount):
+            if amount > balance:
+                raise ValueError("Insufficient balance")
+            return balance - amount
+
+        Now the program enforces your business rule.
+
+
+Q) What is the use of re-raising thhe exception?
+Ans) Re-raising an exception is useful when a function needs to perform some action—such as logging, cleanup, or resource release—but cannot fully handle the error. By using raise inside an except block, we allow the exception to continue propagating to a ***higher level where it can be handled appropriately, while preserving the original traceback for debugging.
+
+Q) How to create a custom exception?
+Ans) Simply create a class that inherits from Exception.
+    Example:
+        class InsufficientBalanceError(Exception):
+            pass
+
+        def withdraw(balance, amount):
+            if amount > balance:
+                raise InsufficientBalanceError("Not enough balance")
+
+        try:
+            withdraw(1000, 1500)
+        except InsufficientBalanceError as e:
+            print(e)
+
+Q) Can a custom exception store additional information?
+Ans) Yes
+    Example:
+        class InvalidAgeError(Exception):
+            def __init__(self, age):
+                self.age = age
+                super().__init__(f"{age} is not a valid age")
+
+        try:
+            raise InvalidAgeError(15)
+        except InvalidAgeError as e:
+            print(e)
+
+    Output:
+        15 is not a valid age
+
+Q) Common types of error
+Ans)
+
+    Exception	                           Short Description
+    SyntaxError	                -       Invalid Python syntax.
+    IndentationError	        -       Incorrect indentation in the code.
+    NameError	                -       Using a variable that has not been defined.
+    TypeError	                -       Operation performed on incompatible data types.
+    ValueError	                -       Correct data type, but invalid value.
+    IndexError	                -       Accessing an invalid index in a list or tuple.
+    KeyError	                -       Accessing a key that does not exist in a dictionary.
+    AttributeError	            -       Accessing a method or attribute that an object doesn't have.
+    ZeroDivisionError	        -       Division or modulo operation by zero.
+    FileNotFoundError	        -       Trying to open a file that does not exist.
+    ImportError	Failure         -       while importing a module or object.
+    ModuleNotFoundError	        -       Specified module cannot be found.
+    RuntimeError	            -       Generic runtime error that doesn't fit another category.
+
+========================================================= File Handling =============================================
+
+Q) We can compare the analogy of file handling with our way of reading the boook?
+Ans) open -> read/write -> close
+
+Q) Why use with?
+Ans) Without with:
+        file = open("data.txt", "r")
+        content = file.read()
+        file.close()    
+    If an exception occurs before file.close(), the file may remain open.
+
+    Example:
+        file = open("data.txt", "r")
+        print(10 / 0)   # Exception occurs
+        file.close()    # This line is never executed
+
+    Using with:
+        with open("data.txt", "r") as file:
+            print(10 / 0)
+
+Q) Common File Methods
+Ans) 
+
+        Method	                 Description
+    read()	            Reads the entire file.
+    read(size)	        Reads a specified number of characters/bytes.
+    readline()	        Reads one line.
+    readlines()	        Reads all lines into a list.
+    write()	            Writes text to the file.
+    writelines()	    Writes a list of strings.
+
+-> Best way to read the file: as this doesn't store it in the variable(RAM) as it will crash if the file is too large as in some system we have limited space.
+    with open("hello.txt", "r") as f: 
+        for line in f: 
+            print(line.strip())
+
+
+what we forgot to close the file -> to resolve this we use "with"
+
+Q) how to get the metadata of the file
+Ans) In Python, file metadata can be obtained using os.stat() or Path.stat() from the pathlib module. These functions return information such as file size, last modified time, last accessed time, permissions, and creation/change time. The metadata is available through attributes like st_size, st_mtime, st_atime, and st_ctime.
+
+Note:
+    1. in read(<NO_OF_CHARACTERS_TO_PRINT>) function we can provide the number of character to be fetched 
+    2. in "w" mode first all the content is cleared then only new content is added to avoid this we need to use it in "a" mode
+
+======================================================== File Handling ===========================================
+
+Q) What are module and packages in python ?
+Ans) 
+    - A module is a single Python file (.py).
+    - A package is a directory containing multiple modules (and possibly sub-packages), it is a bunch of modules
+
+    Types of Modules
+        1. Built-in modules: Python provides many modules by default.
+            Examples:
+                - math
+                - os
+                - sys
+                - random
+                - datetime
+
+        2. User-defined modules: Modules created by you.
+            Example:
+                - calculator.py
+                - employee.py
+                - utils.py
+
+Q) What is __init__.py?
+Ans) Traditionally, __init__.py marks a directory as a Python package. It can also contain package initialization code.
+    In modern Python (3.3+), a package can exist without it (called a namespace package), but many projects still include __init__.py for compatibility and to control package behavior.
+
+Q) When you write import calculator, where does Python actually look?  
+Ans) 
+    Python searches these locations in order:  
+        1. The current directory (where your script runs)  
+        2. Directories in the PYTHONPATH environment variable  
+        3. The standard library directories  
+        4. The site-packages folder (where pip installs third-party packages)
+
+Q) What is __name__?
+Ans) __name__ is a special built-in variable that Python automatically sets.
+
+    - If the file is executed directly:
+        print(__name__)
+
+    Output: __main__
+
+    - If the file is imported:
+        print(__name__)
+
+    Output: demo
+    (where demo is the module name).
+
+Q) What is the use of __name__ = "__main__"
+Ans) if __name__ == "__main__": is used to ensure that a block of code runs only when the Python file is executed directly, and not when it is imported as a module. Python automatically sets the special variable __name__ to "__main__" for the main script, and to the module's name when imported. This is commonly used to keep test code, examples, or the program's entry point separate from reusable functions and classes.
+
+
+Q) Absolute and Relative paths to import
+Ans) . -> to get from the current module
+    .. -> to get from the parent module
+
+======================================================= Multithreading and Multiprocessing ========================
+
+process and Thread
+    Process - Opening a chrome browser
+    Thread - Opening in that browser
+
+Q) What is Multiprocessing and Multithreading?
+Ans) Multithreading allows multiple threads to run within a single process, sharing the same memory. It is lightweight and ideal for I/O-bound tasks such as API calls, file operations, and database access. However, in CPython, CPU-bound threads are limited by the Global Interpreter Lock (GIL), which prevents multiple threads from executing Python bytecode simultaneously.
+
+Multiprocessing creates multiple independent processes, each with its own memory space and Python interpreter. This avoids the GIL and enables true parallel execution on multiple CPU cores, making it the preferred choice for CPU-intensive tasks such as image processing, machine learning, and large numerical computations.
+
+Q) When to use which?
+Ans) 
+
+    Use Multithreading when:
+        - Downloading multiple files.
+        - Calling multiple APIs.
+        - Reading/writing files.
+        - Database operations.
+        - Web scraping.
+
+    Use Multiprocessing when:
+        - Image or video processing.
+        - Machine learning.
+        - Data analysis.
+        - Mathematical computations.
+        - Large simulations.
+
+Q) What is the GIL?
+Ans)The Global Interpreter Lock (GIL) is a lock in CPython that allows only one thread to execute Python bytecode at a time within a single process.
         
 
 
