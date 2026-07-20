@@ -179,15 +179,14 @@
         - Attention allowed models to focus on relevant parts of the input dynamically.
         - Transformers replaced recurrence with self-attention, enabling parallel processing, better context understanding, faster training, and scalability.
         - Modern LLMs like GPT and Claude are built on Transformer architectures.
-    
-RAGAs
-True Lens
+
 
 YT ref: https://www.youtube.com/watch?v=7_LTU0LA374, https://www.youtube.com/watch?v=5fp6e5nhJRk
 Q) What is RAG Evaluation: Precision, Recall, Faithfulness, RAGAS ?
 Ans) In RAG the 2 most important aspects is 
 
-        1. Retrieval(***Retrieved Context - mainly depend on Embedding models used) and 2. Generation(***Generated Answer - mainly depend on LLM model used)
+        1. Retrieval(***Retrieved Context - mainly depend on Embedding models used) and 
+        2. Generation(***Generated Answer - mainly depend on LLM model used)
 
     - Comparing answer with Query(Embedding based)
 
@@ -446,7 +445,19 @@ Ans) Temperature controls the randomness of the model's output.
         Content Writing: 0.7 - 1.0
 
 Q) What is Top-P?
-Ans) Top-P (Nucleus Sampling) controls token selection by choosing from the smallest set of tokens whose cumulative probability reaches P(Parameter set for the LLM).
+Ans)On contrary of Top-k, instead of selecting a fixed number of words as in top-k, Top-p selects enough words so that their cumulative probability reaches a threshold p.
+
+    Example:Suppose the user asks: "The capital of France is..."
+
+    If p = 0.9 (90%)
+
+        Word	Probability	Cumulative
+        Paris	    70%	        70%
+        London	    10%	        80%
+        Berlin	    8%	        88%
+        Rome	    7%	        95% ✅
+
+    Since the cumulative probability exceeds 90%, these four words are included.
 
     Temperature controls randomness, while Top-P controls how many likely token candidates the model can choose from, it is not same as top-k as in top-k we have fixed number of outputs
 
@@ -827,7 +838,7 @@ Ans)
 
     Step 5: Check Metadata Filters - Sometimes overly restrictive filters remove relevant documents.
 
-Q) Hallucinations increased after deployment. How would you investigate?
+Q) ***Hallucinations increased after deployment. How would you investigate?
 Ans) 
     Step 1: Compare Before vs After Deployment
         I would investigate:
@@ -1690,7 +1701,7 @@ Ans) I would compare the underlying data sources, validate evidence supporting e
 
 Q) Research Agent finishes but Report Agent never starts.How would you investigate?
 Ans) This is usually an orchestration or communication issue.
-
+ 
     Step 1: Check Workflow Logs
         Verify:
             Research Agent

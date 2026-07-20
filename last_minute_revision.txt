@@ -1,0 +1,225 @@
+Q) Explain RAG/ Explain RAG in simple words
+Ans) RAG stands for Retrieval-Augmented Generation.
+
+It is a technique that allows an LLM to answer questions using external or up-to-date information instead of relying only on the data it was trained on.
+
+For example, if I ask ChatGPT about my company's latest HR policy, it won't know the answer because that information wasn't part of its training data.
+
+With RAG, before the LLM generates a response, the system first searches a knowledge base, retrieves the most relevant documents, and provides them as additional context to the LLM. The LLM then generates an answer based on both the user's question and the retrieved information.
+
+This helps improve accuracy, reduces hallucinations, and enables the model to answer questions about private or frequently changing data without retraining the model.
+
+Q) What are the main component of RAG ?
+Ans) 
+    1. Data Ingestion: This is where we prepare the knowledge base.
+        - Collect documents (PDFs, Word, emails, web pages, etc.)
+        - Clean the data
+        - Split documents into smaller chunks
+        - Generate embeddings
+        - Store them in a vector database
+
+    2. Embedding Model: An embedding model converts text into numerical vectors.
+    3. Vector Database: The vector database stores the embeddings.
+    4. Retriever: The retriever searches the vector database and fetches the most relevant chunks.Its job is not to generate the answer, but to provide the right context to the LLM.
+    5. Large Language Model (LLM): The LLM receives: 1. User question, 2. Retrieved document chunks
+
+Q) Most Commonly Used Document Loaders
+Ans) 
+      Loader	           Use Case
+    PyPDFLoader	        PDF documents
+    TextLoader	        Text files
+    CSVLoader	        CSV data
+    JSONLoader	        JSON files
+    WebBaseLoader	    Web pages
+    DirectoryLoader	    Multiple files in a folder
+
+Q) Explain text Splitter in RAG and its types ?
+Ans) A Text Splitter is used to divide large documents into smaller chunks before generating embeddings and storing them in the vector database.
+
+We do this because LLMs and embedding models have a limited context window and perform better when processing smaller, meaningful pieces of text.
+
+For example, instead of embedding an entire 100-page PDF as one document, we split it into multiple smaller chunks. This improves retrieval accuracy because only the most relevant chunks are returned for a user's query.
+
+    -- Types of Text Splitters
+        1. Character Text Splitter: Splits text after a fixed number of characters
+        2. Recursive Character Text Splitter
+            Instead of splitting blindly, it tries different separators in order:
+                Paragraph
+                    ↓
+                Sentence
+                    ↓
+                Line
+                    ↓
+                Space
+                    ↓
+                Character   
+    
+        3. Token Text Splitter: Splits based on tokens instead of characters. Useful because LLM pricing and context 
+        limits are based on tokens.Useful because LLM pricing and context limits are based on tokens.
+
+        4. Sentence Text Splitter: Splits document sentence by sentence.
+
+Q) How Do You Choose Chunk Size?
+Ans) There is no fixed value.
+    It depends on:
+        - Document type
+        - Embedding model
+        - LLM context window
+        - Nature of the content
+
+Q) What is a Vector Store?
+Ans) A Vector Store (or Vector Database) is a database that stores embeddings (vector representations of text) instead of plain text.
+
+    When documents are loaded and split into chunks, each chunk is converted into an embedding using an embedding model. These embeddings, along with the original text and metadata, are stored in the vector store.
+
+    Its main purpose is to enable semantic search, so we can find documents based on meaning rather than exact keywords.
+    Examples:
+        - ChromaDB
+        - Pinecone
+        - FAISS
+
+Q) What is a Retriever?
+Ans) A Retriever is the component that searches the vector store.
+
+    When a user asks a question:
+        1. The question is converted into an embedding.
+        2. The retriever compares it with the embeddings stored in the vector database.
+        3. It retrieves the most relevant document chunks.
+        4. Those chunks are sent to the LLM as context.
+    The retriever does not generate the answer. It only finds the right information.
+
+Q) What is fine-tuning?
+Ans) Fine-tuning is the process of taking a pre-trained Large Language Model (LLM) and training it further on a specific dataset so that it becomes better at a particular task or domain.
+
+    For example, if I want an LLM to understand insurance claim terminology or generate legal documents in a specific style, I can fine-tune it using domain-specific data.
+
+    The model's weights are updated during fine-tuning, so the knowledge becomes part of the model itself.
+
+Q) When is RAG used and when is fine-tuning used ?
+Ans)RAG is used when:
+        - Data changes frequently.
+        - You want the latest information.
+        - You have private company documents.
+        - You don't want to retrain the model.
+
+    Fine-tuning is used when:
+        - You want to change the model's behavior or writing style.
+        - The knowledge doesn't change often.
+        - You need the model to consistently perform a specialized task.
+
+Q) What is LORA and QLORA ?
+Ans)Traditional fine-tuning updates all the model's parameters, which is computationally expensive. LoRA improves this by freezing the original model and training only small adapter layers, making fine-tuning faster and more memory efficient. QLoRA goes one step further by loading the base model in a quantized 4-bit format while still training only the LoRA adapters. This allows us to fine-tune very large language models on much smaller GPUs without significantly affecting performance.
+
+    LORA - LoRA (Low-Rank Adaptation) is a parameter-efficient fine-tuning technique used to fine-tune Large Language Models without updating all of the model's parameters.Instead of modifying the entire model, LoRA freezes the original model weights and trains only a small set of additional adapter layers.
+
+    QLORA - QLoRA (Quantized Low-Rank Adaptation) is an improved version of LoRA.
+
+    Simple Analogy: Imagine your original book is very large.
+        - LoRA: Keep the full-size book and add sticky notes.
+        - QLoRA: Compress the book into a smaller format and use sticky notes for updates.
+
+Q) What is an AI Agent?
+Ans) An AI Agent is an AI system that can understand a goal, make decisions, plan the required steps, use external tools when needed, and execute tasks to achieve that goal.
+
+    Unlike a normal LLM, which only generates text, an AI Agent can interact with external systems such as APIs, databases, search engines, or other software to complete a task.
+
+    Suppose I ask:
+        "Book a flight from Mumbai to Delhi for tomorrow."
+
+    A normal LLM might tell you how to book the flight.
+
+    An AI Agent can:
+        - Search available flights.
+        - Compare prices.
+        - Select the best option.
+        - Book the ticket (if authorized).
+        - Confirm the booking.
+    That's why an AI Agent is more than just a chatbot.
+
+Q) What is Tool Calling?
+Ans) Tool Calling is the ability of an AI Agent to decide which external tool or function should be used to complete a user's request. ***The LLM does not execute the tool itself.
+
+Q) What is Tool Execution?
+Ans) Tool Execution is the process where the selected tool is actually executed by the application.
+
+Q) What is verbose?
+Ans) Verbose is a debugging option that shows the internal execution steps of an LLM application or AI agent.
+
+Q) What is ReAct?
+Ans) ReAct stands for Reason + Act.
+
+    ReAct is a design pattern used in Al agents that stands for Reasoning +Acting. It allows a language model (LLM) to interleave internal reasoning (Thought) with external actions (like tool use) in a structured, multi-step process.  Instead of generating an answer in one go, the model thinks step by step, deciding what it needs to do next and optionally calling tools (APIs, calculators, web search, etc.) to help it.
+
+    It works in a loop with 3 steps - Thought, Action, Observation
+
+    - Thought: I need to find the capital of France. 
+    - Action: search_tool Action Input: "capital of France" 
+    - Observation: Paris Thought: Now I need the population of Paris.
+    - Action: search_tool Action Input: "population of Paris" 
+    - Observation: 2.1 million Thought: I now know the final answer. 
+    - Final Answer: Paris is the capital of France and has a population of ~2.1 million.
+
+Q) Types of Search Strategies in RAG?
+Ans) 
+    1. Keyword Search (Traditional Search)
+    2. Semantic Search - Instead of matching keywords, it matches the meaning of the query using embeddings.
+    3. Similarity Search - The retriever compares the query embedding with stored embeddings and returns the most similar chunks.
+    4. Hybrid Search - Keyword Search (BM25) + Semantic Search
+    5. Metadata Filtering - Searches documents based on metadata.
+
+Q) Types of Chunking Strategies?
+Ans) 
+    1. Fixed-size Chunking - Splits documents into equal-sized chunks.
+    2. Recursive Chunking - Splits while preserving document structure. Paragraph -> Sentence -> Line -> Word
+    3. Token-based Chunking - Splits based on tokens instead of characters.
+    4. Sentence-based Chunking - Each chunk contains one or more complete sentences.
+    5. Paragraph-based Chunking - Keeps each paragraph together.
+    6. Document Structure Chunking - 
+    7. Semantic Chunking - Instead of splitting by size, the document is split where the topic changes. Instead of splitting by size, the document is split where the topic changes.
+
+Q) What is Metadata Filtering?
+Ans)Metadata filtering is a technique where we filter documents based on their metadata before performing retrieval.
+
+    Metadata is additional information about a document, such as its title, document type, author, date, language, department, or customer ID.
+
+    ***Instead of searching the entire vector database, we first narrow down the search using metadata, making retrieval faster and more accurate.
+
+    Example
+
+        Suppose your vector database contains insurance documents.
+
+              Document	            Metadata
+            Car Policy	        Type = Motor, Year = 2025
+            Health Policy	    Type = Health, Year = 2025
+            Home Policy	        Type = Property, Year = 2024
+
+        User asks: "Show me the latest motor insurance policy."
+
+        Without metadata filtering:
+            The retriever searches all documents.
+
+        With metadata filtering:
+            Apply Type = Motor
+            Apply Year = 2025
+        Now the retriever searches only the relevant subset.
+
+    Flow
+        User Query
+            │
+            ▼
+        Metadata Filter
+        (Type = Motor)
+            │
+            ▼
+        Vector Search
+            │
+            ▼
+        Relevant Chunks
+            │
+            ▼
+        LLM
+
+Q) What is Re-ranking?
+Ans) Re-ranking is the process of reordering the retrieved documents so that the most relevant ones appear first before they are sent to the LLM. A re-ranker performs a second evaluation and improves the ordering.
+
+        Complete flow: Metadata Filtering → Retriever → Re-ranker → LLM
