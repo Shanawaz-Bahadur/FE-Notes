@@ -170,7 +170,7 @@ Ans)
 Q) Types of Chunking Strategies?
 Ans) 
     1. Fixed-size Chunking - Splits documents into equal-sized chunks.
-    2. Recursive Chunking - Splits while preserving document structure. Paragraph -> Sentence -> Line -> Word
+    2. Recursive Chunking - Splits while preserving document structure. Paragraph -> Sentence -> Line -> Word (If the paragraph is too large, it splits into sentences. If the sentence is still too large, it splits further.)
     3. Token-based Chunking - Splits based on tokens instead of characters.
     4. Sentence-based Chunking - Each chunk contains one or more complete sentences.
     5. Paragraph-based Chunking - Keeps each paragraph together.

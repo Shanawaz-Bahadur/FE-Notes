@@ -1002,7 +1002,7 @@ Ans) Cosine Similarity measures the angle between two vectors, The closer the an
         - This works well for text embeddings.
 
 Scenario Based
-Q) Search quality suddenly drops after changing embedding models.
+Q) ***Search quality suddenly drops after changing embedding models.
 Ans) 
     Verify Re-indexing
         Whenever an embedding model changes:
@@ -1034,7 +1034,7 @@ Ans) Yes. Because embeddings capture semantic meaning, words such as "car" and "
 Q) Why can't we use keyword search alone instead of embeddings?
 Ans) Keyword search depends on exact word matches and often fails when users phrase questions differently. Embeddings enable semantic search by retrieving documents based on meaning rather than exact terms, which significantly improves retrieval quality in RAG systems.
 
-Q) How do you select an embedding model for a use case?
+Q) ***How do you select an embedding model for a use case?
 Ans) The best embedding model is the one that performs best on your data and retrieval tasks, not necessarily the one with the highest benchmark score.
 
     I select an embedding model based on:
@@ -1063,7 +1063,7 @@ Ans) The best embedding model is the one that performs best on your data and ret
 Q) You are building a RAG system for an internal HR portal.
 Ans) I would first gather representative HR queries and documents, then evaluate a few candidate embedding models on retrieval metrics such as Recall@K. Since HR documents are mostly natural language, a strong general-purpose embedding model would likely be sufficient. I would also evaluate latency, cost, multilingual support, and storage requirements before making the final selection.
 
-Q) You changed the embedding model. What should you do before deployment?
+Q) ***You changed the embedding model. What should you do before deployment?
 Ans) Since each embedding model creates a different vector space, I would re-embed the entire document corpus, rebuild the vector index, validate retrieval quality using benchmark queries, and compare metrics against the previous model before deploying.
 
 -----------------------------------------Vector Databases
@@ -1083,7 +1083,7 @@ Ans) A Vector Database is designed to efficiently store, index, and search high-
 
     A Vector DB uses specialized indexes to perform Approximate Nearest Neighbor (ANN) search efficiently.
 
-    What does a Vector DB provide?
+    ***What does a Vector DB provide?
 
         - Vector Storage
         - Similarity Search
@@ -1136,7 +1136,7 @@ Ans) Metadata filtering allows us to restrict retrieval based on structured attr
             }
         before or during vector search.
 
-Q) What is Indexing?
+Q) ***What is Indexing?
 Ans) Indexing organizes vectors in a way that enables fast similarity search.
 
     Without indexing:
@@ -1246,7 +1246,7 @@ Ans) An AI Agent is a system that can:
           ↓
         Final Result
 
-    Example
+    ***Example
         User:
             Find the cheapest flight from Mumbai to Dubai next week and summarize the options.
 
@@ -1869,11 +1869,6 @@ Ans) AI Evaluation is the systematic measurement of model and system performance
                     React is a frontend framework.
                     Low Relevance ✖
 
-            How to Measure
-                - Human evaluation
-                - LLM-as-a-Judge
-                - Benchmark datasets
-
         2. Faithfulness: Faithfulness measures whether the generated answer is grounded in and supported by the provided context.
 
             Example
@@ -1956,10 +1951,10 @@ Ans) There are multiple approaches.
 Q) Users complain about poor answer quality. What metrics would you analyze?
 Ans) I would analyze relevance, faithfulness, hallucination rate, retrieval quality, task success rate, and user feedback. Poor answer quality is often caused by retrieval failures rather than generation failures, so I would investigate both layers.
 
-Q) What's the difference between Relevance and Faithfulness?
+Q) ***What's the difference between Relevance and Faithfulness?
 Ans) Relevance measures whether the answer addresses the user's question, while faithfulness measures whether the answer is supported by the provided context. An answer can be relevant but still unfaithful if it contains information not present in the retrieved sources.
 
-Q) In a RAG application, there are multiple documents (PDF, DOCX, XLSX, etc.). The user wants not only the answer but also wants to know which document the answer came from. How would you implement this?
+Q) ***In a RAG application, there are multiple documents (PDF, DOCX, XLSX, etc.). The user wants not only the answer but also wants to know which document the answer came from. How would you implement this?
 Ans) I would store metadata along with every chunk during the ingestion phase.
 
     1. During Document Processing
@@ -2185,7 +2180,7 @@ Ans) What is a Transformer?
 
         Transformers are the architecture behind modern LLMs. They convert text into token embeddings, add positional information, and process tokens using self-attention mechanisms that learn relationships between words. Multiple transformer layers refine these representations, and the model finally predicts the next token. By repeating next-token prediction many times, the LLM generates coherent responses while leveraging the knowledge learned during training.
 
-Q) What are Encoder and Decoder in Transformers?
+Q) ***What are Encoder and Decoder in Transformers?
 Ans) Think of it as:
 
         Encoder → Understand
@@ -2262,7 +2257,7 @@ Ans) Think of it as:
 
         one token at a time.
 
-Q) Types of Transformer Models
+Q) ***Types of Transformer Models
 Ans) 1. Encoder-Only Models
 
         Examples:
@@ -2578,20 +2573,7 @@ Ans) I would first identify the document structure, use semantic or recursive ch
 
         2. Semantic Chunking (Preferred)
 
-            Split based on:
-                - Paragraphs
-                - Sections
-                - Headings
-                - Topics
-
-            Example:
-                Section 1: Leave Policy
-                Section 2: Travel Policy
-                Section 3: Insurance Policy
-            Each becomes a chunk.
-
-            Why Better?
-                Retrieval aligns with meaning rather than arbitrary token counts.
+            Semantic Chunking uses embeddings to identify where the meaning or topic changes and creates chunks based on semantic boundaries instead of fixed text boundaries.
 
         3. Recursive Chunking
             Very common in production.
@@ -2655,7 +2637,7 @@ Ans)
             RAG is ideal when knowledge changes frequently because documents can be updated without retraining the model.
 
     When to Use Fine-Tuning?
-        Use Fine-Tuning when you want:
+        ***Use Fine-Tuning when you want:
 
             - Behavior Change
             - Style Change
