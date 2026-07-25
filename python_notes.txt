@@ -9,7 +9,7 @@ Tuples: my_tuple[1]
 
 Q) if and elif difference?
 Ans) In Python, the core difference is that if starts a brand-new conditional check, while elif (short for "else if") links back to the previous if statement to create a mutually exclusive chain.
-
+    
 Q) Inbuilt modules in python
 
 Q) Difference between append() and extend()
@@ -109,9 +109,12 @@ Ans) The main difference between append() and extend() is that append() adds a s
     append(): Adds an element to the very end of the list.
     extend(): Merges an iterable (like another list or tuple) into the current list.
     insert(): Places an item at a specific index position.
-    remove(): Deletes the first occurrence of a specific value.pop(): Removes and returns the item at a given index (defaults to the last item).
-    clear(): Empties the list completely, removing all elements.index(): Returns the position index of the first occurrence of a specific value.
-    count(): Counts how many times a given element appears in the list.sort(): Sorts the list elements in place (ascending order by default).
+    remove(): Deletes the first occurrence of a specific value.
+    pop(): Removes and returns the item at a given index (defaults to the last item).
+    clear(): Empties the list completely, removing all elements.
+    index(): Returns the position index of the first occurrence of a specific value.
+    count(): Counts how many times a given element appears in the list.
+    sort(): Sorts the list elements in place (ascending order by default).
     reverse(): Flips the chronological order of the items in place.
     copy(): Returns a shallow, distinct copy of the original list.
 
@@ -172,7 +175,7 @@ Ans) - Packing: Bundles loose elements into a data structure like a tuple.
 
     - Functions: *args and **kwargs
         1. Packing Function Arguments
-            *args: Packs a variable number of positional arguments into a single tuple.python
+            *args: Packs a variable number of positional arguments into a single tuple
         
             def sum_numbers(*args):
                 return sum(args) # args is a tuple: (1, 2, 3)
@@ -797,7 +800,7 @@ Ans)
             print(line.strip())
 
 
-what we forgot to close the file -> to resolve this we use "with"
+what if we forgot to close the file -> to resolve this we use "with"
 
 Q) how to get the metadata of the file
 Ans) In Python, file metadata can be obtained using os.stat() or Path.stat() from the pathlib module. These functions return information such as file size, last modified time, last accessed time, permissions, and creation/change time. The metadata is available through attributes like st_size, st_mtime, st_atime, and st_ctime.
@@ -892,7 +895,20 @@ Ans)
 
 Q) What is the GIL?
 Ans)The Global Interpreter Lock (GIL) is a lock in CPython that allows only one thread to execute Python bytecode at a time within a single process.
-        
+
+22/07/2026       
+# Accenture interview Questions - R
+
+    1. What is the difference between langchain and langgraph
+    2. Explain me your project
+    3. Library used to send the email
+    4. Library used to extract the text from PDF and DOC
+    5. Have you used any OOP concepts
+    6. Do we need to mandatoraly write the abstract methond inside an abstract class - No
+
+    Coding questions 
+        1. Sort the given list using for loop
+        2. create a dictionary where key is the vowel and value is the count of occurence of that vowel
 
 
 
