@@ -910,6 +910,131 @@ Ans)The Global Interpreter Lock (GIL) is a lock in CPython that allows only one 
         1. Sort the given list using for loop
         2. create a dictionary where key is the vowel and value is the count of occurence of that vowel
 
+26/07/2026
 
+Q) What is the difference betweem json.loads and json.dumps?
+Ans) The "s" at the end of both function names stands for string, meaning these functions handle data entirely in-memory as strings, rather than reading or writing directly to physical files.
+
+    Function            Action                         Input                                   Output
+    json.dumps()    Serialization (Encoding)    Python object (dict, list, etc.)    JSON string (str)
+    
+    json.loads()    Deserialization (Decoding)  JSON string (str)                   Python object (dict, list, etc.)
+
+    1. json.dumps() — Object to String: Use json.dumps() when you want to convert Python data structures into a string format. This is helpful when sending data to a web API, passing messages between applications, or saving settings into a database text field.
+    Example:
+        import json
+
+        # A standard Python dictionary
+        user_profile = {
+            "username": "coder123",
+            "is_active": True,
+            "login_attempts": 3,
+            "roles": ["admin", "developer"]
+        }
+
+        # Convert Python dictionary to a JSON string
+        json_string = json.dumps(user_profile, indent=4)
+
+        print(type(json_string))  # Output: <class 'str'>
+        print(json_string)
+
+    2. json.loads() — String to Object: Use json.loads() when you receive incoming JSON data as text (such as an API response) and need to parse it into Python dictionaries or lists so you can manipulate it in your code.
+    Example:
+        import json
+
+        # A JSON-formatted string (note the double quotes inside)
+        incoming_data = '{"item": "laptop", "price": 899.99, "in_stock": false}'
+
+        # Parse the JSON string into a Python dictionary
+        parsed_dict = json.loads(incoming_data)
+
+        print(type(parsed_dict))  # Output: <class 'dict'>
+        print(parsed_dict["item"])  # Output: laptop
+        print(parsed_dict["in_stock"])  # Output: False
+
+Q) What is the difference between json.dump and json.load
+Ans) The core difference is that json.dump() writes data to a file, while json.load() reads data from a file
+    Example: 
+        1. json.dump(): Use this function when you want to convert a Python object (like a dictionary or list) into JSON format and save it directly into a file.
+            import json
+
+            data = {"name": "Alice", "age": 30}
+
+            # Open a file in write mode and dump the data
+            with open("data.json", "w") as file:
+                json.dump(data, file)
+
+        2. json.load()Use this function when you have an existing file containing JSON data and you want to read it into a Python object.
+            import json
+
+            # Open the JSON file in read mode and load the data
+            with open("data.json", "r") as file:
+                loaded_data = json.load(file)
+
+            print(loaded_data)  # Outputs: {'name': 'Alice', 'age': 30}
+
+    Quick Memory Trick
+        dump: You are dumping data out of your program and into a file.
+        load: You are loading data from a file into your program.
+
+    (Note: If you want to work with strings instead of files, use the versions with an "s" at the end: json.dumps() and json.loads()).
+
+Q) map function in python ?
+Ans) The built-in map() function in Python applies a specified function to every item of an iterable (like a list or tuple) and returns a lazy iterator called a map object.
+
+    Syntax
+        map(function, iterable, ...)
+
+    Use Cases:
+
+        1. Using a Named Function:
+            # Convert a list of strings to uppercase
+            words = ["hello", "world", "python"]
+            upper_words = map(str.upper, words)
+
+            # Convert the iterator to a list to print results
+            print(list(upper_words))  
+            # Output: ['HELLO', 'WORLD', 'PYTHON']
+
+        2. Using an Anonymous Function (lambda):
+            # Square each number in a list
+            numbers = [1, 2, 3, 4, 5]
+            squared = list(map(lambda x: x**2, numbers))
+
+            print(squared)  
+            # Output: [1, 4, 9, 16, 25]
+
+Q) ways to delete an particular object from a list of objects in python?
+Ans) data = [
+        {"name": "John", "age": 25},
+        {"name": "Alice", "age": 30},
+        {"name": "Bob", "age": 28}
+    ]
+
+    1. del — Delete using index
+
+        del data[1]
+
+    2. pop() — Delete using index and optionally get the object
+
+        deleted = data.pop(1)
+        print(deleted)
+
+    3. Find by a property, then remove()
+        If you only know the name:
+            for item in data:
+            if item["name"] == "Alice":
+                data.remove(item)
+                break
+
+    4. List Comprehension — Remove all matching objects: This removes all objects whose name is "Alice".
+        data = [item for item in data if item["name"] != "Alice"]
+
+Q) How to generate the random password for my registration?
+Ans) # Here for loop is used to generate the random character 8 times as I want the 8 character long password as at a time random module choose only one character 
+
+    characters = string.ascii_letters + string.digits + "!@#$%^&*"
+    generated_pwd = "".join(random.choice(characters) for _ in range(8)) 
+    
 
 

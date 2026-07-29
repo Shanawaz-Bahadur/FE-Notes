@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Shanawaz",
+        "stud_address": "Antophill",
+        "stud_age": "29",
+        "stud_std": "20",
+        "roll_no": 1
+    },
+    {
+        "name": "Aarif",
+        "stud_address": "Kurla",
+        "stud_age": "30",
+        "stud_std": "20",
+        "roll_no": 2
+    }
+]
