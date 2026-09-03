@@ -272,6 +272,16 @@ Ans) The del keyword in Python is primarily used to delete references to objects
         sorted() Function: Returns a new sorted list, Leaves original iterable unaltered, Accepts any iterable (tuples, sets, etc.), Uses more memory (creates a copy)
 
         sort() method: Returns None, Modifies original list in-place, Only works on lists, More memory efficient
+        
+        Example for both:
+            list.sort(): Changes the original list directly. Use this when you do not need to preserve the original order of the data.pythonnums = [3, 1, 4]
+            nums.sort() 
+            print(nums)  # Output: [1, 3, 4]
+            
+            sorted(): Leaves your original data completely untouched and outputs a brand-new sorted list. You can pass any collection into it (strings, tuples, dicts).pythonnums = [3, 1, 4]
+            new_nums = sorted(nums)
+            print(nums)      # Output: [3, 1, 4] (Unchanged)
+            print(new_nums)  # Output: [1, 3, 4]
 
 ============================= Sets ==================================
 
@@ -1035,6 +1045,70 @@ Ans) # Here for loop is used to generate the random character 8 times as I want 
 
     characters = string.ascii_letters + string.digits + "!@#$%^&*"
     generated_pwd = "".join(random.choice(characters) for _ in range(8)) 
+
+Q) What is generator?
+Ans) A generator produces values lazily using yield, so it is memory efficient for large datasets.
+    Example:
+        def make_generator():
+            yield "First"
+            yield "Second"
+
+        g = make_generator()
+
+        print(next(g))
+        print(next(g))
+
+Q) What is a decorator?
+Ans) A decorator is a function that modifies or extends the behavior of another function without changing its source code.
+    Example: 
+        # 1. Define the decorator
+        def log_activity(func):
+            def wrapper():
+                print(">>> Good morning...")
+                func()  # Calls the original function
+                print(">>> Good Bye")
+            return wrapper
+
+        # 2. Apply the decorator
+        @log_activity
+        def greet():
+            print("Hello, World!")
+
+        # 3. Call the function
+        greet()
+        log_activity(greet)() # It is similar as running the above code
+
+Q) What is the GIL?
+Ans) The Global Interpreter Lock allows only one Python thread to execute Python bytecode at a time in a CPython process. It's mainly relevant to CPU-bound multithreading; I/O-bound applications can still benefit from async or threads.
+
+
+---> EY interview Questions on YT - 
+
+    Questions: 
+        - List aur tuple mein difference 
+        - Deep copy vs shallow copy 
+        - Decorators kya hote hain 
+        - Generators  
+        - GIL in Python 
+        - Multithreading vs multiprocessing 
+        - Mutable vs immutable objects 
+        - Lambda functions  
+        - Exception handling  .  .  .  .
+    
+        - OOPs
+            - Polymorphism
+            - Method Overriding
+
+    Questions on Project:
+        
+        - Architecture of project 
+        - Biggest challenge faced and resolution? 
+        - How do you manage deadlines? 
+        - Code review process? 
+        - Agile/Scrum experience? 
+        - Git branching strategy? 
+        - Docker / cloud exposure? 
+        - Al and LLMs
     
 
 

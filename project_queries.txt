@@ -1,0 +1,136 @@
+=================================================== Siant gobain FNOL =======================================================
+
+Q) How to describe the technology stack
+Ans) The backend is implemented in Python with FastAPI. I use LangGraph for stateful workflow orchestration and agent coordination. LangChain is used for LLM integration, structured outputs and tool abstractions. I use Pydantic for schema validation, MySQL for policy data, and an email parsing library for extracting content from Outlook .msg files. For local LLM inference I'm using Ollama.
+
+Q) Why use structured output?
+Ans) I need a controlled schema from the LLM because downstream nodes depend on specific fields. Instead of parsing free-form LLM text, I use Pydantic models with with_structured_output().
+
+***Q) Human-in-the-loop in this project
+Ans) This is implemented as a controlled pause in the workflow when the parser is not confident enough to proceed.
+
+        - After the email is parsed, the system checks whether all required fields are present, such as policy number, loss date, loss cause, description, and claimant name.
+        - If any required value is missing or blank, the parser does not fail immediately.
+        - Instead, it sends a paused status event to the user/frontend through WebSocket and tells them exactly which fields are missing.
+        - The frontend/user then sends the remaining values back to the system.
+        - Those values are collected from the message queue, merged into the claim state, and the workflow continues from the parsed stage.
+
+Q) How WebSockets work here
+Ans) "WebSockets are used for live event streaming. As each agent executes, it emits status updates to the frontend, and the frontend can also send missing data back to the workflow. This creates a real-time, interactive claim processing pipeline instead of a silent backend-only process"
+
+    WebSockets are used for real-time workflow tracking and human interaction.
+
+        -> When the frontend uploads an email, the backend creates a session and returns a session_id.
+        -> The frontend opens a WebSocket connection using that session ID.
+        -> The backend starts the workflow asynchronously.
+        -> Each agent node sends status updates like:
+            - started
+            - completed
+            - paused
+            - failed
+        These updates are sent as JSON messages using ws.send_json(...).
+        This allows the frontend to show live progress such as:
+
+            - Parser running
+            - Coverage validation in progress
+            - Duplicate check passed/failed
+            - Registration done
+            - Notification sent
+            - Workflow completed
+
+Q) Which library is used to send notification email?
+Ans) The application uses Python’s built-in SMTP stack:
+
+Q) Which library is used to send notification email?
+Ans) For the notification email, the system uses Python’s built-in smtplib along with EmailMessage to send an SMTP email and attach the generated acknowledgment PDF.
+
+Example:
+        from email.message import EmailMessage
+
+        msg = EmailMessage()
+        msg["From"] = f"{FROM_NAME} <{FROM_EMAIL}>"
+        msg["To"] = to_email
+        msg["Subject"] = subject
+        msg.set_content(body)
+        msg.add_attachment(
+                    f.read(),
+                    maintype="application",
+                    subtype="pdf",
+                    filename=pdf_path.name
+                )
+
+        smtp = smtplib.SMTP(SMTP_HOST, SMTP_PORT)
+        smtp.starttls()
+        smtp.login(SMTP_USER, SMTP_PASS)
+        smtp.send_message(msg)
+        smtp.quit()
+
+
+Q) Why did you use LangGraph?
+Ans) I used LangGraph because my workflow has multiple nodes, conditional routing, shared state, tool execution and Human-in-the-Loop. These are easier to manage using a stateful graph than a simple sequential chain.
+
+Q) State vs memory?
+Ans) State represents data required by the current workflow execution, whereas memory generally refers to information retained across interactions or conversations.
+
+Q) What is a checkpointer?
+Ans) A checkpointer persists graph state at different points so that the workflow can resume later, which is especially important for Human-in-the-Loop workflows.
+
+Q) LangChain vs LangGraph?
+Ans) LangChain provides the components for building LLM applications, while LangGraph focuses on orchestrating those components into stateful, graph-based workflows.
+
+Q) Why did you use with_structured_output()?
+Ans) I need predictable output from the LLM because downstream nodes depend on specific fields. Pydantic structured output ensures the response follows a predefined schema.
+
+Q) Why is Validation a tool instead of an agent?
+Ans) Because validation follows predefined business rules and doesn't require LLM reasoning.
+
+Q) What is top-k?
+Ans) Top-k is the number of highest-ranked documents or chunks returned by the retriever for a query.
+
+Q) What if your RAG returns irrelevant documents?
+Ans) I would tune chunk size and overlap, improve embeddings, add metadata filtering, use hybrid search and potentially introduce a reranker.
+
+Q) How do you evaluate RAG?
+Ans) I evaluate both retrieval and generation. For retrieval I can use metrics like Recall@K and MRR, while for generation I look at faithfulness, answer relevance and context relevance.
+
+Q) Why FastAPI?
+Ans) FastAPI provides high-performance APIs, asynchronous support, Pydantic validation and automatic OpenAPI documentation, which makes it a good fit for AI backend services.
+
+Q) FastAPI vs Flask?
+Ans) FastAPI has strong built-in type validation through Pydantic and native async support, while Flask is a lightweight and mature framework with a simpler traditional architecture.
+
+Q) How do you upload a file using FastAPI?
+Ans) I use UploadFile with multipart/form-data and pass the uploaded file to my processing pipeline.
+
+Q) What is Pydantic used for in FastAPI?
+Ans) Pydantic is used to define and validate request and response schemas and automatically generate API documentation.
+
+Q)*** How do you make React accessible?
+Ans) I use semantic HTML, keyboard navigation, proper labels, ARIA attributes where necessary, focus management, sufficient contrast and meaningful alt text.
+
+Q) How do you process PDFs?
+Ans) I first determine whether the PDF contains an actual text layer. If it does, I extract the text using a library such as PyPDF2 or pdfminer.six. If it's scanned or image-based, I use OCR (like, pytesseract, EasyOCR).
+
+Q) PyPDF2 vs pdfminer.six?
+Ans) PyPDF2 is useful for common PDF manipulation and basic text extraction, while pdfminer.six provides more detailed text and layout extraction capabilities.
+
+Q) What if the database is down?
+Ans) The tool should catch the database exception, return a controlled failure state, log the error and optionally retry depending on the failure type.
+
+Q) What if the LLM is unavailable?
+Ans) I'd use retries with appropriate timeouts and, depending on the architecture, a fallback model or provider. The workflow should fail gracefully rather than hanging indefinitely.
+
+Q) What if the user doesn't provide the HITL information?
+Ans) The workflow remains in a waiting state. In production I'd add a timeout, escalation mechanism and status tracking.
+
+Q) ***"What was the most difficult part?"
+Ans) The challenging part was designing the workflow so that the LLM handled reasoning tasks while deterministic business logic remained outside the LLM. Handling state persistence and resuming the workflow after Human-in-the-Loop was another important part.
+
+Q) ###Pending to implement: How do you pause LangGraph?
+Ans) I use LangGraph's interrupt() mechanism.
+
+Q) ###Pending to implement: How do you resume it?
+Ans) I resume the same graph execution using Command(resume=...) and the original thread ID.
+
+
+

@@ -223,3 +223,6 @@ Q) What is Re-ranking?
 Ans) Re-ranking is the process of reordering the retrieved documents so that the most relevant ones appear first before they are sent to the LLM. A re-ranker performs a second evaluation and improves the ordering.
 
         Complete flow: Metadata Filtering → Retriever → Re-ranker → LLM
+
+reverse() vs revered()
+sort vs sorted

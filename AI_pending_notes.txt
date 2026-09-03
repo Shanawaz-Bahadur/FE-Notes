@@ -929,7 +929,7 @@ Ans) Embeddings convert text into numerical vectors that preserve semantic meani
             - Pizza
             - Football
         will be far apart.
-
+8
         Example
             Text:
                 React is a frontend library.
