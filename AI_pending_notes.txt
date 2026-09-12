@@ -2888,3 +2888,10 @@ Ans)
         
 Q) How do you handle Data Privacy and PII Safety in GenAI/RAG Systems?
 Ans) I handle privacy and PII safety through role-based access control(RBAC), metadata filtering, PII detection and masking, encryption, output filtering, audit logging, and retention policies. In RAG systems, access control should be enforced before retrieval so unauthorized users never retrieve restricted documents in the first place.
+
+Q) What is 1536 dimensions in AI Agents
+Ans) In AI agents, 1536 dimensions refers to the length of a specific vector embedding used by an agent to understand, remember, and retrieve semantic information.
+
+    When an AI agent interacts with data, it converts words, sentences, or entire documents into a long list of numbers called a vector. If a model outputs 1536 dimensions, it means every piece of text is translated into an array of exactly 1,536 floating-point numbers.
+    
+    This specific number became an industry standard primarily because it is the default output size for OpenAI’s highly popular embedding models, including text-embedding-ada-002 and text-embedding-3-small

@@ -6,6 +6,9 @@ Ans) The backend is implemented in Python with FastAPI. I use LangGraph for stat
 Q) Why use structured output?
 Ans) I need a controlled schema from the LLM because downstream nodes depend on specific fields. Instead of parsing free-form LLM text, I use Pydantic models with with_structured_output().
 
+Q) How you have implemented HITL in your project
+Ans) WebSocket + interupt and command function
+
 ***Q) Human-in-the-loop in this project
 Ans) This is implemented as a controlled pause in the workflow when the parser is not confident enough to proceed.
 
@@ -132,5 +135,253 @@ Ans) I use LangGraph's interrupt() mechanism.
 Q) ###Pending to implement: How do you resume it?
 Ans) I resume the same graph execution using Command(resume=...) and the original thread ID.
 
+=========================================================== Round 1 Questions (St. Gobain) ============================
+
+1. What is th difference between langchain and langgraph and why did you choose this framwork for your project
+Ans) LangChain provides components for building LLM applications, such as prompts, models, tools, retrievers and chains. LangGraph is used to orchestrate complex, stateful workflows with nodes, edges, conditional routing and Human-in-the-Loop. I used LangChain for LLM and tool integration and LangGraph for orchestrating my FNOL workflow because my project requires multiple agents, conditional flows and HITL.
+        LangChain = building blocks | LangGraph = workflow orchestration
+
+
+2. What is the difference between Multi-LLM and Multi Agent?
+Ans) Multi-LLM means using multiple LLM models, usually because different models are better for different tasks. Multi-Agent means having multiple specialized agents, where each agent has its own role, instructions and possibly tools. An agent can use one or more LLMs. So Multi-LLM focuses on models, while Multi-Agent focuses on autonomous task responsibilities
+
+3. What is the difference between query params and path params?
+Ans) Path parameters are part of the URL and usually identify a specific resource, while query parameters are optional parameters used to filter, search or modify the request.
+
+    Example:
+        GET /users/123
+        123 → Path Parameter
+
+        GET /users?role=admin&active=true
+        role and active → Query Parameters
+
+4. Types of validators in Pydantic?
+Ans) The main validators are field validators and model validators. Field validators validate individual fields, while model validators can validate multiple fields together or the complete model. Validators can run in before or after mode.
+
+    Example:
+        @field_validator("age")
+        @model_validator(mode="after")
+
+
+5. What is the use of Pydantic?
+Ans) Pydantic is mainly used for data type and data validation(gt, lt, max_length), as we know that Python is dynamically typed language as we can store integer in the same variable and then replace that value with string, which has the chance on breaking in the production,and also it is used for parsing and serialization using Python type hints. In my project, I use it to validate API requests and define structured LLM outputs so that downstream nodes receive predictable data.
+
+6. How to get the response in JSON using Pydantic?
+Ans) I define a Pydantic model and use model_dump() to get a Python dictionary or model_dump_json() to get a JSON string.
+    Example:
+        class User(BaseModel):
+            name: str
+            age: int
+
+        user = User(name="John", age=30)
+        user.model_dump_json()
+
+        Output:
+            {
+                "name": "John",
+                "age": 30
+            }
+
+
+7. Any library for extracting tabular data witho+E11ut losing the layout and also for multi type of data format like pdf, excel, csv. image
+Ans) For PDFs, I can use Camelot or Tabula for structured tables, and pdfplumber when I need more control over layout. For scanned or image-based tables, I would use OCR-based tools such as PaddleOCR or Azure Document Intelligence. For Excel and CSV, I would use openpyxl and pandas respectively. If I need one document-AI solution across multiple formats, Azure Document Intelligence is a strong option because it supports documents, tables and OCR
+
+8. Why to use Pydantic?
+Ans) I use Pydantic because it gives me type validation and structured data. In an LLM application, it is especially useful because it ensures that the LLM output follows a predefined schema instead of returning unpredictable free-form text
+
+9. Google Genkit or Genlit UI framework to display the AI response?
+Ans) Genkit is an open-source framework from Google for building AI-powered applications. It provides abstractions for models, prompts, tools, flows and streaming. It can be used as an AI backend layer, but it is not primarily a UI framework.
+
+10. How can we stream the data on UI using React in chatbot?
+Ans) I can use WebSockets or Server-Sent Events. For a two-way chatbot interaction, I prefer WebSockets because the client and server can communicate in both directions. The backend streams tokens or events, and React updates the UI incrementally as messages arrive.
+
+11. What is useState and useMemo?
+Ans) useState is used to store and update component state, while useMemo is used to memoize the result of an expensive calculation so that it doesn't get recalculated unnecessarily on every render
+
+12. Why to use FastAPI over other framework like Flask, Django
+Ans) I chose FastAPI because it provides asynchronous support, high performance, Pydantic-based validation, dependency injection and automatic OpenAPI documentation. It is also well suited for AI applications where we may have async LLM calls, streaming and WebSocket communication.
+    FastAPI also fits well because I need file uploads, REST APIs and WebSocket-based Human-in-the-Loop communication.”
+
+13. What is the difference between chains and multi Agents
+Ans) A chain follows a predefined sequence of steps, whereas a multi-agent system contains multiple specialized agents that can make decisions and perform different responsibilities. Chains are more deterministic, while agents are more dynamic and decision-oriented.
+
+14. What is Agent Handoff
+Ans) Agent handoff means transferring control or responsibility from one agent to another agent when the current task requires another agent's expertise. The second agent receives the required context or state and continues the workflow.
+
+15. How you will handle the limited context window of LLM as you also need to maintain the Chat history?
+Ans) I wouldn't send the complete chat history to the LLM every time. I would maintain the conversation state separately and use techniques like summarization, truncation and retrieval. Recent messages can be kept directly in the context, while older messages can be summarized or stored in a vector database and retrieved only when relevant.
+    The key is to separate conversation storage from the LLM context window; the database can contain the full history, while the LLM receives only the relevant context.
+
+16. What is the use of Annotated ? 
+Ans) Annotated allows us to attach additional metadata or behavior to a type without changing the underlying type itself.
+
+Q) On which tech stack I will be working on:
+Ans) FastAPI, Genkit, langchain, langgraph, React, Multi Agent
+
+
+Pydantic is used for Data type and data validation(gt, lt, max_length), as we know that Python is dynamically typed language as we can store integer in the same variable and then replace that value with string, which has the chance on breaking in the production
+
+Terms to learn:
+
+Data validators - EmailStr, AnyUrl
+Field - (Default value, data validation, metadata) it is used to define the range and other validation and also it is used to add the metadata like title, description 
+    As bydefault if we send the string value even after the schema is set to int then it performs type coersion('12' -> 12) to convert the string to int and if we want to stop this behavior then we can set strict=True in the Field.
+
+Annotated - Annotated we can directly add data type and Field to be more clear
+
+Different Types of Validators (This all validators should be written inside the class which is inheriting the BaseModel)
+
+    1. field_validator - Also we can set mode = "after" and "before" which means doing field_validation before or after type coersion, bydefault it is False
+
+    2. Model Validators - As in the field_validator we were applying the validation in some particular field but in model_validator we can apply it on the complete model(All the fields)
+
+computed_fields - This is used to calculate any fields using the current fields
+nested model - This is used to add the types of the field which has the nested schema
+
+Q) What is the use of TypedDict and Optional
+
+
+Q) How can you export your Pydantic object in json and dict
+Ans) model_dump and model_dump_json
+
+Q) What is the use of model_dump() and model_dump_json()?
+Ans) Both are used to serialize a Pydantic model, but they return different types. model_dump() converts a Pydantic model into a Python dictionary, whereas model_dump_json() serializes it into a JSON string. I use model_dump() when passing structured data within my Python application or LangGraph state, and model_dump_json() when I specifically need JSON representation.
+
+    Example: model_dump()
+        from pydantic import BaseModel
+
+        class Policy(BaseModel):
+            policy_number: str
+            policy_holder: str
+            active: bool
+
+        policy = Policy(
+            policy_number="POL12345",
+            policy_holder="John Doe",
+            active=True
+        )
+
+        result = policy.model_dump()
+        print(result)
+        print(type(result))
+
+        Output: converts the Pydantic model into a Python dictionary. You would typically use this when passing structured data to another Python function, LangGraph state, database layer, etc.
+            {
+                'policy_number': 'POL12345',
+                'policy_holder': 'John Doe',
+                'active': True
+            }
+
+            <class 'dict'>
+
+    Example: model_dump_json()
+
+        result = policy.model_dump_json()
+
+        print(result)
+        print(type(result))
+
+        Output: converts the Pydantic model into a JSON string. This is useful when you actually need to send or store JSON-formatted text.
+        
+        {"policy_number":"POL12345","policy_holder":"John Doe","active":true}
+        <class 'str'>
+
+Q) What is a Skill in GitHub Copilot?
+Ans) A Copilot Agent Skill is a reusable, specialized set of instructions, resources, and optionally scripts that Copilot can load when it needs to perform a particular type of task. GitHub's current documentation defines a skill as a directory containing a SKILL.md file
+
+    When Copilot determines that the skill is relevant, it loads the skill's instructions and resources into its context and follows them. Skills can also be manually invoked where supported.
+
+    Skill vs Custom Instructions
+        Another common question:
+            Custom instructions = rules that should generally apply to Copilot's behavior.
+            Skill = specialized instructions that should be loaded for a particular task/workflow.
+
+    Example:
+        Custom instruction:
+            "Always use TypeScript in this project."
+
+        Skill:
+            "When implementing an FNOL parser, follow these validation, logging and testing steps."
+
+Q) What are Python Type Hints?
+Ans) Type hints are a way of specifying the expected data type of a variable, function parameter, or return value. They do not enforce the type at runtime by themselves. They mainly improve code readability, IDE support, static analysis, and maintainability.
+
+    Example:
+        def add(a: int, b: int) -> int:
+            return a + b
+
+            Here:
+                a: int → a should be an integer
+                b: int → b should be an integer
+                -> int → function is expected to return an integer
+
+Q) TypedDict vs BaseModel
+Ans) Both are commonly used to define the structure of data, but they solve different problems.
+                    TypedDict = structure of a dictionary
+                    BaseModel = validated data object
+
+    TypedDict: TypedDict is mainly used to define the expected structure of a dictionary.
+
+        from typing import TypedDict
+
+        class PolicyData(TypedDict):
+            policy_number: str
+            policy_holder: str
+            active: bool
+
+        You can then have:
+
+        policy: PolicyData = {
+            "policy_number": "POL123",
+            "policy_holder": "John",
+            "active": True
+        }
+
+        But TypedDict does not perform runtime validation.
+
+        For example, this can still execute:
+
+        policy = {
+            "policy_number": 123,
+            "policy_holder": "John",
+            "active": "yes"
+        }
+        A type checker may complain, but Python itself won't validate it.
+
+    BaseModel: BaseModel comes from Pydantic and provides runtime validation and parsing.
+
+        from pydantic import BaseModel
+
+        class PolicyData(BaseModel):
+            policy_number: str
+            policy_holder: str
+            active: bool
+
+        Now:
+
+        policy = PolicyData(
+            policy_number="POL123",
+            policy_holder="John",
+            active=True
+        )
+
+        Pydantic validates the data when the object is created.
+
+============== HITL================
+
+To implement HITL we need to implepment checkpointer to store the state
+
+There are 2 important function:
+    1. interrupt()
+    2. command()
+
+Steps followed for HITL, when there is interrupt function is called:
+
+    1. Pause the workflow
+    2. Save State using checkpointer
+    3. Prepare a message(To show the user)
+    4. frontend receives the interrupt msg
+    5. User input the required data(Ex. appproval, missing field)
+    6. Again call the invoke function but this time we need to send the command argument
 
 
