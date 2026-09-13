@@ -1,0 +1,63 @@
+As before MCP the developers were facing multiple issues like:
+    1. API URL change
+    2. API loginc change
+    3. Different connection code for each service like  data sources (e.g. local files, databases), tools (e.g. search engines, calculators) and workflows (e.g. specialized prompts)
+
+To solve this MCP was introduced as mainly it consist of MCP server, MCP Host and as service provided will be maintaining the MCP server as if there is any change in the service then service provider will make the appropriate change in the MCP server
+
+Q) What is the Model Context Protocol (MCP)?
+Ans) (From Anthropc) MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems.
+    Think of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect electronic devices, MCP provides a standardized way to connect AI applications to external systems.
+    Using MCP, AI applications like Claude or ChatGPT can connect to data sources (e.g. local files, databases), tools (e.g. search engines, calculators) and workflows (e.g. specialized prompts)—enabling them to access key information and perform tasks.
+
+
+    The key participants in the MCP architecture are:
+
+        1. MCP Host: The AI application that coordinates and manages one or multiple MCP clients (e.g., Streamlit app, Visual Studio Code IDE Copilot chat, MCP inspector, Terminal, Claude Desktop, Cursor IDE )
+        2. MCP Client: A component that maintains a connection to an MCP server and obtains context from an MCP server for the MCP host to use
+        3. MCP Server: A program that provides context to MCP clients (it can be local or global)
+
+    MCP consists of two layers between client and the server:
+
+        1. Data layer: Defines the JSON-RPC based protocol for client-server communication,
+        2. Transport layer: Defines the communication mechanisms and channels that enable data exchange between clients and servers, including transport-specific connection establishment, message framing, and authorization.
+
+            MCP supports two transport mechanisms:
+
+                1. Stdio transport(used mainly for the local server): Uses standard input/output streams for direct process communication between local processes on the same Machine
+                2. Streamable HTTP transport(used mainly for the Global server): Uses HTTP POST for client-to-server messages with optional Server-Sent Events for streaming capabilities. This transport enables remote server communication and supports standard HTTP authentication methods including bearer tokens, API keys, and custom headers. MCP recommends using OAuth to obtain authentication tokens.
+
+
+Q) What are the steps to create the MCP and to use it?
+Ans) 
+
+    Step 1: Create the MCP server using FastMCP as example created for weather alert in D:\Practice React\Model Context Protocol\weatherServer.py with 1 tool and 1 resource
+
+    Step 2: Start the MCP server - uv run mcp dev weatherServer.py (As using this command we get the option to use MCP inspector to use as a MCP client)
+
+    Step 3: If we wants to use the VS copilot chat as an MCP client to communicate we have the following steps
+        i. Install - python -m pip install mcp httpx
+        ii. Create .vscode/mcp.json in Root directory:
+
+                {
+                    "servers": {
+                        "weather": {
+                        "type": "stdio",
+                        "command": "python",
+                        "args": [
+                            "${workspaceFolder}/Model Context Protocol/weatherServer.py"
+                        ]
+                        }
+                    }
+                }
+
+        iii. Reload the VS code, select agent mode then Open the MCP server controls and start weather(Name if the MCP server)  
+        iv. Then start asking questions
+        
+
+
+
+
+
+
+

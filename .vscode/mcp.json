@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "weather": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "${workspaceFolder}/Model Context Protocol/weatherServer.py"
+      ]
+    }
+  }
+}
