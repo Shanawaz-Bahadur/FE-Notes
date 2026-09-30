@@ -1,0 +1,17 @@
+YT Ref: https://www.youtube.com/watch?v=BV0YUeam4y8&t=2064s (KN)
+
+Multimodal here -> Text + Image
+    As till now we were working on the embeddings models for text, but we don't know how image gets embedded 
+
+Multimodal LLM -> The models which are trained on both Text + Images (ex. gpt-4.1, google_gemini_flash_2.5)
+
+Q) Library to be used to extract text and images
+Ans) PyMuPDF(fitz)
+
+--> Flow of the complete project
+
+PDF document -> Extract text and imgaes(Seperately using CLIP model for embedding the text and image Seperately) -> Store it into the vector stort(FAISS) -> As per the query(In the embedding format) retrieve the chunks from the vector store -> Then provide the retrived chunks to the LLM(gpt-4.1) to provide the final output
+
+
+
+

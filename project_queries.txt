@@ -238,8 +238,73 @@ Different Types of Validators (This all validators should be written inside the 
 computed_fields - This is used to calculate any fields using the current fields
 nested model - This is used to add the types of the field which has the nested schema
 
-Q) What is the use of TypedDict and Optional
+Q) What is the use of Optional?
+Ans)Optional means a value can be either a particular type or None
 
+     If you give Optional to any of the field with Default value then even if you don't provide the value to that particular object then it will take the defautl value 
+
+    Ex. 
+
+        from typing import Optional 
+        class Employee(BaseModel): 
+            id: int 
+            name: str 
+            department: str 
+            salary: Optional[float] = None # Optional with default value 
+            is_active: Optional[bool] = True # Optional with default True
+
+        emp1 = Employee(id=1, name="John", department="IT") 
+        print(emp1) # O/p: id=1 name='John' department='IT' salary=None is_active=True
+
+Q) What is the difference between Basemodel and TypedDict?
+Ans)
+    - TypedDict defines the structure of a dictionary.
+    - BaseModel defines and validates a data object.
+
+    1. Using TypedDict
+        TypedDict mainly helps your IDE and static type checker understand what keys and types are expected. It does not validate the data at runtime.
+
+        Ex. from typing import TypedDict
+
+            class Policy(TypedDict):
+                policy_number: str
+                policy_holder: str
+                active: bool
+
+            policy: Policy = {
+                "policy_number": "POL12345",
+                "policy_holder": "John",
+                "active": True
+            }
+
+            Here policy is simply a Python dictionary.
+            print(type(policy)) # <class 'dict'>
+
+    2. Using Pydantic BaseModel
+
+        from pydantic import BaseModel
+
+        class Policy(BaseModel):
+            policy_number: str
+            policy_holder: str
+            active: bool
+
+        policy = Policy(
+            policy_number="POL12345",
+            policy_holder="John",
+            active=True
+        )
+
+        Now policy is a Pydantic object, Pydantic performs runtime validation.
+        print(type(policy)) # <class '__main__.Policy'>
+
+        For example:
+            policy = Policy(
+                policy_number="POL12345",
+                policy_holder="John",
+                active="hello"
+            )
+        Pydantic will raise a validation error because "hello" isn't a valid boolean.
 
 Q) How can you export your Pydantic object in json and dict
 Ans) model_dump and model_dump_json
@@ -367,6 +432,9 @@ Ans) Both are commonly used to define the structure of data, but they solve diff
 
         Pydantic validates the data when the object is created.
 
+
+Q) In the resume how did you calculated the percentage of optimization
+
 ============== HITL================
 
 To implement HITL we need to implepment checkpointer to store the state
@@ -384,4 +452,8 @@ Steps followed for HITL, when there is interrupt function is called:
     5. User input the required data(Ex. appproval, missing field)
     6. Again call the invoke function but this time we need to send the command argument
 
+Azure - 38501
+AWS 37970 
 
+4045
+3969

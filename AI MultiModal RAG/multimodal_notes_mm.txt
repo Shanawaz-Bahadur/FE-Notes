@@ -1,0 +1,13 @@
+YT Ref: https://www.youtube.com/watch?v=qKxQ1yXC2MQ (Mohammed Moin)
+
+Here it has used - unstructured-library for extracting the text, images and tables from PDF
+
+1. we will be using partition_pdf function from unstructured_library to split the PDF into the strcutured chunks of text, images and tables
+
+2. Then will use the Vision language modal(Multimodal) to understand the extracted image from unstructure_library and provide us the summary of that image and similarly for table we will use simple text language model like groq here we don't need to use vision language model here we will extract the html representation of the table using the unstructure_library then will send this html file to the LLM to generate the summary of each of the table and for text will create the summary with the help of any LLM
+
+Note: Here we are not storing the embeddings of text, images or table into the vector store we are specifically storing the embedding summary of all three
+
+3. Once we have summary of the image, text and table then will convert the summarized text into vectors using an embedding model
+
+

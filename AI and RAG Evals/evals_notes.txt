@@ -1,0 +1,15 @@
+Ref: https://github.com/krishnaik06/RAG-Tutorials/blob/main/1-rag_evaluation.ipynb
+https://www.youtube.com/watch?v=o126p1QN_RI
+
+Q) Why do weed to perform Evaluation?
+Ans) To select perfect LLM for our usecase for that we need to first have the Ground truth output
+
+    Here we will be using LLM as a Judge + Prompt using langsmith
+
+--> Steps to create implement the LLM Evaluation?
+Ans) 1. Gathering the Data points(Ground truth)
+    2. LLM as a Judge
+    3. Evaluation Metrics
+    4. Comparing multiple models
+
+--> Steps to implement the RAG Evaluation
