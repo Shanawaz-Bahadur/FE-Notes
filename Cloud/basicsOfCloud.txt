@@ -1,0 +1,57 @@
+https://www.youtube.com/watch?v=XrcVL1fXYms
+
+===========================================  AI Cloud Baics =========================================== 
+
+Phase 1: Cloud Infra for AI workloads
+Phase 2: Implement AI Cloud Security 
+Phase 3: MLOps
+
+
+==> Phase 1: Cloud Infra for AI workloads
+
+1. Compute: For this we have 3 options - 
+
+    i. EC2 Instance(With GPU equipped Instance)
+
+        For Automated Scheduling, so that no instance it sitting idle we can opt for Containers(We can package all of this in a container using Amazon ECS or Amazon AKS)
+
+    ii. Container:
+        Benefits of using container:
+
+            1. They ensure model works consistently across all Environment, and avoid "Worked on my machine" problem.
+            2. You can manage varying resource needs in an AI pipeline
+            3. Container orchestration helps maximize expensive GPU utilization
+
+    iii. Lambda: used to handle the event driven aspects of AI pipeline and maintaining constantly running servers
+
+        But if some major limitation, so it not used much AI application as it can be used for traditional application or light weight preprocessing:
+            
+            1. Cold Start problem
+            2. Strict resource constaints
+    
+2. Storage: S3 Bucket - Used for storing Website images, backups and Holding files, as in traditional app it is not a static storage but a continous pipeline.
+
+    There are specialized Data Organization techniques:
+        i. Apache Hudi
+        ii. Delta Lake
+
+    Journey of data in AI:
+
+        Raw Information -> Cleaned & Processed -> Traning Data -> Feeded to AI Models
+
+    There are more types of storage:
+
+        i. S3: Large amount of historical Data
+        ii. DynamoDB: Fast access to current information
+        iii. Elastic Cache: Temporary storage of frequently access results 
+
+3. Identity Access management(IAM):  As permission contantly changes as projects move through different phases
+
+    Evolving IAM permission for AI workflow
+
+        - Data Engineers Need access to storage services and raw data sources  
+        - Data Scientists Require permissions to compute resources and development datasets  
+        - ML Engineers Need access to benchmarking tools and test environments  
+        - Al Cloud Engineers or Al/ML Platform Engineers Require permissions for deployment services and monitoring tools
+
+ 
